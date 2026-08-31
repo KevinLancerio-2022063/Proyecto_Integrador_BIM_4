@@ -20,6 +20,7 @@ create table zona (
     nombre varchar(120) not null,
     municipio varchar(120),
     departamento varchar(120),
+    pais varchar(80) not null default 'Guatemala',
     latitud numeric(9,6),
     longitud numeric(9,6),
     nivel_riesgo varchar(20) not null default 'MEDIO'
@@ -28,7 +29,6 @@ create table zona (
     created_at timestamptz not null default now(),
     updated_at timestamptz
 );
-
 
 -- listar todos los usuarios activos
 create or replace function sp_listar_usuarios()
@@ -114,7 +114,7 @@ begin
 end;
 $$ language plpgsql;
 
--- eliminar usuario
+-- eliminar usuario (soft delete)
 create or replace procedure sp_eliminar_usuario(p_id bigint) as $$
 begin
     update usuario
@@ -131,6 +131,7 @@ returns table (
     nombre varchar,
     municipio varchar,
     departamento varchar,
+    pais varchar,
     latitud numeric,
     longitud numeric,
     nivel_riesgo varchar,
@@ -139,7 +140,7 @@ returns table (
 ) as $$
 begin
     return query
-    select z.id, z.nombre, z.municipio, z.departamento, z.latitud, z.longitud,
+    select z.id, z.nombre, z.municipio, z.departamento, z.pais, z.latitud, z.longitud,
            z.nivel_riesgo, z.activo, z.created_at
     from zona z
     where z.activo = true
@@ -152,13 +153,14 @@ create or replace procedure sp_agregar_zona(
     p_nombre varchar,
     p_municipio varchar default null,
     p_departamento varchar default null,
+    p_pais varchar default 'Guatemala',
     p_latitud numeric default null,
     p_longitud numeric default null,
     p_nivel_riesgo varchar default 'MEDIO'
 ) as $$
 begin
-    insert into zona (nombre, municipio, departamento, latitud, longitud, nivel_riesgo)
-    values (p_nombre, p_municipio, p_departamento, p_latitud, p_longitud, p_nivel_riesgo);
+    insert into zona (nombre, municipio, departamento, pais, latitud, longitud, nivel_riesgo)
+    values (p_nombre, p_municipio, p_departamento, p_pais, p_latitud, p_longitud, p_nivel_riesgo);
 end;
 $$ language plpgsql;
 
@@ -169,6 +171,7 @@ returns table (
     nombre varchar,
     municipio varchar,
     departamento varchar,
+    pais varchar,
     latitud numeric,
     longitud numeric,
     nivel_riesgo varchar,
@@ -190,6 +193,7 @@ create or replace procedure sp_actualizar_zona(
     p_nombre varchar,
     p_municipio varchar,
     p_departamento varchar,
+    p_pais varchar,
     p_latitud numeric,
     p_longitud numeric,
     p_nivel_riesgo varchar
@@ -199,6 +203,7 @@ begin
     set nombre = p_nombre,
         municipio = p_municipio,
         departamento = p_departamento,
+        pais = p_pais,
         latitud = p_latitud,
         longitud = p_longitud,
         nivel_riesgo = p_nivel_riesgo,
