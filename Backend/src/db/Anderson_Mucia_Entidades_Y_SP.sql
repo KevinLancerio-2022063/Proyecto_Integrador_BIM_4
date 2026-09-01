@@ -144,7 +144,7 @@ begin
            z.nivel_riesgo, z.activo, z.created_at
     from zona z
     where z.activo = true
-    order by z.nombre;
+    order by z.id asc;
 end;
 $$ language plpgsql;
 
@@ -221,3 +221,17 @@ begin
     where id = p_id;
 end;
 $$ language plpgsql;
+
+-- Usuarios
+call sp_agregar_usuario('carlos mendez', 'carlos.mendez@siged.com', '$2b$10$hash123admin', '5555-1001', 'ADMIN', 'gestión de emergencias, coordinación', true);
+call sp_agregar_usuario('maría gonzález', 'maria.gonzalez@siged.com', '$2b$10$hash123coord', '5555-1002', 'COORDINADOR', 'coordinación de equipos, logística', true);
+call sp_agregar_usuario('juan pérez', 'juan.perez@siged.com', '$2b$10$hash123rescate', '5555-1003', 'RESCATISTA', 'rescate acuático, primeros auxilios', true);
+call sp_agregar_usuario('ana rodríguez', 'ana.rodriguez@siged.com', '$2b$10$hash123gestor', '5555-1004', 'GESTOR_REFUGIO', 'gestión de albergues, atención a damnificados', true);
+call sp_agregar_usuario('luis martínez', 'luis.martinez@siged.com', '$2b$10$hash123voluntario', '5555-1005', 'VOLUNTARIO', 'apoyo general, distribución de ayuda', true);
+
+-- Zonas
+call sp_agregar_zona('zona 1 guatemala', 'guatemala', 'guatemala', 'guatemala', 14.6349, -90.5069, 'MEDIO');
+call sp_agregar_zona('quetzaltenango centro', 'quetzaltenango', 'quetzaltenango', 'guatemala', 14.8348, -91.5181, 'ALTO');
+call sp_agregar_zona('escuintla costa', 'escuintla', 'escuintla', 'guatemala', 14.3050, -90.7850, 'ALTO');
+call sp_agregar_zona('petén norte', 'flores', 'petén', 'guatemala', 16.9281, -89.8990, 'BAJO');
+call sp_agregar_zona('huehuetenango sierra', 'huehuetenango', 'huehuetenango', 'guatemala', 15.3197, -91.4714, 'CRITICO');
