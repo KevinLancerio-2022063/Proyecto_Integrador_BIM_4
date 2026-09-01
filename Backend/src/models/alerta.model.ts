@@ -13,3 +13,35 @@ export interface Alerta {
     estado: Estado;
     fecha: Date;
 };
+
+// Datos necesarios para crear una alerta
+export interface CrearAlertaDTO {
+    incidente_id?: number;
+    zona_id?: number;
+    refugio_id?: number;
+    tipo: Tipo;
+    nivel: Nivel;
+    mensaje: string;
+    estado?: Estado;
+    fecha?: Date;
+}
+
+// Datos necesarios para actualizar una alerta
+export interface ActualizarAlertaDTO {
+    incidente_id?: number | null;
+    zona_id?: number | null;
+    refugio_id?: number | null;
+    tipo?: Tipo;
+    nivel?: Nivel;
+    mensaje?: string;
+    estado?: Estado;
+    fecha?: Date;
+}
+
+// Respuesta estándar de la API
+export interface RespuestaAlertaAPI<T> {
+    success: boolean;
+    message: string;
+    data?: T;
+    error?: string;
+}

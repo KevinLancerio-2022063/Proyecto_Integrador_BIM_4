@@ -1,5 +1,5 @@
 export enum Nivel {
-    Info = 'Informacion',
+    Informacion = 'Informacion',
     Advertencia = 'Advertencia',
     Critico = 'Critico'
 };
