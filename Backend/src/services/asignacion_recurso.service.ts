@@ -36,7 +36,7 @@ export class AsignacionRecursoService {
                 return { success: false, message: "La cantidad debe ser mayor a cero" };
             }
 
-            // Validar que tenga un destino unico (incidente O refugio, no ambos)
+            // Validar que tenga un destino unico (incidente o refugio, no ambos)
             const tieneIncidente = datos.incidente_id !== undefined && datos.incidente_id !== null;
             const tieneRefugio = datos.refugio_id !== undefined && datos.refugio_id !== null;
 
