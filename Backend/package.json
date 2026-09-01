@@ -12,6 +12,7 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^26.2.0",
     "@types/pg": "^8.23.1",
     "tsx": "^4.23.12",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "pg": "^8.23.0"
   }
 }
