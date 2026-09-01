@@ -20,7 +20,7 @@ app.get("/api/health", (req, res) => {
     });
 });
 
-app.use("/api/recursos", recursoRoutes);
+app.use("/api/incidentes", recursoRoutes);
 
 app.get("/", (req, res) => {
     res.json({
