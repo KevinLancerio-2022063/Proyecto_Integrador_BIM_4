@@ -2,36 +2,31 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-// Importa las rutas
+// Importa las rutas de los modulos
 import recursoRoutes from "./routes/recurso.routes";
+import refugioRoutes from "./routes/refugio.routes";
+import asignacionRecursoRoutes from "./routes/asignacion_recurso.routes";
 
 dotenv.config();
 
 const app = express();
 
-// Middlewares
+// Configura los middlewares globales
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas de prueba
-app.get("/api/health", (req, res) => {
-    res.json({
-        success: true,
-        message: "API SIGED funcionando correctamente",
-        timestamp: new Date().toISOString()
-    });
-});
-
-// Rutas de la API
+// Registra las rutas de los modulos
 app.use("/api/recursos", recursoRoutes);
+app.use("/api/refugios", refugioRoutes);
+app.use("/api/asignaciones-recurso", asignacionRecursoRoutes);
 
-// Ruta raíz
+// Ruta de prueba para verificar que el servidor funciona
 app.get("/", (req, res) => {
     res.json({
         nombre: "SIGED API",
         version: "1.0.0",
-        descripcion: "Sistema Integrado de Gestión de Emergencias y Desastres"
+        descripcion: "Sistema Integrado de Gestion de Emergencias y Desastres",
     });
 });
 
