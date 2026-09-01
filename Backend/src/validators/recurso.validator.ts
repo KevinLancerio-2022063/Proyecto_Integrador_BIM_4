@@ -26,7 +26,7 @@ export function validarCrearRecurso(datos: any): { valido: boolean; errores: str
         errores.push(`El tipo debe ser uno de: ${TIPOS_RECURSO.join(", ")}`);
     }
 
-    // Validar unidad_medida (opcional pero debe ser válida si se proporciona)
+    // Validar unidad_medida
     if (datos.unidad_medida !== undefined && datos.unidad_medida !== null) {
         if (typeof datos.unidad_medida !== "string") {
             errores.push("La unidad de medida debe ser texto");
@@ -35,7 +35,7 @@ export function validarCrearRecurso(datos: any): { valido: boolean; errores: str
         }
     }
 
-    // Validar cantidad_total (opcional pero debe ser válida si se proporciona)
+    // Validar cantidad_total
     if (datos.cantidad_total !== undefined && datos.cantidad_total !== null) {
         if (typeof datos.cantidad_total !== "number") {
             errores.push("La cantidad total debe ser un número");
@@ -44,7 +44,7 @@ export function validarCrearRecurso(datos: any): { valido: boolean; errores: str
         }
     }
 
-    // Validar descripcion (opcional)
+    // Validar descripcion
     if (datos.descripcion !== undefined && datos.descripcion !== null) {
         if (typeof datos.descripcion !== "string") {
             errores.push("La descripción debe ser texto");
