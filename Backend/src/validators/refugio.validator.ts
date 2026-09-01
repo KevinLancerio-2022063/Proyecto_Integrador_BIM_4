@@ -25,14 +25,14 @@ export function validarCrearRefugio(datos: any): { valido: boolean; errores: str
         errores.push("La capacidad total debe ser mayor a cero");
     }
 
-    // Validar direccion (opcional)
+    // Validar direccion
     if (datos.direccion !== undefined && datos.direccion !== null) {
         if (typeof datos.direccion !== "string") {
             errores.push("La dirección debe ser texto");
         }
     }
 
-    // Validar zona_id (opcional pero debe ser número si se proporciona)
+    // Validar zona_id
     if (datos.zona_id !== undefined && datos.zona_id !== null) {
         if (typeof datos.zona_id !== "number") {
             errores.push("El zona_id debe ser un número");
@@ -41,7 +41,7 @@ export function validarCrearRefugio(datos: any): { valido: boolean; errores: str
         }
     }
 
-    // Validar coordenadas (opcionales pero deben ser válidas si se proporcionan)
+    // Validar coordenadas
     if (datos.latitud !== undefined && datos.latitud !== null) {
         if (typeof datos.latitud !== "number") {
             errores.push("La latitud debe ser un número");
@@ -58,7 +58,7 @@ export function validarCrearRefugio(datos: any): { valido: boolean; errores: str
         }
     }
 
-    // Validar responsable_id (opcional)
+    // Validar responsable_id
     if (datos.responsable_id !== undefined && datos.responsable_id !== null) {
         if (typeof datos.responsable_id !== "number") {
             errores.push("El responsable_id debe ser un número");
@@ -67,7 +67,7 @@ export function validarCrearRefugio(datos: any): { valido: boolean; errores: str
         }
     }
 
-    // Validar telefono_contacto (opcional)
+    // Validar telefono_contacto
     if (datos.telefono_contacto !== undefined && datos.telefono_contacto !== null) {
         if (typeof datos.telefono_contacto !== "string") {
             errores.push("El teléfono de contacto debe ser texto");
@@ -167,7 +167,7 @@ export function validarActualizarRefugio(datos: any): { valido: boolean; errores
         errores.push("El teléfono de contacto no puede exceder 30 caracteres");
     }
 
-    // Validar observaciones (opcional)
+    // Validar observaciones
     if (datos.observaciones !== undefined && datos.observaciones !== null) {
         if (typeof datos.observaciones !== "string") {
             errores.push("Las observaciones deben ser texto");
