@@ -22,20 +22,12 @@ export interface CrearAlertaDTO {
     tipo: Tipo;
     nivel: Nivel;
     mensaje: string;
-    estado?: Estado;
-    fecha?: Date;
 }
 
 // Datos necesarios para actualizar una alerta
 export interface ActualizarAlertaDTO {
-    incidente_id?: number | null;
-    zona_id?: number | null;
-    refugio_id?: number | null;
-    tipo?: Tipo;
-    nivel?: Nivel;
-    mensaje?: string;
+    id: number;
     estado?: Estado;
-    fecha?: Date;
 }
 
 // Respuesta estándar de la API
