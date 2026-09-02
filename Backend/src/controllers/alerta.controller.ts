@@ -34,9 +34,7 @@ export class AlertaController {
             refugio_id,
             tipo,
             nivel,
-            mensaje,
-            estado,
-            fecha,
+            mensaje
         } = req.body;
 
         if (!tipo || !nivel || !mensaje) {
@@ -65,9 +63,7 @@ export class AlertaController {
             refugio_id,
             tipo,
             nivel,
-            mensaje,
-            estado,
-            fecha,
+            mensaje
         });
 
         res.status(respuesta.success ? 201 : 400).json(respuesta);
@@ -85,25 +81,12 @@ export class AlertaController {
         }
 
         const {
-            incidente_id,
-            zona_id,
-            refugio_id,
-            tipo,
-            nivel,
-            mensaje,
             estado,
-            fecha,
         } = req.body;
 
         const respuesta = await AlertaService.actualizar(id, {
-            incidente_id,
-            zona_id,
-            refugio_id,
-            tipo,
-            nivel,
-            mensaje,
+            id,
             estado,
-            fecha,
         });
 
         res.status(respuesta.success ? 200 : 404).json(respuesta);
