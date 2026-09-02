@@ -1,10 +1,10 @@
-import { C as validateUrl, S as parseForwardedHeader, _ as renderApplication, b as isProxyHeaderAllowed, g as SERVER_CONTEXT, r as InlineCriticalCssProcessor, t as AngularAppEngine, v as renderModule, x as normalizeTrustProxyHeaders, y as getFirstHeaderValue } from "./ssr-CPnbJvSw.js";
+import { C as validateUrl, S as parseForwardedHeader, _ as renderApplication, b as isProxyHeaderAllowed, g as SERVER_CONTEXT, r as InlineCriticalCssProcessor, t as AngularAppEngine, v as renderModule, x as normalizeTrustProxyHeaders, y as getFirstHeaderValue } from "./ssr-D3N2TxGo.js";
 import * as fs from "node:fs";
 import { dirname, join, normalize, resolve } from "node:path";
 import { URL as URL$1, fileURLToPath } from "node:url";
 import { readFile } from "node:fs/promises";
 import { argv } from "node:process";
-//#region ../node_modules/@angular/ssr/fesm2022/node.mjs
+//#region node_modules/@angular/ssr/fesm2022/node.mjs
 function getAllowedHostsFromEnv() {
 	return getArrayFromEnv("NG_ALLOWED_HOSTS");
 }
