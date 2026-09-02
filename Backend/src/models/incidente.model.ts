@@ -45,3 +45,10 @@ export interface ActualizarIncidenteDTO {
   cantidad_personas_afectadas?: number;
   observaciones?: string;
 }
+
+export interface RespuestaAPI<T> {
+    success: boolean;
+    message: string;
+    data?: T;
+    error?: string;
+}
