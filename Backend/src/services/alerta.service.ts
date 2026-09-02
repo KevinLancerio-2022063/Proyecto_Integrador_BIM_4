@@ -101,33 +101,6 @@ export class AlertaService {
                 };
             }
 
-            const incidenteId =
-                datos.incidente_id !== undefined
-                    ? datos.incidente_id
-                    : existe.incidente_id;
-
-            const zonaId =
-                datos.zona_id !== undefined
-                    ? datos.zona_id
-                    : existe.zona_id;
-
-            const refugioId =
-                datos.refugio_id !== undefined
-                    ? datos.refugio_id
-                    : existe.refugio_id;
-
-            if (
-                incidenteId === null &&
-                zonaId === null &&
-                refugioId === null
-            ) {
-                return {
-                    success: false,
-                    message:
-                        'La alerta debe tener al menos un destino',
-                };
-            }
-
             await AlertaRepository.actualizarAlerta(id, datos);
 
             return {
