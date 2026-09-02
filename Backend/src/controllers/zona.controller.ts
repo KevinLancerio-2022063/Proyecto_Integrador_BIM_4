@@ -19,7 +19,15 @@ export class ZonaController {
 
     async findById(req: Request, res: Response): Promise<void> {
         try {
-            const id = parseInt(req.params.zonaid as string);
+            // CORREGIDO: Cambiado de zonaid a id para coincidir con la ruta (:id)
+            const id = parseInt(req.params.id as string, 10);
+
+            // CONTROL DE SEGURIDAD: Evita enviar un NaN a PostgreSQL
+            if (isNaN(id)) {
+                res.status(400).json({ message: 'El ID proporcionado debe ser un número entero válido' });
+                return;
+            }
+
             const zona = await this.service.findById(id);
             res.json(zona);
         } catch (error) {
@@ -42,7 +50,14 @@ export class ZonaController {
 
     async update(req: Request, res: Response): Promise<void> {
         try {
-            const id = parseInt(req.params.id as string);
+            const id = parseInt(req.params.id as string, 10);
+
+            // CONTROL DE SEGURIDAD: Evita enviar un NaN a PostgreSQL
+            if (isNaN(id)) {
+                res.status(400).json({ message: 'El ID proporcionado debe ser un número entero válido' });
+                return;
+            }
+
             await this.service.update(id, req.body);
             res.json({ message: 'Zona actualizada exitosamente' });
         } catch (error) {
@@ -56,9 +71,16 @@ export class ZonaController {
 
     async delete(req: Request, res: Response): Promise<void> {
         try {
-            const id = parseInt(req.params.id as string);
+            const id = parseInt(req.params.id as string, 10);
+
+            // CONTROL DE SEGURIDAD: Evita enviar un NaN a PostgreSQL
+            if (isNaN(id)) {
+                res.status(400).json({ message: 'El ID proporcionado debe ser un número entero válido' });
+                return;
+            }
+
             await this.service.delete(id);
-            res.json({ message: 'Zona eliminada exitosamente' });
+            res.json({ message: 'Zona estructura eliminada exitosamente' });
         } catch (error) {
             res.status(500).json({ message: 'Error al eliminar zona', error });
         }
