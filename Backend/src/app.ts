@@ -30,4 +30,15 @@ app.get("/", (req, res) => {
     });
 });
 
+app.use("/api/historial-incidentes", recursoRoutes);
+
+app.get("/", (req, res) => {
+    res.json({
+        nombre: "SIGED API",
+        version: "1.0.0",
+        descripcion: "Sistema Integrado de Gestión de Emergencias y Desastres"
+    });
+
+});
+
 export default app;
