@@ -1,5 +1,5 @@
 import { IncidenteRepository } from "../repositories/incidente.repository";
-import { CrearIncidenteDTO, ActualizarIncidenteDTO } from "../models/incidente.model";
+import { RespuestaAPI, ActualizarIncidenteDTO, CrearIncidenteDTO } from "../models/incidente.model";
 
 export class IncidenteService {
 
@@ -43,32 +43,40 @@ export class IncidenteService {
     }
 
     // Funciona para actualizar un incidente existente con validaciones
-    static async actualizar(id: number, datos: ActualizarIncidenteDTO) {
-        try {
-            const existe = await IncidenteRepository.buscarIncidentePorId(id);
-            if (!existe) return { success: false, message: "Incidente no encontrado" };
 
-            if (datos.cantidad_personas_afectadas !== undefined && datos.cantidad_personas_afectadas < 0) {
-                return { success: false, message: "La cantidad de personas afectadas no puede ser negativa" };
+    static async actualizar(id: number, datos: ActualizarIncidenteDTO): Promise<RespuestaAPI<any>> {
+        try {
+             const existe = await IncidenteRepository.buscarIncidentePorId(id);
+
+             // Validar si existe o si ya fue eliminado/cerrado
+            if (!existe || existe.estado === 'CERRADO') {
+                 return { success: false, message: "Incidente no encontrado o ya cerrado" };
+            }
+
+             if (datos.cantidad_personas_afectadas !== undefined && datos.cantidad_personas_afectadas < 0) {
+                 return { success: false, message: "La cantidad de personas afectadas no puede ser negativa" };
             }
 
             await IncidenteRepository.actualizarIncidente(id, datos);
-            return { success: true, message: "Incidente actualizado correctamente" };
+             return { success: true, message: "Incidente actualizado correctamente" };
         } catch (error: any) {
             return { success: false, message: "Error al actualizar incidente", error: error.message };
-        }
     }
+}
 
-    // Funciona para eliminar un incidente
-    static async eliminar(id: number) {
-        try {
-            const existe = await IncidenteRepository.buscarIncidentePorId(id);
-            if (!existe) return { success: false, message: "Incidente no encontrado" };
+static async eliminar(id: number): Promise<RespuestaAPI<any>> {
+    try {
+        const existe = await IncidenteRepository.buscarIncidentePorId(id);
 
-            await IncidenteRepository.eliminarIncidente(id);
-            return { success: true, message: "Incidente eliminado correctamente" };
-        } catch (error: any) {
-            return { success: false, message: "Error al eliminar incidente", error: error.message };
+        // Evitar eliminar algo que no existe o que ya está en CERRADO
+        if (!existe || existe.estado === 'CERRADO') {
+            return { success: false, message: "Incidente no encontrado" };
         }
+
+        await IncidenteRepository.eliminarIncidente(id);
+        return { success: true, message: "Incidente eliminado correctamente" };
+    } catch (error: any) {
+        return { success: false, message: "Error al eliminar incidente", error: error.message };
     }
+}
 }
