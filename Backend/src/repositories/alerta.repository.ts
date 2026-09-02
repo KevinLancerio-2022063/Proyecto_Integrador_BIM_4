@@ -29,15 +29,14 @@ export class AlertaRepository {
     // Agregar una nueva alerta
     static async agregarAlerta(datos: CrearAlertaDTO) {
         const result: QueryResult = await pool.query(
-            'CALL sp_agregar_alerta($1, $2, $3, $4, $5, $6, $7)',
+            'CALL sp_agregar_alerta($1, $2, $3, $4, $5, $6)',
             [
-                datos.incidente_id ?? null,
-                datos.zona_id ?? null,
-                datos.refugio_id ?? null,
                 datos.tipo,
                 datos.nivel,
                 datos.mensaje,
-                datos.estado ?? 'ACTIVA',
+                datos.incidente_id ?? null,
+                datos.zona_id ?? null,
+                datos.refugio_id ?? null,
             ],
         );
 
@@ -50,15 +49,9 @@ export class AlertaRepository {
         datos: ActualizarAlertaDTO,
     ) {
         const result: QueryResult = await pool.query(
-            'CALL sp_actualizar_alerta($1, $2, $3, $4, $5, $6, $7, $8)',
+            'CALL sp_actualizar_alerta($1, $2)',
             [
                 id,
-                datos.incidente_id ?? null,
-                datos.zona_id ?? null,
-                datos.refugio_id ?? null,
-                datos.tipo ?? null,
-                datos.nivel ?? null,
-                datos.mensaje ?? null,
                 datos.estado ?? null,
             ],
         );
