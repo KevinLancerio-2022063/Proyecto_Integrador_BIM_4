@@ -10,10 +10,15 @@ export interface HistorialIncidente {
 
 export interface CrearHistorialIncidenteDTO {
   incidente_id: number;
-  estado_anterior?: string;
   estado_nuevo: string;
+  estado_anterior?: string;
   comentario?: string;
   usuario_id?: number;
+}
+
+export interface ActualizarHistorialIncidenteDTO {
+  id: number;
+  comentario?: string;
 }
 
 // Define la estructura estándar de respuesta de la API
