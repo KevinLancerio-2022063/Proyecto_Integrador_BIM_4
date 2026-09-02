@@ -1,5 +1,3 @@
-import { CrearHistorialIncidenteDTO } from "../models/historial_incidente.model";
-
 // Estados válidos para historial
 const ESTADOS_INCIDENTE = ["PENDIENTE", "EN_PROCESO", "RESUELTO", "CANCELADO"];
 
@@ -50,4 +48,40 @@ export function validarCrearHistorialIncidente(datos: any): { valido: boolean; e
         valido: errores.length === 0,
         errores,
     };
+
+}
+    // Validar actualizar historial
+export function validarActualizarHistorialIncidente(datos: any): { valido: boolean; errores: string[] } {
+    const errores: string[] = [];
+
+    if (datos.estado_nuevo === undefined || datos.estado_nuevo === null) {
+        errores.push("El nuevo estado es obligatorio");
+    } else if (!ESTADOS_INCIDENTE.includes(datos.estado_nuevo)) {
+        errores.push(`El nuevo estado debe ser uno de: ${ESTADOS_INCIDENTE.join(", ")}`);
+    }
+
+    if (datos.estado_anterior === undefined || datos.estado_anterior === null) {
+        errores.push("El estado anterior es obligatorio");
+    } else if (!ESTADOS_INCIDENTE.includes(datos.estado_anterior)) {
+        errores.push(`El estado anterior debe ser uno de: ${ESTADOS_INCIDENTE.join(", ")}`);
+    }
+
+    if (datos.comentario === undefined || datos.comentario === null) {
+        errores.push("El comentario es obligatorio");
+    } else if (datos.comentario.trim().length === 0) {
+        errores.push("El comentario no puede estar vacío");
+    } else if (datos.comentario.length > 500) {
+        errores.push("El comentario no puede exceder 500 caracteres");
+    }
+
+    if (datos.usuario_id === undefined || datos.usuario_id === null) {
+        errores.push("El ID del usuario es obligatorio");
+    } else if (typeof datos.usuario_id !== "number") {
+        errores.push("El ID del usuario debe ser un número");
+    }
+
+    return {
+        valido: errores.length === 0,
+        errores,
+    };      
 }
