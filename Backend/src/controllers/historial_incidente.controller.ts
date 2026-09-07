@@ -6,13 +6,13 @@ export class HistorialIncidenteController {
 
     
     // Funciona para listar todos los historiales (GET /api/historial-incidentes)
-        static async listarHistorial(req: Request, res: Response) {
+        static async listarHistorialIncidente(req: Request, res: Response) {
             const respuesta = await HistorialIncidenteService.obtenerTodos();
             res.status(respuesta.success ? 200 : 400).json(respuesta);
         }
 
          // Funciona para buscar un historial por su ID (GET /api/historial-incidentes/:id)
-    static async buscarHistorialPorId(req: Request, res: Response) {
+    static async buscarHistorialIncidentePorId(req: Request, res: Response) {
         const id = parseInt(req.params.id as string);
         if (isNaN(id)) return res.status(400).json({ success: false, message: "ID inválido" });
  
@@ -21,7 +21,7 @@ export class HistorialIncidenteController {
     }
 
     // Funciona para crear un nuevo historial (POST /api/historial-incidentes)
-    static async crearHistorial(req: Request, res: Response) {
+    static async crearHistorialIncidente(req: Request, res: Response) {
         const {
             incidente_id,   
             estado_nuevo,
@@ -70,7 +70,7 @@ export class HistorialIncidenteController {
     }
 
     // Funciona para eliminar un historial (DELETE /api/historial-incidentes/:id)
-        static async eliminarHistorial(req: Request, res: Response) {
+        static async eliminarHistorialIncidente(req: Request, res: Response) {
             const id = parseInt(req.params.id as string);
             if (isNaN(id)) return res.status(400).json({ success: false, message: "ID inválido" });
      
