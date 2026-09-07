@@ -1,66 +1,128 @@
-<div class="container mt-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
-      <h3 class="mb-0">{{ isEditMode ? "Editar Recurso" : "Nuevo Recurso" }}</h3>
+<!-- Contenedor del modal con animación de entrada -->
+<div class="modal-container animate-modal-in">
+  
+  <!-- Encabezado del modal con gradiente -->
+  <div class="modal-header">
+    <div class="modal-header-content">
+      <mat-icon class="modal-header-icon">inventory_2</mat-icon>
+      <h2 class="modal-titulo">{{ isEdit ? "Editar recurso" : "Registrar recurso" }}</h2>
     </div>
-    <div class="card-body">
-      <form [formGroup]="recursoForm" (ngSubmit)="onSubmit()">
-        
-        <div class="mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Nombre del Recurso</mat-label>
-            <input matInput formControlName="nombre" placeholder="Ej. Agua Embotellada">
-            <mat-error *ngIf="recursoForm.get('nombre')?.hasError('required')">El nombre es obligatorio</mat-error>
-            <mat-error *ngIf="recursoForm.get('nombre')?.hasError('maxlength')">Máximo 120 caracteres</mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Tipo</mat-label>
-              <mat-select formControlName="tipo">
-                <mat-option *ngFor="let tipo of tiposRecurso" [value]="tipo">{{ tipo }}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="recursoForm.get('tipo')?.hasError('required')">El tipo es obligatorio</mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Unidad de Medida</mat-label>
-              <mat-select formControlName="unidad_medida">
-                <mat-option *ngFor="let unidad of unidadesMedida" [value]="unidad">{{ unidad }}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="recursoForm.get('unidad_medida')?.hasError('required')">La unidad es obligatoria</mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Cantidad Total</mat-label>
-            <input matInput type="number" formControlName="cantidad_total">
-            <mat-error *ngIf="recursoForm.get('cantidad_total')?.hasError('required')">La cantidad es obligatoria</mat-error>
-            <mat-error *ngIf="recursoForm.get('cantidad_total')?.hasError('min')">La cantidad no puede ser negativa</mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Descripción (Opcional)</mat-label>
-            <textarea matInput formControlName="descripcion" rows="3" placeholder="Detalles adicionales del recurso"></textarea>
-          </mat-form-field>
-        </div>
-
-        <div class="d-flex justify-content-end gap-2">
-          <button mat-button type="button" routerLink="/logistica/recursos">Cancelar</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="recursoForm.invalid">
-            {{ isEditMode ? "Actualizar" : "Guardar" }}
-          </button>
-        </div>
-
-      </form>
-    </div>
+    <button class="btn-cerrar" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
+
+  <!-- Formulario reactivo -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="formulario-contenido">
+      
+      <!-- Campo nombre -->
+      <div class="form-group">
+        <label class="form-label">Nombre del recurso*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">label</mat-icon>
+          <input 
+            matInput 
+            formControlName="nombre" 
+            placeholder="Ej. Agua embotellada"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')" class="error-message">
+          El nombre es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.get('nombre')?.hasError('maxlength')" class="error-message">
+          Máximo 120 caracteres
+        </mat-error>
+      </div>
+
+      <!-- Campos tipo y unidad de medida -->
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Tipo*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">category</mat-icon>
+            <mat-select formControlName="tipo" class="form-select">
+              <mat-option *ngFor="let tipo of tiposRecurso" [value]="tipo">
+                {{ tipo }}
+              </mat-option>
+            </mat-select>
+          </div>
+          <mat-error *ngIf="form.get('tipo')?.hasError('required')" class="error-message">
+            El tipo es obligatorio
+          </mat-error>
+        </div>
+        <div class="form-group form-group-half">
+          <label class="form-label">Unidad de medida*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">straighten</mat-icon>
+            <mat-select formControlName="unidad_medida" class="form-select">
+              <mat-option *ngFor="let unidad of unidadesMedida" [value]="unidad">
+                {{ unidad }}
+              </mat-option>
+            </mat-select>
+          </div>
+          <mat-error *ngIf="form.get('unidad_medida')?.hasError('required')" class="error-message">
+            La unidad es obligatoria
+          </mat-error>
+        </div>
+      </div>
+
+      <!-- Campo cantidad -->
+      <div class="form-group">
+        <label class="form-label">Cantidad total*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">inventory</mat-icon>
+          <input 
+            matInput 
+            type="number" 
+            min="0" 
+            formControlName="cantidad_total"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('cantidad_total')?.hasError('required')" class="error-message">
+          La cantidad es obligatoria
+        </mat-error>
+        <mat-error *ngIf="form.get('cantidad_total')?.hasError('min')" class="error-message">
+          La cantidad no puede ser negativa
+        </mat-error>
+      </div>
+
+      <!-- Campo descripción -->
+      <div class="form-group">
+        <label class="form-label">Descripción (opcional)</label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">description</mat-icon>
+          <textarea 
+            matInput 
+            formControlName="descripcion" 
+            rows="3" 
+            placeholder="Detalles adicionales del recurso"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="botones-accion">
+      <button 
+        type="button" 
+        (click)="onCancel()" 
+        class="btn-cancelar"
+        [disabled]="loading">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn-registrar"
+        [disabled]="loading || form.invalid">
+        <mat-icon *ngIf="!loading">check</mat-icon>
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        {{ isEdit ? "Guardar cambios" : "Registrar" }}
+      </button>
+    </div>
+  </form>
 </div>
