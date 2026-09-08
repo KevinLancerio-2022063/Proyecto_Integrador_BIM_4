@@ -68,4 +68,31 @@ export class AlertaRepository {
 
         return result;
     }
+
+    // Verificar existencia de incidente
+    static async existeIncidente(id: number): Promise<boolean> {
+        const result: QueryResult = await pool.query(
+            'SELECT 1 FROM incidente WHERE id = $1',
+            [id],
+        );
+        return (result.rowCount ?? 0) > 0;
+    }
+
+    // Verificar existencia de zona activa
+    static async existeZona(id: number): Promise<boolean> {
+        const result: QueryResult = await pool.query(
+            'SELECT 1 FROM zona WHERE id = $1 AND activo = true',
+            [id],
+        );
+        return (result.rowCount ?? 0) > 0;
+    }
+
+    // Verificar existencia de refugio activo
+    static async existeRefugio(id: number): Promise<boolean> {
+        const result: QueryResult = await pool.query(
+            'SELECT 1 FROM refugio WHERE id = $1 AND activo = true',
+            [id],
+        );
+        return (result.rowCount ?? 0) > 0;
+    }
 }
