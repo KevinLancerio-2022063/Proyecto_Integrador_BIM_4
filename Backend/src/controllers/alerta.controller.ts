@@ -45,9 +45,9 @@ export class AlertaController {
         }
 
         const tieneDestino =
-            incidente_id !== undefined ||
-            zona_id !== undefined ||
-            refugio_id !== undefined;
+            incidente_id != null ||
+            zona_id != null ||
+            refugio_id != null;
 
         if (!tieneDestino) {
             return res.status(400).json({
@@ -80,9 +80,7 @@ export class AlertaController {
             });
         }
 
-        const {
-            estado,
-        } = req.body;
+        const { estado } = req.body;
 
         const respuesta = await AlertaService.actualizar(id, {
             id,
