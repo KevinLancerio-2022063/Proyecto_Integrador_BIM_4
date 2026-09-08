@@ -17,7 +17,7 @@ export class HistorialIncidenteRepository {
     }
 
     // Funciona para agregar un nuevo incidente a la base de datos
-        static async agregarIncidente(datos: CrearHistorialIncidenteDTO) {
+        static async agregarHistorialIncidente(datos: CrearHistorialIncidenteDTO) {
             const result: QueryResult = await pool.query(
                 "CALL sp_agregar_historial_incidente($1, $2, $3, $4, $5)",
                 [
@@ -32,7 +32,7 @@ export class HistorialIncidenteRepository {
         }
 
         // Funciona para actualizar un incidente existente
-        static async actualizarIncidente(id: number, datos: ActualizarHistorialIncidenteDTO) {
+        static async actualizarHistorialIncidente(id: number, datos: ActualizarHistorialIncidenteDTO) {
             const incidenteActual = await this.buscarHistorialPorId(id);
         
             const result: QueryResult = await pool.query(
