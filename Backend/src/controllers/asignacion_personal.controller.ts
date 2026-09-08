@@ -1,5 +1,3 @@
-// controllers/asignacion-personal.controller.ts
-
 import { Request, Response } from 'express';
 import { AsignacionPersonalService } from '../services/asignacion_personal.service';
 
@@ -34,23 +32,22 @@ export class AsignacionPersonalController {
     static async crear(req: Request, res: Response) {
         const {
             usuario_id,
-            incidente_id,
-            refugio_id,
             rol_asignado,
             estado,
-            fecha_asignacion,
+            incidente_id,
+            refugio_id,
             observaciones,
         } = req.body;
 
-        if (!usuario_id) {
+        if (usuario_id == null) {
             return res.status(400).json({
                 success: false,
                 message: 'El usuario_id es obligatorio',
             });
         }
 
-        const tieneIncidente = incidente_id !== undefined;
-        const tieneRefugio = refugio_id !== undefined;
+        const tieneIncidente = incidente_id != null;
+        const tieneRefugio = refugio_id != null;
 
         if (tieneIncidente === tieneRefugio) {
             return res.status(400).json({
@@ -62,11 +59,10 @@ export class AsignacionPersonalController {
 
         const respuesta = await AsignacionPersonalService.crear({
             usuario_id,
-            incidente_id,
-            refugio_id,
             rol_asignado,
             estado,
-            fecha_asignacion,
+            incidente_id,
+            refugio_id,
             observaciones,
         });
 
@@ -85,9 +81,6 @@ export class AsignacionPersonalController {
         }
 
         const {
-            usuario_id,
-            incidente_id,
-            refugio_id,
             rol_asignado,
             estado,
             fecha_finalizacion,
@@ -96,9 +89,6 @@ export class AsignacionPersonalController {
 
         const respuesta =
             await AsignacionPersonalService.actualizar(id, {
-                usuario_id,
-                incidente_id,
-                refugio_id,
                 rol_asignado,
                 estado,
                 fecha_finalizacion,
