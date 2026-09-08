@@ -8,19 +8,26 @@ export class AuthController {
         this.service = new AuthService();
     }
 
-    async login(req: Request, res: Response): Promise<void> {
-        try {
-            const { email, password } = req.body;
-            const authResponse = await this.service.login({ email, password });
-            res.json(authResponse);
-        } catch (error) {
-            if (error instanceof Error && error.message === 'Credenciales inválidas') {
-                res.status(401).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: 'Error en el login', error });
-            }
+// auth.controller.ts (modifícalo temporalmente)
+async login(req: Request, res: Response): Promise<void> {
+    try {
+        const { email, password } = req.body;
+        const authResponse = await this.service.login({ email, password });
+        res.json(authResponse);
+    } catch (error: any) {
+        console.error("Error detallado en login:", error); // Muestra el error completo en la consola de tu terminal
+        if (error instanceof Error && error.message === 'Credenciales inválidas') {
+            res.status(401).json({ message: error.message });
+        } else {
+            // Extraemos el mensaje y el stack para verlo en Postman
+            res.status(500).json({ 
+                message: 'Error en el login', 
+                errorDetail: error instanceof Error ? error.message : String(error) 
+            });
         }
     }
+}
+
 
     async verifyToken(req: Request, res: Response): Promise<void> {
         try {
