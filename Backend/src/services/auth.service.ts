@@ -2,8 +2,7 @@ import { AuthRepository } from '../repositories/auth.repository';
 import { LoginCredentials, AuthResponse } from '../models/auth.model';
 import { UsuarioResponse } from '../models/usuario.model';
 import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
-
+import jwt from 'jsonwebtoken';
 export class AuthService {
     private repository: AuthRepository;
     private jwtSecret: string;
@@ -44,15 +43,15 @@ export class AuthService {
             updated_at: usuario.updated_at
         };
 
-        const token = jwt.sign(
-            {
-                userId: usuario.id,
-                email: usuario.email,
-                rol: usuario.rol
-            },
-            this.jwtSecret,
-            { expiresIn: this.jwtExpiresIn as any } // <- Solución aplicada aquí
-        );
+const token = jwt.sign(
+    {
+        userId: usuario.id,
+        email: usuario.email,
+        rol: usuario.rol
+    },
+    this.jwtSecret,
+    { expiresIn: this.jwtExpiresIn as any }
+);
 
         return {
             usuario: usuarioResponse,
@@ -60,11 +59,11 @@ export class AuthService {
         };
     }
 
-    verifyToken(token: string): any {
-        try {
-            return jwt.verify(token, this.jwtSecret);
-        } catch (error) {
-            throw new Error('Token inválido o expirado');
-        }
+verifyToken(token: string): any {
+    try {
+        return jwt.verify(token, this.jwtSecret);
+    } catch (error) {
+        throw new Error('Token inválido o expirado');
     }
+}
 }
