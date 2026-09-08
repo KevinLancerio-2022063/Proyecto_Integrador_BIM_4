@@ -35,7 +35,7 @@ export class HistorialIncidenteService {
                 return { success: false, message: "El comentario no puede estar vacío" };
             }
 
-            await HistorialIncidenteRepository.agregarIncidente(datos);
+            await HistorialIncidenteRepository.agregarHistorialIncidente(datos);
             return { success: true, message: "Historial creado correctamente" };
         } catch (error: any) {
             return { success: false, message: "Error al crear historial", error: error.message };
@@ -55,7 +55,7 @@ export class HistorialIncidenteService {
                 return { success: false, message: "El comentario no puede estar vacío" };
             }
 
-            await HistorialIncidenteRepository.actualizarIncidente(id, datos);
+            await HistorialIncidenteRepository.actualizarHistorialIncidente(id, datos);
             return { success: true, message: "Historial actualizado correctamente" };
         } catch (error: any) {
             return { success: false, message: "Error al actualizar historial", error: error.message };
