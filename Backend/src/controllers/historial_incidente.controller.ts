@@ -49,7 +49,7 @@ export class HistorialIncidenteController {
     }
 
      // Funciona para actualizar un incidente existente (PUT /api/historial-incidentes/:id)
-        static async actualizarHistorial(req: Request, res: Response) {
+        static async actualizarHistorialIncidente(req: Request, res: Response) {
         const id = parseInt(req.params.id as string);
         if (isNaN(id)) return res.status(400).json({ success: false, message: "ID inválido" });
     
