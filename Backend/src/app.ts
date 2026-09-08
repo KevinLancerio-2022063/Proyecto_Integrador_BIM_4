@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import recursoRoutes from "./routes/incidente.routes";
+import incidenteRoutes from "./routes/incidente.routes";
+import historialIncidenteRoutes from "./routes/historial_incidente.routes";
 
 dotenv.config();
 
@@ -20,7 +21,9 @@ app.get("/api/health", (req, res) => {
     });
 });
 
-app.use("/api/incidentes", recursoRoutes);
+app.use("/api/incidentes", incidenteRoutes);
+
+app.use("/api/historial-incidentes", historialIncidenteRoutes);
 
 app.get("/", (req, res) => {
     res.json({
@@ -28,17 +31,6 @@ app.get("/", (req, res) => {
         version: "1.0.0",
         descripcion: "Sistema Integrado de Gestión de Emergencias y Desastres"
     });
-});
-
-app.use("/api/historial-incidentes", recursoRoutes);
-
-app.get("/", (req, res) => {
-    res.json({
-        nombre: "SIGED API",
-        version: "1.0.0",
-        descripcion: "Sistema Integrado de Gestión de Emergencias y Desastres"
-    });
-
 });
 
 export default app;
