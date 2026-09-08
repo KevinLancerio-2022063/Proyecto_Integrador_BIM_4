@@ -31,14 +31,13 @@ export class AsignacionPersonalRepository {
         datos: CrearAsignacionPersonalDTO,
     ) {
         const result: QueryResult = await pool.query(
-            'CALL sp_agregar_asignacion_personal($1, $2, $3, $4, $5, $6, $7)',
+            'CALL sp_agregar_asignacion_personal($1, $2, $3, $4, $5, $6)',
             [
                 datos.usuario_id,
-                datos.incidente_id ?? null,
-                datos.refugio_id ?? null,
                 datos.rol_asignado ?? 'APOYO',
                 datos.estado ?? 'ASIGNADO',
-                datos.fecha_asignacion ?? null,
+                datos.incidente_id ?? null,
+                datos.refugio_id ?? null,
                 datos.observaciones ?? null,
             ],
         );
@@ -52,14 +51,11 @@ export class AsignacionPersonalRepository {
         datos: ActualizarAsignacionPersonalDTO,
     ) {
         const result: QueryResult = await pool.query(
-            'CALL sp_actualizar_asignacion_personal($1, $2, $3, $4, $5, $6, $7, $8)',
+            'CALL sp_actualizar_asignacion_personal($1, $2, $3, $4, $5)',
             [
                 id,
-                datos.usuario_id ?? null,
-                datos.incidente_id ?? null,
-                datos.refugio_id ?? null,
-                datos.rol_asignado ?? null,
-                datos.estado ?? null,
+                datos.rol_asignado,
+                datos.estado,
                 datos.fecha_finalizacion ?? null,
                 datos.observaciones ?? null,
             ],
@@ -76,5 +72,32 @@ export class AsignacionPersonalRepository {
         );
 
         return result;
+    }
+
+    // Verificar existencia de usuario activo
+    static async existeUsuario(id: number): Promise<boolean> {
+        const result: QueryResult = await pool.query(
+            'SELECT 1 FROM usuario WHERE id = $1 AND activo = true',
+            [id],
+        );
+        return (result.rowCount ?? 0) > 0;
+    }
+
+    // Verificar existencia de incidente
+    static async existeIncidente(id: number): Promise<boolean> {
+        const result: QueryResult = await pool.query(
+            'SELECT 1 FROM incidente WHERE id = $1',
+            [id],
+        );
+        return (result.rowCount ?? 0) > 0;
+    }
+
+    // Verificar existencia de refugio activo
+    static async existeRefugio(id: number): Promise<boolean> {
+        const result: QueryResult = await pool.query(
+            'SELECT 1 FROM refugio WHERE id = $1 AND activo = true',
+            [id],
+        );
+        return (result.rowCount ?? 0) > 0;
     }
 }
