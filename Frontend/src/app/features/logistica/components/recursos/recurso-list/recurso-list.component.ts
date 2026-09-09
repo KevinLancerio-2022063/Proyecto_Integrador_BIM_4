@@ -11,6 +11,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { RecursoService } from "../../../services/recurso.service";
 import { Recurso } from "../../../models/recurso.model";
 import { RecursoFormComponent } from "../recurso-form/recurso-form.component";
+import { TipoRecursoPipe } from "../../../pipes/tipo-recurso.pipe";
+import { UnidadMedidaPipe } from "../../../pipes/unidad-medida.pipe";
+import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
 
 // Define el componente como independiente (standalone)
 @Component({
@@ -25,11 +28,15 @@ import { RecursoFormComponent } from "../recurso-form/recurso-form.component";
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TipoRecursoPipe,
+    UnidadMedidaPipe,
+    FechaFormateadaPipe
   ],
   templateUrl: "./recurso-list.component.html",
   styleUrls: ["./recurso-list.component.css"]
 })
+
 export class RecursoListComponent implements OnInit {
   // Almacena la lista de recursos obtenidos del backend
   recursos: Recurso[] = [];
