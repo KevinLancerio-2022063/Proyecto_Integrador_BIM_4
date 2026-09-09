@@ -1,0 +1,91 @@
+<h2 mat-dialog-title class="fw-bold mb-0">
+  {{ modo === 'crear' ? 'Registrar Incidente' : 'Editar Incidente' }}
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <mat-dialog-content class="pt-3">
+    <div class="row g-3">
+      <!-- Título -->
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Título del Incidente</mat-label>
+          <input matInput formControlName="titulo" placeholder="Ej. Inundación Sector Norte" />
+          <mat-error *ngIf="form.get('titulo')?.hasError('required')">El título es requerido</mat-error>
+          <mat-error *ngIf="form.get('titulo')?.hasError('minlength')">Mínimo 3 caracteres</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Tipo de Incidente -->
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo">
+            <mat-option value="INUNDACION">Inundación</mat-option>
+            <mat-option value="TERREMOTO">Terremoto</mat-option>
+            <mat-option value="INCENDIO">Incendio</mat-option>
+            <mat-option value="DESLIZAMIENTO">Deslizamiento</mat-option>
+            <mat-option value="ACTIVIDAD_VOLCANICA">Volcán</mat-option>
+            <mat-option value="OTRO">Otro</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Nivel de Emergencia -->
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nivel de Emergencia</mat-label>
+          <mat-select formControlName="nivel_emergencia">
+            <mat-option value="BAJA">Baja</mat-option>
+            <mat-option value="MEDIA">Media</mat-option>
+            <mat-option value="ALTA">Alta</mat-option>
+            <mat-option value="CRITICA">Crítica</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Estado -->
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="estado">
+            <mat-option value="REPORTADO">Reportado</mat-option>
+            <mat-option value="EN_ATENCION">En Atención</mat-option>
+            <mat-option value="MITIGADO">Mitigado</mat-option>
+            <mat-option value="CERRADO">Cerrado</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Personas Afectadas -->
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Personas Afectadas</mat-label>
+          <input matInput type="number" formControlName="cantidad_personas_afectadas" min="0" />
+        </mat-form-field>
+      </div>
+
+      <!-- Descripción -->
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput formControlName="descripcion" rows="3" placeholder="Detalles de lo ocurrido..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Observaciones</mat-label>
+          <textarea matInput formControlName="observaciones" rows="2" placeholder="Notas adicionales o requerimientos"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="pb-3 px-3">
+    <button mat-button type="button" (click)="cancelar()" [disabled]="loading">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+      {{ loading ? 'Guardando...' : (modo === 'crear' ? 'Guardar' : 'Actualizar') }}
+    </button>
+  </mat-dialog-actions>
+</form>
