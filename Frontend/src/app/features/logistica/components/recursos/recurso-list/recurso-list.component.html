@@ -53,18 +53,15 @@
   <!-- Grid de recursos con separación entre tarjetas -->
   <div *ngIf="!loading && recursosFiltrados.length > 0" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     <!-- Tarjeta de recurso -->
-    <div
-      *ngFor="let recurso of recursosFiltrados; let i = index"
-      class="recurso-card"
-      [style.animation-delay]="i * 50 + 'ms'">
+    <div *ngFor="let recurso of recursosFiltrados" class="recurso-card">
       
-      <!-- Icono y tipo -->
+      <!-- Icono con tipo de recurso -->
       <div class="recurso-header">
-        <div class="icono-container" [class]="'icono-' + recurso.tipo.toLowerCase()">
-          <mat-icon>{{ getIconoTipo(recurso.tipo) }}</mat-icon>
+        <div class="icono-container" [class]="'icono-' + (recurso.tipo | lowercase)">
+          <mat-icon>{{ (recurso.tipo | tipoRecurso).icono }}</mat-icon>
         </div>
         <span class="tipo-badge" [ngClass]="getColorTipo(recurso.tipo)">
-          {{ recurso.tipo }}
+          {{ recurso.tipo | tipoRecurso | json }}
         </span>
       </div>
 
@@ -73,15 +70,23 @@
         {{ recurso.nombre }}
       </h3>
 
-      <!-- Cantidad y unidad -->
+      <!-- Cantidad y unidad formateada -->
       <div class="recurso-cantidad">
         <mat-icon class="cantidad-icono">inventory</mat-icon>
-        <span class="cantidad-texto">{{ recurso.cantidad_total }} {{ recurso.unidad_medida }}</span>
+        <span class="cantidad-texto">
+          {{ recurso.cantidad_total }} {{ recurso.unidad_medida | unidadMedida }}
+        </span>
       </div>
 
       <!-- Descripción -->
       <p class="recurso-descripcion">
         {{ recurso.descripcion || "Sin descripción disponible" }}
+      </p>
+
+      <!-- Fecha de creación formateada -->
+      <p class="recurso-fecha">
+        <mat-icon class="fecha-icono">calendar_today</mat-icon>
+        Registrado: {{ recurso.created_at | fechaFormateada }}
       </p>
 
       <!-- Acciones -->
@@ -94,7 +99,6 @@
         </button>
       </div>
     </div>
-  </div>
 
   <!-- Estado vacío -->
   <div *ngIf="!loading && recursosFiltrados.length === 0" class="estado-vacio">
