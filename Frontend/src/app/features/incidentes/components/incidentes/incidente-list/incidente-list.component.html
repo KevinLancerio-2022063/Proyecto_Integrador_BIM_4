@@ -1,0 +1,94 @@
+<div class="container-fluid p-4">
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">Gestión de Incidentes</h2>
+      <p class="text-muted mb-0">Reporte y seguimiento de emergencias registradas</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="abrirModalCrear()">
+      <mat-icon class="me-1">add</mat-icon> Registrar Incidente
+    </button>
+  </div>
+
+  <!-- Barra de Filtros y Búsqueda -->
+  <div class="card shadow-sm border-0 mb-4 p-3">
+    <div class="row g-3 align-items-center">
+      <!-- Buscador -->
+      <div class="col-12 col-md-5">
+        <mat-form-field appearance="outline" class="w-100 density-compact">
+          <mat-label>Buscar incidente...</mat-label>
+          <input matInput [(ngModel)]="busqueda" placeholder="Ej. Inundación en sector 3" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Filtros por tipo -->
+      <div class="col-12 col-md-7 d-flex flex-wrap gap-2 justify-content-md-end">
+        <button
+          *ngFor="let filtro of filtros"
+          type="button"
+          class="btn btn-sm"
+          [ngClass]="filtroActivo === filtro.id ? 'btn-primary' : 'btn-outline-secondary'"
+          (click)="setFiltro(filtro.id)"
+        >
+          <mat-icon class="align-middle me-1 fs-6">{{ filtro.icono }}</mat-icon>
+          {{ filtro.etiqueta }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado de Carga -->
+  <div *ngIf="loading" class="d-flex justify-content-center align-items-center py-5">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Lista Vaca -->
+  <div *ngIf="!loading && incidentesFiltrados.length === 0" class="text-center py-5 my-3">
+    <mat-icon class="text-secondary display-1 mb-2">report_problem</mat-icon>
+    <h5 class="text-muted">No se encontraron incidentes</h5>
+    <p class="text-muted small">Intenta ajustar los criterios de búsqueda o registra uno nuevo.</p>
+  </div>
+
+  <!-- Grid de Incidentes -->
+  <div *ngIf="!loading && incidentesFiltrados.length > 0" class="row g-3">
+    <div *ngFor="let incidente of incidentesFiltrados" class="col-12 col-md-6 col-lg-4">
+      <mat-card class="h-100 shadow-sm border-0">
+        <mat-card-header class="d-flex align-items-center pb-2">
+          <div mat-card-avatar class="rounded-circle d-flex align-items-center justify-content-center bg-light text-primary">
+            <mat-icon>{{ getIconoTipo(incidente.tipo) }}</mat-icon>
+          </div>
+          <mat-card-title class="fs-6 fw-bold mb-0 text-truncate">{{ incidente.titulo }}</mat-card-title>
+          <mat-card-subtitle class="small text-muted">{{ incidente.tipo }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="pt-2">
+          <p class="text-secondary small text-truncate-2 mb-3">
+            {{ incidente.descripcion || 'Sin descripción detallada' }}
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-2">
+            <span class="badge px-2 py-1" [ngClass]="getColorNivel(incidente.nivel_emergencia)">
+              Nivel: {{ incidente.nivel_emergencia }}
+            </span>
+            <span class="badge px-2 py-1" [ngClass]="getColorEstado(incidente.estado)">
+              Estado: {{ incidente.estado }}
+            </span>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="d-flex justify-content-end gap-1 pt-0">
+          <button mat-icon-button color="primary" [routerLink]="['/incidentes', incidente.id]" title="Ver detalle">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="abrirModalEditar(incidente)" title="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarIncidente(incidente.id!)" title="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
