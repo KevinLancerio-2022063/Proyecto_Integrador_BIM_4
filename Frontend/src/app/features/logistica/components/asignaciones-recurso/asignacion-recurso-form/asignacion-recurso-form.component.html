@@ -1,0 +1,178 @@
+<!-- Contenedor del modal con animación de entrada -->
+<div class="modal-container animate-modal-in">
+  
+  <!-- Encabezado del modal con gradiente -->
+  <div class="modal-header">
+    <div class="modal-header-content">
+      <mat-icon class="modal-header-icon">assignment</mat-icon>
+      <h2 class="modal-titulo">{{ isEdit ? "Editar asignación" : "Nueva asignación" }}</h2>
+    </div>
+    <button class="btn-cerrar" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Formulario reactivo -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="formulario-contenido">
+      
+      <!-- Campo recurso_id -->
+      <div class="form-group">
+        <label class="form-label">ID del recurso*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">inventory</mat-icon>
+          <input 
+            matInput 
+            type="number"
+            formControlName="recurso_id" 
+            placeholder="Ej. 1"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('recurso_id')?.hasError('required')" class="error-message">
+          El recurso es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Campo cantidad -->
+      <div class="form-group">
+        <label class="form-label">Cantidad*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">straighten</mat-icon>
+          <input 
+            matInput 
+            type="number" 
+            min="1"
+            formControlName="cantidad"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('cantidad')?.hasError('required')" class="error-message">
+          La cantidad es obligatoria
+        </mat-error>
+        <mat-error *ngIf="form.get('cantidad')?.hasError('min')" class="error-message">
+          La cantidad debe ser mayor a cero
+        </mat-error>
+      </div>
+
+      <!-- Campo estado -->
+      <div class="form-group">
+        <label class="form-label">Estado*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">info</mat-icon>
+          <mat-select formControlName="estado" class="form-select">
+            <mat-option *ngFor="let estado of estadosAsignacion" [value]="estado">
+              {{ estado }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('estado')?.hasError('required')" class="error-message">
+          El estado es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Tipo de destino -->
+      <div class="form-group">
+        <label class="form-label">Tipo de destino*</label>
+        <div class="destino-selector">
+          <button 
+            type="button" 
+            class="destino-btn"
+            [class.active]="tipoDestino === 'incidente'"
+            (click)="onTipoDestinoChange('incidente')">
+            <mat-icon>warning</mat-icon>
+            Incidente
+          </button>
+          <button 
+            type="button" 
+            class="destino-btn"
+            [class.active]="tipoDestino === 'refugio'"
+            (click)="onTipoDestinoChange('refugio')">
+            <mat-icon>home</mat-icon>
+            Refugio
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo incidente_id -->
+      <div class="form-group" *ngIf="tipoDestino === 'incidente'">
+        <label class="form-label">ID del incidente*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">warning</mat-icon>
+          <input 
+            matInput 
+            type="number"
+            formControlName="incidente_id" 
+            placeholder="Ej. 1"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <!-- Campo refugio_id -->
+      <div class="form-group" *ngIf="tipoDestino === 'refugio'">
+        <label class="form-label">ID del refugio*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">home</mat-icon>
+          <input 
+            matInput 
+            type="number"
+            formControlName="refugio_id" 
+            placeholder="Ej. 1"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <!-- Campo usuario_asigna_id -->
+      <div class="form-group">
+        <label class="form-label">ID del usuario que asigna</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">person</mat-icon>
+          <input 
+            matInput 
+            type="number"
+            formControlName="usuario_asigna_id" 
+            placeholder="Ej. 1"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <!-- Campo observaciones -->
+      <div class="form-group">
+        <label class="form-label">Observaciones</label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">note</mat-icon>
+          <textarea 
+            matInput 
+            formControlName="observaciones" 
+            rows="3" 
+            placeholder="Información adicional sobre la asignación"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="botones-accion">
+      <button 
+        type="button" 
+        (click)="onCancel()" 
+        class="btn-cancelar"
+        [disabled]="loading">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn-registrar"
+        [disabled]="loading || form.invalid">
+        <mat-icon *ngIf="!loading">check</mat-icon>
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        {{ isEdit ? "Guardar cambios" : "Crear" }}
+      </button>
+    </div>
+  </form>
+</div>
