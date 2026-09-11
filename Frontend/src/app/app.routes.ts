@@ -1,26 +1,23 @@
 import { Routes } from "@angular/router";
 import { LayoutComponent } from "./features/logistica/components/layout/layout.component";
 
-// Definimos las rutas principales con layout
+// Define las rutas principales de la aplicación
 export const routes: Routes = [
   {
     path: "logistica",
     component: LayoutComponent,
     children: [
       {
-        path: "recursos",
-        loadChildren: () => import("./features/logistica/logistica.module").then(m => m.LogisticaModule)
-      },
-      {
+        // Carga el módulo de logística en la ruta base de logistica
         path: "",
-        redirectTo: "recursos",
-        pathMatch: "full"
+        loadChildren: () => import("./features/logistica/logistica.module").then((m) => m.LogisticaModule)
       }
     ]
   },
   {
+    // Redirección global a la sección de logística
     path: "",
-    redirectTo: "/logistica/recursos",
+    redirectTo: "/logistica",
     pathMatch: "full"
   }
 ];
