@@ -1,0 +1,362 @@
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+/* Animación de entrada del modal */
+.animate-modal-in {
+  animation: modalIn 0.4s ease-out forwards;
+}
+
+/* Define la animación de entrada del modal */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ============================================
+   CONTENEDOR DEL MODAL
+   ============================================ */
+
+/* Contenedor principal del modal con efecto 3D */
+.modal-container {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(11, 31, 92, 0.15), 0 8px 16px rgba(11, 31, 92, 0.1);
+}
+
+/* ============================================
+   HEADER DEL MODAL
+   ============================================ */
+
+/* Encabezado del modal con gradiente */
+.modal-header {
+  background: linear-gradient(135deg, #0b1f5c 0%, #1e3a8a 100%);
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto decorativo del header */
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 3s infinite;
+}
+
+/* Define la animación de brillo */
+@keyframes shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Contenido del header */
+.modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Icono del header */
+.modal-header-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #38bdf8;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 12px;
+}
+
+/* Título del modal */
+.modal-titulo {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+/* Botón de cerrar */
+.btn-cerrar {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+/* Efecto hover del botón cerrar */
+.btn-cerrar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+/* ============================================
+   CONTENIDO DEL FORMULARIO
+   ============================================ */
+
+/* Contenedor del formulario */
+.formulario-contenido {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* ============================================
+   GRUPOS DE FORMULARIO
+   ============================================ */
+
+/* Grupo de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Fila de formulario para campos lado a lado */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+/* Grupo de formulario a la mitad */
+.form-group-half {
+  flex: 1;
+}
+
+/* Etiqueta del formulario */
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b1f5c;
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   INPUTS Y SELECTS
+   ============================================ */
+
+/* Contenedor del input con icono */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* Efecto focus del input */
+.input-wrapper:focus-within {
+  border-color: #0ea5e9;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Icono dentro del input */
+.input-icon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+/* Input del formulario */
+.form-input {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #0b1f5c;
+  background: transparent;
+  outline: none;
+}
+
+/* Placeholder del input */
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Select del formulario */
+.form-select {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #0b1f5c;
+  background: transparent;
+  outline: none;
+}
+
+/* Textarea del formulario */
+.form-textarea {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #0b1f5c;
+  background: transparent;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Wrapper del textarea */
+.textarea-wrapper {
+  align-items: flex-start;
+}
+
+/* Icono del textarea */
+.textarea-icon {
+  margin-top: 12px;
+}
+
+/* ============================================
+   MENSAJES DE ERROR
+   ============================================ */
+
+/* Mensaje de error */
+.error-message {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 4px;
+  display: block;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN
+   ============================================ */
+
+/* Contenedor de botones */
+.botones-accion {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Botón de cancelar */
+.btn-cancelar {
+  padding: 12px 24px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Efecto hover del botón cancelar */
+.btn-cancelar:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Botón de registrar con gradiente */
+.btn-registrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2), 0 10px 20px rgba(5, 150, 105, 0.15);
+  transition: all 0.3s ease;
+}
+
+/* Efecto hover del botón registrar */
+.btn-registrar:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 12px rgba(5, 150, 105, 0.3), 0 15px 30px rgba(5, 150, 105, 0.25);
+}
+
+/* Efecto active del botón registrar */
+.btn-registrar:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2);
+}
+
+/* Botón deshabilitado */
+.btn-registrar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================
+   SPINNER
+   ============================================ */
+
+/* Estilo personalizado para el spinner */
+::ng-deep .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: white;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Ajustes para móviles */
+@media (max-width: 640px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .modal-titulo {
+    font-size: 18px;
+  }
+
+  .botones-accion {
+    flex-direction: column;
+  }
+
+  .btn-cancelar,
+  .btn-registrar {
+    width: 100%;
+    justify-content: center;
+  }
+}
