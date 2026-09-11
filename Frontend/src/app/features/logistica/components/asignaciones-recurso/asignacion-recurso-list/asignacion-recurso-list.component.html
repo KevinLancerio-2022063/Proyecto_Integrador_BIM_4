@@ -1,0 +1,126 @@
+<!-- Contenedor principal de la página de asignaciones -->
+<div class="container-page py-12 sm:py-16 animate-fade-in">
+  
+  <!-- Encabezado de la sección -->
+  <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+    <div class="max-w-2xl">
+      <h1 class="font-display text-3xl font-extrabold text-navy-900 sm:text-4xl">
+        Gestión de asignaciones
+      </h1>
+      <p class="mt-3 text-navy-700">
+        Consulta, registra y edita asignaciones de recursos
+      </p>
+    </div>
+    <button 
+      class="btn-custom-primary"
+      (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon>
+      Nueva asignación
+    </button>
+  </div>
+
+  <!-- Barra de búsqueda -->
+  <div class="mb-6">
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Buscar por recurso o estado..."
+        class="search-input"
+      />
+    </div>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="estado-carga">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="text-navy-600 mt-4">Cargando asignaciones...</p>
+  </div>
+
+  <!-- Grid de asignaciones -->
+  <div *ngIf="!loading && asignacionesFiltradas.length > 0" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Tarjeta de asignación -->
+    <div
+      *ngFor="let asignacion of asignacionesFiltradas; let i = index"
+      class="asignacion-card"
+      [style.animation-delay]="i * 50 + 'ms'">
+      
+      <!-- Header con estado -->
+      <div class="asignacion-header">
+        <div class="icono-container icono-asignacion">
+          <mat-icon>assignment</mat-icon>
+        </div>
+        <span class="estado-badge" [ngClass]="getColorEstado(asignacion.estado)">
+          {{ asignacion.estado }}
+        </span>
+      </div>
+
+      <!-- Recurso asignado -->
+      <h3 class="asignacion-titulo">
+        {{ asignacion.nombre_recurso || "Recurso #" + asignacion.recurso_id }}
+      </h3>
+
+      <!-- Cantidad asignada -->
+      <div class="asignacion-cantidad">
+        <mat-icon class="cantidad-icono">inventory</mat-icon>
+        <span class="cantidad-texto">
+          Cantidad: {{ asignacion.cantidad }} unidades
+        </span>
+      </div>
+
+      <!-- Destino -->
+      <div class="asignacion-destino">
+        <mat-icon class="destino-icono">
+          {{ asignacion.incidente_id ? 'warning' : 'home' }}
+        </mat-icon>
+        <span class="destino-texto">
+          {{ getDestino(asignacion) }}
+        </span>
+      </div>
+
+      <!-- Fechas -->
+      <div class="asignacion-fechas">
+        <p class="fecha-item">
+          <mat-icon class="fecha-icono">schedule</mat-icon>
+          Solicitado: {{ asignacion.fecha_solicitud | date:'shortDate' }}
+        </p>
+        
+        <p class="fecha-item" *ngIf="asignacion.fecha_asignacion">
+          <mat-icon class="fecha-icono">check_circle</mat-icon>
+          Asignado: {{ asignacion.fecha_asignacion | date:'shortDate' }}
+        </p>
+        
+        <p class="fecha-item" *ngIf="asignacion.fecha_entrega">
+          <mat-icon class="fecha-icono">done_all</mat-icon>
+          Entregado: {{ asignacion.fecha_entrega | date:'shortDate' }}
+        </p>
+      </div>
+
+      <!-- Observaciones -->
+      <p class="asignacion-observaciones" *ngIf="asignacion.observaciones">
+        <mat-icon class="observaciones-icono">note</mat-icon>
+        {{ asignacion.observaciones }}
+      </p>
+
+      <!-- Acciones -->
+      <div class="asignacion-acciones">
+        <button class="btn-accion btn-editar" (click)="abrirModalEditar(asignacion)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button class="btn-accion btn-eliminar" (click)="eliminarAsignacion(asignacion.id)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vacío -->
+  <div *ngIf="!loading && asignacionesFiltradas.length === 0" class="estado-vacio">
+    <mat-icon class="estado-vacio-icono">assignment</mat-icon>
+    <h3 class="estado-vacio-titulo">No hay asignaciones registradas</h3>
+    <p class="estado-vacio-texto">
+      {{ busqueda ? 'No se encontraron asignaciones con ese criterio de búsqueda' : 'Comienza creando tu primera asignación' }}
+    </p>
+  </div>
+</div>
