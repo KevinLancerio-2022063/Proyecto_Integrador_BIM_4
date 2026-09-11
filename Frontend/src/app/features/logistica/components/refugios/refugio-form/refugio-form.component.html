@@ -1,0 +1,200 @@
+<!-- Contenedor del modal con animación de entrada -->
+<div class="modal-container animate-modal-in">
+  
+  <!-- Encabezado del modal con gradiente -->
+  <div class="modal-header">
+    <div class="modal-header-content">
+      <mat-icon class="modal-header-icon">home</mat-icon>
+      <h2 class="modal-titulo">{{ isEdit ? "Editar refugio" : "Registrar refugio" }}</h2>
+    </div>
+    <button class="btn-cerrar" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Formulario reactivo -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="formulario-contenido">
+      
+      <!-- Campo nombre -->
+      <div class="form-group">
+        <label class="form-label">Nombre del refugio*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">business</mat-icon>
+          <input 
+            matInput 
+            formControlName="nombre" 
+            placeholder="Ej. Refugio Centro Comunitario"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')" class="error-message">
+          El nombre es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.get('nombre')?.hasError('maxlength')" class="error-message">
+          Máximo 160 caracteres
+        </mat-error>
+      </div>
+
+      <!-- Campos capacidad y ocupación -->
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Capacidad total*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">people</mat-icon>
+            <input 
+              matInput 
+              type="number" 
+              min="1"
+              formControlName="capacidad_total"
+              class="form-input"
+            />
+          </div>
+          <mat-error *ngIf="form.get('capacidad_total')?.hasError('required')" class="error-message">
+            La capacidad es obligatoria
+          </mat-error>
+          <mat-error *ngIf="form.get('capacidad_total')?.hasError('min')" class="error-message">
+            La capacidad debe ser mayor a cero
+          </mat-error>
+        </div>
+        <div class="form-group form-group-half">
+          <label class="form-label">Ocupación actual*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">person</mat-icon>
+            <input 
+              matInput 
+              type="number" 
+              min="0"
+              formControlName="ocupacion_actual"
+              class="form-input"
+            />
+          </div>
+          <mat-error *ngIf="form.get('ocupacion_actual')?.hasError('required')" class="error-message">
+            La ocupación es obligatoria
+          </mat-error>
+          <mat-error *ngIf="form.get('ocupacion_actual')?.hasError('min')" class="error-message">
+            La ocupación no puede ser negativa
+          </mat-error>
+        </div>
+      </div>
+
+      <!-- Campo estado -->
+      <div class="form-group">
+        <label class="form-label">Estado*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">info</mat-icon>
+          <mat-select formControlName="estado" class="form-select">
+            <mat-option *ngFor="let estado of estadosRefugio" [value]="estado">
+              {{ estado }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('estado')?.hasError('required')" class="error-message">
+          El estado es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Campo dirección -->
+      <div class="form-group">
+        <label class="form-label">Dirección</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">location_on</mat-icon>
+          <input 
+            matInput 
+            formControlName="direccion" 
+            placeholder="Ej. Avenida Principal #123, Zona 1"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <!-- Campos latitud y longitud -->
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Latitud</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">my_location</mat-icon>
+            <input 
+              matInput 
+              type="number" 
+              step="any"
+              formControlName="latitud"
+              class="form-input"
+            />
+          </div>
+          <mat-error *ngIf="form.get('latitud')?.hasError('min')" class="error-message">
+            La latitud debe estar entre -90 y 90
+          </mat-error>
+        </div>
+        <div class="form-group form-group-half">
+          <label class="form-label">Longitud</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">place</mat-icon>
+            <input 
+              matInput 
+              type="number" 
+              step="any"
+              formControlName="longitud"
+              class="form-input"
+            />
+          </div>
+          <mat-error *ngIf="form.get('longitud')?.hasError('min')" class="error-message">
+            La longitud debe estar entre -180 y 180
+          </mat-error>
+        </div>
+      </div>
+
+      <!-- Campo teléfono -->
+      <div class="form-group">
+        <label class="form-label">Teléfono de contacto</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">phone</mat-icon>
+          <input 
+            matInput 
+            formControlName="telefono_contacto" 
+            placeholder="Ej. 5555-1234"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('telefono_contacto')?.hasError('maxlength')" class="error-message">
+          Máximo 30 caracteres
+        </mat-error>
+      </div>
+
+      <!-- Campo observaciones -->
+      <div class="form-group">
+        <label class="form-label">Observaciones</label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">note</mat-icon>
+          <textarea 
+            matInput 
+            formControlName="observaciones" 
+            rows="3" 
+            placeholder="Información adicional del refugio"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="botones-accion">
+      <button 
+        type="button" 
+        (click)="onCancel()" 
+        class="btn-cancelar"
+        [disabled]="loading">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn-registrar"
+        [disabled]="loading || form.invalid">
+        <mat-icon *ngIf="!loading">check</mat-icon>
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        {{ isEdit ? "Guardar cambios" : "Registrar" }}
+      </button>
+    </div>
+  </form>
+</div>
