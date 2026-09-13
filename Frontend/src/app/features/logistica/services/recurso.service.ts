@@ -16,10 +16,21 @@ export class RecursoService {
 
   // Obtiene la lista de todos los recursos activos
   getAll(): Observable<Recurso[]> {
-    // Indicamos que la respuesta es de tipo RespuestaAPI que contiene un array de Recurso
-    return this.http.get<RespuestaAPI<Recurso[]>>(this.apiUrl).pipe(
-      // Extraemos solo el array que viene en la propiedad 'data'
-      map(response => response.data || [])
+    return this.http.get<any>(this.apiUrl).pipe(
+      map((response: any) => {
+        // Si la respuesta es un array directo, lo devolvemos
+        if (Array.isArray(response)) {
+          return response;
+        }
+        
+        // Si la respuesta es un objeto, intentamos extraer la propiedad 'data'
+        if (response && response.data) {
+          return response.data;
+        }
+
+        // En cualquier otro caso, devolvemos un array vacío
+        return [];
+      })
     );
   }
 
