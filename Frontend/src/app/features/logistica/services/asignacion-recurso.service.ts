@@ -16,16 +16,27 @@ export class AsignacionRecursoService {
 
   // Obtiene la lista de todas las asignaciones
   getAll(): Observable<AsignacionRecurso[]> {
-    return this.http.get<RespuestaAPI<AsignacionRecurso[]>>(this.apiUrl).pipe(
-      map(response => response.data || [])
+    return this.http.get<any>(this.apiUrl).pipe(
+      map((response: any) => {
+        // Si la respuesta es un array directo, lo devolvemos
+        if (Array.isArray(response)) {
+          return response;
+        }
+        
+        // Si la respuesta es un objeto, intentamos extraer la propiedad 'data'
+        if (response && response.data) {
+          return response.data;
+        }
+
+        // En cualquier otro caso, devolvemos un array vacío
+        return [];
+      })
     );
   }
 
   // Obtiene una asignación específica por su ID
   getById(id: number): Observable<AsignacionRecurso> {
-    return this.http.get<RespuestaAPI<AsignacionRecurso>>(`${this.apiUrl}/${id}`).pipe(
-      map(response => response.data!)
-    );
+    return this.http.get<AsignacionRecurso>(`${this.apiUrl}/${id}`);
   }
 
   // Crea una nueva asignación en la base de datos
