@@ -16,16 +16,27 @@ export class RefugioService {
 
   // Obtiene la lista de todos los refugios activos
   getAll(): Observable<Refugio[]> {
-    return this.http.get<RespuestaAPI<Refugio[]>>(this.apiUrl).pipe(
-      map(response => response.data || [])
+    return this.http.get<any>(this.apiUrl).pipe(
+      map((response: any) => {
+        // Si la respuesta es un array directo, lo devolvemos
+        if (Array.isArray(response)) {
+          return response;
+        }
+        
+        // Si la respuesta es un objeto, intentamos extraer la propiedad 'data'
+        if (response && response.data) {
+          return response.data;
+        }
+
+        // En cualquier otro caso, devolvemos un array vacío
+        return [];
+      })
     );
   }
 
   // Obtiene un refugio específico por su ID
   getById(id: number): Observable<Refugio> {
-    return this.http.get<RespuestaAPI<Refugio>>(`${this.apiUrl}/${id}`).pipe(
-      map(response => response.data!)
-    );
+    return this.http.get<Refugio>(`${this.apiUrl}/${id}`);
   }
 
   // Crea un nuevo refugio en la base de datos
