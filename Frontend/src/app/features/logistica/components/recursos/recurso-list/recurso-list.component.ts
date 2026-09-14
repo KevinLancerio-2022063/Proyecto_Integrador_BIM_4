@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -36,7 +36,6 @@ import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
   templateUrl: "./recurso-list.component.html",
   styleUrls: ["./recurso-list.component.css"]
 })
-
 export class RecursoListComponent implements OnInit {
   // Almacena la lista de recursos obtenidos del backend
   recursos: Recurso[] = [];
@@ -61,10 +60,11 @@ export class RecursoListComponent implements OnInit {
     { id: "OTRO", etiqueta: "Otros", icono: "category" }
   ];
 
-  // Inyecta el servicio de recursos y el diálogo
+  // Inyecta el servicio de recursos, el diálogo y el detector de cambios
   constructor(
     private recursoService: RecursoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {}
 
   // Se ejecuta al inicializar el componente
@@ -77,12 +77,15 @@ export class RecursoListComponent implements OnInit {
     this.loading = true;
     this.recursoService.getAll().subscribe({
       next: (data) => {
+        console.log("Recursos cargados:", data);
         this.recursos = data;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error("Error al cargar recursos:", error);
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
