@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -43,7 +43,8 @@ export class RefugioListComponent implements OnInit {
   // Inyecta el servicio de refugios y el diálogo
   constructor(
     private refugioService: RefugioService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {}
 
   // Se ejecuta al inicializar el componente
@@ -56,12 +57,15 @@ export class RefugioListComponent implements OnInit {
     this.loading = true;
     this.refugioService.getAll().subscribe({
       next: (data) => {
+        console.log("Refugios cargados:", data); 
         this.refugios = data;
         this.loading = false;
+        this.cdr.detectChanges();  
       },
       error: (error) => {
         console.error("Error al cargar refugios:", error);
         this.loading = false;
+        this.cdr.detectChanges(); 
       }
     });
   }
