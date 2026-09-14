@@ -1,47 +1,100 @@
-<!-- Tarjeta de recurso -->
-<div *ngFor="let recurso of recursosFiltrados" class="recurso-card">
+<!-- Contenedor principal -->
+<div class="container-page">
   
-  <!-- Icono con tipo de recurso -->
-  <div class="recurso-header">
-    <div class="icono-container" [class]="'icono-' + (recurso.tipo | lowercase)">
-      <mat-icon>{{ (recurso.tipo | tipoRecurso).icono }}</mat-icon>
+  <!-- Encabezado -->
+  <div class="page-header">
+    <h1 class="page-title">Gestión de Recursos</h1>
+    <p class="page-subtitle">Consulta, registra y edita recursos tácticos de emergencia</p>
+  </div>
+
+  <!-- Barra de búsqueda y botón -->
+  <div class="header-actions">
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Búsqueda global (ej: Alimentos 5km, Unidades Sector B)..."
+        class="search-input"
+      />
     </div>
-    <span class="tipo-badge" [ngClass]="getColorTipo(recurso.tipo)">
-      {{ recurso.tipo | tipoRecurso | json }}
-    </span>
+    <button class="btn-primary-cyber" (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon>
+      Iniciar Nuevo Registro Táctico
+    </button>
   </div>
 
-  <!-- Nombre del recurso -->
-  <h3 class="recurso-nombre">
-    {{ recurso.nombre }}
-  </h3>
-
-  <!-- Cantidad y unidad formateada -->
-  <div class="recurso-cantidad">
-    <mat-icon class="cantidad-icono">inventory</mat-icon>
-    <span class="cantidad-texto">
-      {{ recurso.cantidad_total }} {{ recurso.unidad_medida | unidadMedida }}
-    </span>
+  <!-- Filtros hexagonales -->
+  <div class="filtros-container">
+    <div 
+      *ngFor="let filtro of filtros" 
+      class="filtro-hex"
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)">
+      <div class="hexagon-wrapper">
+        <div class="hexagon" [class]="'hex-' + filtro.id.toLowerCase()">
+          <mat-icon>{{ filtro.icono }}</mat-icon>
+        </div>
+      </div>
+      <span class="filtro-label">{{ filtro.etiqueta }}</span>
+    </div>
   </div>
 
-  <!-- Descripción -->
-  <p class="recurso-descripcion">
-    {{ recurso.descripcion || "Sin descripción disponible" }}
-  </p>
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="estado-carga">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="text-secondary mt-4">Cargando recursos...</p>
+  </div>
 
-  <!-- Fecha de creación formateada -->
-  <p class="recurso-fecha">
-    <mat-icon class="fecha-icono">calendar_today</mat-icon>
-    Registrado: {{ recurso.created_at | fechaFormateada }}
-  </p>
+  <!-- Grid de recursos -->
+  <div *ngIf="!loading && recursosFiltrados.length > 0" class="recursos-grid">
+    <div 
+      *ngFor="let recurso of recursosFiltrados; let i = index" 
+      class="recurso-card"
+      [style.animation-delay]="(i * 80) + 'ms'">
+      
+      <div class="recurso-header">
+        <div class="icono-container" [class]="'icono-' + recurso.tipo.toLowerCase()">
+          <mat-icon>{{ getIconoTipo(recurso.tipo) }}</mat-icon>
+        </div>
+        <span class="tipo-badge">{{ recurso.tipo }}</span>
+      </div>
 
-  <!-- Acciones -->
-  <div class="recurso-acciones">
-    <button class="btn-accion btn-editar" (click)="abrirModalEditar(recurso)" title="Editar">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button class="btn-accion btn-eliminar" (click)="eliminarRecurso(recurso.id)" title="Eliminar">
-      <mat-icon>delete</mat-icon>
-    </button>
+      <h3 class="recurso-nombre">{{ recurso.nombre }}</h3>
+
+      <div class="recurso-cantidad">
+        <mat-icon class="cantidad-icono">inventory</mat-icon>
+        <span class="cantidad-texto">
+          {{ recurso.cantidad_total }} {{ recurso.unidad_medida }}
+        </span>
+      </div>
+
+      <p class="recurso-descripcion">
+        {{ recurso.descripcion || "Sin descripción disponible" }}
+      </p>
+
+      <p class="recurso-fecha">
+        <mat-icon class="fecha-icono">calendar_today</mat-icon>
+        Registrado: {{ recurso.created_at | fechaFormateada }}
+      </p>
+
+      <div class="recurso-acciones">
+        <button class="btn-accion btn-editar" (click)="abrirModalEditar(recurso)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button class="btn-accion btn-eliminar" (click)="eliminarRecurso(recurso.id)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vacío -->
+  <div *ngIf="!loading && recursosFiltrados.length === 0" class="estado-vacio">
+    <mat-icon class="estado-vacio-icono">inventory_2</mat-icon>
+    <h3 class="estado-vacio-titulo">No hay recursos disponibles</h3>
+    <p class="estado-vacio-texto">
+      {{ busqueda ? 'No se encontraron recursos con ese criterio' : 'Comienza registrando tu primer recurso' }}
+    </p>
   </div>
 </div>
