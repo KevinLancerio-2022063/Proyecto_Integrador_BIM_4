@@ -1,5 +1,5 @@
 /* ============================================
-   LAYOUT PRINCIPAL
+   Layout principal
    ============================================ */
 
 .layout-container {
@@ -9,23 +9,25 @@
 }
 
 /* ============================================
-   SIDEBAR
+   Sidebar
    ============================================ */
 
 .sidebar {
   width: 260px;
   background: var(--bg-sidebar);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(0, 240, 255, 0.1);
   display: flex;
   flex-direction: column;
   position: fixed;
   height: 100vh;
   z-index: 1000;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-header {
   padding: 24px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, transparent 100%);
 }
 
 .logo-container {
@@ -38,17 +40,18 @@
   font-size: 32px;
   width: 32px;
   height: 32px;
-  color: #38bdf8;
-  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+  color: var(--neon-cyan);
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.8));
 }
 
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
 }
 
 /* Navegación */
@@ -69,18 +72,20 @@
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(56, 189, 248, 0.1);
+  background: rgba(0, 240, 255, 0.1);
   color: var(--text-primary);
+  border-color: rgba(0, 240, 255, 0.3);
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(14, 165, 233, 0.2) 100%);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
   color: var(--text-primary);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
 }
 
 .nav-icon {
@@ -95,7 +100,7 @@
 }
 
 /* ============================================
-   CONTENIDO PRINCIPAL
+   Contenido Principal
    ============================================ */
 
 .main-content {
@@ -107,7 +112,7 @@
 }
 
 /* ============================================
-   RESPONSIVE
+   Responsive
    ============================================ */
 
 @media (max-width: 768px) {
