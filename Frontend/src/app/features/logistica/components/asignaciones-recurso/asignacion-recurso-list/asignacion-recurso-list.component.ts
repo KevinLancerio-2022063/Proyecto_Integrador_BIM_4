@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -43,7 +43,8 @@ export class AsignacionRecursoListComponent implements OnInit {
   // Inyecta el servicio de asignaciones y el diálogo
   constructor(
     private asignacionService: AsignacionRecursoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {}
 
   // Se ejecuta al inicializar el componente
@@ -56,12 +57,15 @@ export class AsignacionRecursoListComponent implements OnInit {
     this.loading = true;
     this.asignacionService.getAll().subscribe({
       next: (data) => {
+        console.log("Asignaciones cargadas:", data);
         this.asignaciones = data;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error("Error al cargar asignaciones:", error);
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
