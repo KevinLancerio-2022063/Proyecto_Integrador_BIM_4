@@ -261,7 +261,7 @@
 }
 
 /* ============================================
-   Filtros hexagonales con efecto 3D
+   Filtros hexagonales sin fondo cuadrado
    ============================================ */
 
 .filtros-container {
@@ -283,12 +283,15 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .filtro-hex:hover {
   transform: translateY(-8px) scale(1.05);
 }
 
+/* Contenedor del hexágono - completamente transparente */
 .hexagon-wrapper {
   width: 85px;
   height: 85px;
@@ -297,10 +300,12 @@
   align-items: center;
   justify-content: center;
   transition: all 0.4s ease;
-  background: transparent;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
+/* El hexágono con clip-path */
 .hexagon {
   width: 100%;
   height: 100%;
@@ -342,9 +347,9 @@
   transform: scale(1.15) rotate(10deg);
 }
 
-/* Hexágono activo con glow */
+/* Hexágono activo - usar drop-shadow en lugar de box-shadow */
 .filtro-hex.active .hexagon-wrapper {
-  animation: glowPulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
 }
 
 .filtro-hex.active .hexagon {
