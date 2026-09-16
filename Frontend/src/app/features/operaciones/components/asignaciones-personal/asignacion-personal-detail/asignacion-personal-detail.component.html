@@ -1,0 +1,97 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Detalle de la Asignación de Personal</h2>
+
+    <a
+      mat-raised-button
+      color="primary"
+      routerLink="/operaciones/asignaciones-personal"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Volver a la lista
+    </a>
+  </div>
+
+  <mat-card class="shadow-sm" *ngIf="asignacionPersonal; else loading">
+    <mat-card-header class="bg-light p-3 border-bottom">
+      <mat-card-title class="fs-4">
+        Asignación #{{ asignacionPersonal.id }}
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        Estado: {{ asignacionPersonal.estado }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="p-4">
+      <div class="row">
+
+        <div class="col-md-6 mb-3">
+          <strong>ID:</strong>
+          {{ asignacionPersonal.id }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <strong>Estado:</strong>
+          <span class="badge bg-primary">
+            {{ asignacionPersonal.estado }}
+          </span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <strong>ID del Usuario:</strong>
+          {{ asignacionPersonal.usuario_id || 'No asignado' }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <strong>ID del Incidente:</strong>
+          {{ asignacionPersonal.incidente_id || 'No asignado' }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <strong>ID del Refugio:</strong>
+          {{ asignacionPersonal.refugio_id || 'No asignado' }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <strong>Fecha de Asignación:</strong>
+          {{ asignacionPersonal.fecha_asignacion | date:'medium' }}
+        </div>
+
+        <div class="col-12 mb-3">
+          <strong>Observaciones:</strong>
+
+          <p class="text-muted mt-1">
+            {{ asignacionPersonal.observaciones || 'Sin observaciones' }}
+          </p>
+        </div>
+
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="p-3 border-top d-flex justify-content-end gap-2">
+      <button
+        mat-raised-button
+        color="accent"
+        [routerLink]="[
+          '/operaciones/asignaciones-personal',
+          asignacionPersonal.id,
+          'editar'
+        ]"
+      >
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <ng-template #loading>
+    <div class="text-center py-5">
+      <mat-spinner diameter="40"></mat-spinner>
+
+      <p class="mt-2 text-muted">
+        Cargando información de la asignación de personal...
+      </p>
+    </div>
+  </ng-template>
+</div>
