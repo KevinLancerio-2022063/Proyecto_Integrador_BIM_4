@@ -1,0 +1,264 @@
+<!-- Contenedor principal -->
+<div class="container-page">
+
+  <!-- Encabezado -->
+  <div class="page-header">
+    <h1 class="page-title">Gestión de Alertas</h1>
+
+    <p class="page-subtitle">
+      Consulta, registra y gestiona alertas de emergencia
+    </p>
+  </div>
+
+
+  <!-- Barra de búsqueda y botón -->
+  <div class="header-actions">
+
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+
+      <input
+        type="text"
+        [(ngModel)]="busqueda"
+        placeholder="Búsqueda global (ej: Emergencia, Zona 5, Critico)..."
+        class="search-input"
+      />
+    </div>
+
+    <button
+      class="btn-primary-cyber"
+      (click)="abrirModalCrear()">
+
+      <mat-icon>add_alert</mat-icon>
+
+      Registrar Nueva Alerta
+    </button>
+
+  </div>
+
+
+  <!-- Filtros -->
+  <div class="filtros-container">
+
+    <div
+      *ngFor="let filtro of filtros"
+      class="filtro-hex"
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)">
+
+      <div class="hexagon-wrapper">
+
+        <div
+          class="hexagon"
+          [class]="'hex-' + filtro.id.toLowerCase()">
+
+          <mat-icon>
+            {{ filtro.icono }}
+          </mat-icon>
+
+        </div>
+
+      </div>
+
+      <span class="filtro-label">
+        {{ filtro.etiqueta }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- Estado de carga -->
+  <div
+    *ngIf="loading"
+    class="estado-carga">
+
+    <mat-spinner
+      diameter="50"
+      class="mx-auto">
+    </mat-spinner>
+
+    <p class="text-secondary mt-4">
+      Cargando alertas...
+    </p>
+
+  </div>
+
+
+  <!-- Grid de alertas -->
+  <div
+    *ngIf="!loading && alertasFiltradas.length > 0"
+    class="recursos-grid">
+
+    <div
+      *ngFor="let alerta of alertasFiltradas; let i = index"
+      class="recurso-card"
+      [style.animation-delay]="(i * 80) + 'ms'">
+
+
+      <!-- Encabezado de la alerta -->
+      <div class="recurso-header">
+
+        <div
+          class="icono-container"
+          [class]="'icono-' + alerta.nivel.toLowerCase()">
+
+          <mat-icon>
+            {{ getIconoNivel(alerta.nivel) }}
+          </mat-icon>
+
+        </div>
+
+        <span class="tipo-badge">
+          {{ alerta.tipo }}
+        </span>
+
+      </div>
+
+
+      <!-- Nivel -->
+      <div class="alerta-nivel">
+        <span class="nivel-label">
+          Nivel:
+        </span>
+
+        <span
+          class="nivel-badge"
+          [class]="'nivel-' + alerta.nivel.toLowerCase()">
+
+          {{ alerta.nivel }}
+
+        </span>
+      </div>
+
+
+      <!-- Mensaje -->
+      <h3 class="recurso-nombre">
+        {{ alerta.mensaje }}
+      </h3>
+
+
+      <!-- Estado -->
+      <div class="recurso-cantidad">
+
+        <mat-icon class="cantidad-icono">
+          notifications
+        </mat-icon>
+
+        <span class="cantidad-texto">
+          {{ alerta.estado }}
+        </span>
+
+      </div>
+
+
+      <!-- Información relacionada -->
+      <p
+        *ngIf="alerta.incidente_id"
+        class="recurso-descripcion">
+
+        <mat-icon>
+          report_problem
+        </mat-icon>
+
+        Incidente: {{ alerta.incidente_id }}
+
+      </p>
+
+      <p
+        *ngIf="alerta.zona_id"
+        class="recurso-descripcion">
+
+        <mat-icon>
+          location_on
+        </mat-icon>
+
+        Zona: {{ alerta.zona_id }}
+
+      </p>
+
+      <p
+        *ngIf="alerta.refugio_id"
+        class="recurso-descripcion">
+
+        <mat-icon>
+          home
+        </mat-icon>
+
+        Refugio: {{ alerta.refugio_id }}
+
+      </p>
+
+
+      <!-- Fecha -->
+      <p class="recurso-fecha">
+
+        <mat-icon class="fecha-icono">
+          calendar_today
+        </mat-icon>
+
+        Registrada:
+        {{ alerta.fecha | date:'dd/MM/yyyy HH:mm' }}
+
+      </p>
+
+
+      <!-- Acciones -->
+      <div class="recurso-acciones">
+
+        <button
+          class="btn-accion btn-editar"
+          (click)="abrirModalEditar(alerta)"
+          title="Editar">
+
+          <mat-icon>
+            edit
+          </mat-icon>
+
+        </button>
+
+        <button
+          class="btn-accion btn-eliminar"
+          (click)="eliminarAlerta(alerta.id)"
+          title="Eliminar">
+
+          <mat-icon>
+            delete
+          </mat-icon>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Estado vacío -->
+  <div
+    *ngIf="!loading && alertasFiltradas.length === 0"
+    class="estado-vacio">
+
+    <mat-icon class="estado-vacio-icono">
+      notifications_none
+    </mat-icon>
+
+    <h3 class="estado-vacio-titulo">
+      No hay alertas disponibles
+    </h3>
+
+    <p class="estado-vacio-texto">
+
+      {{
+        busqueda
+          ? 'No se encontraron alertas con ese criterio'
+          : 'Comienza registrando tu primera alerta'
+      }}
+
+    </p>
+
+  </div>
+
+</div>
