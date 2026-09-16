@@ -5,6 +5,7 @@ import { Routes } from "@angular/router";
 import { AlertaListComponent } from "./components/alertas/alerta-list/alerta-list.component";
 import { AlertaFormComponent } from "./components/alertas/alerta-form/alerta-form.component";
 import { AlertaDetailComponent } from "./components/alertas/alerta-detail/alerta-detail.component";
+import { AlertaNotificationsComponent } from "./components/alertas/alerta-notifications/alerta-notifications.component";
 
 // Define las rutas del módulo de operaciones
 export const OPERACIONES_ROUTES: Routes = [
@@ -15,6 +16,7 @@ export const OPERACIONES_ROUTES: Routes = [
     children: [
       { path: "", component: AlertaListComponent },
       { path: "nuevo", component: AlertaFormComponent },
+      { path: "notificaciones", component: AlertaNotificationsComponent },
       { path: ":id", component: AlertaDetailComponent },
       { path: ":id/editar", component: AlertaFormComponent }
     ]
