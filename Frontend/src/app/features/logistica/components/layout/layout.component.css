@@ -24,37 +24,42 @@
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
 }
 
+/* ============================================
+   Header del sidebar con logo
+   ============================================ */
+
 .sidebar-header {
-  padding: 24px 20px;
+  padding: 20px;
   border-bottom: 1px solid rgba(0, 240, 255, 0.1);
   background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, transparent 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  width: 100%;
 }
 
-.logo-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-  color: var(--neon-cyan);
-  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.8));
+.logo-image {
+  max-width: 180px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
 }
 
-.logo-text {
-  font-size: 24px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+.logo-image:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 6px 16px rgba(0, 240, 255, 0.3));
 }
 
-/* Navegación */
+/* ============================================
+   Navegación del sidebar con degradado sutil
+   ============================================ */
+
 .sidebar-nav {
   padding: 20px 12px;
   display: flex;
@@ -66,41 +71,118 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  color: var(--text-secondary);
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: #b3b3cb;
   text-decoration: none;
-  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  margin: 6px 12px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   border: 1px solid transparent;
 }
 
-.nav-item:hover {
-  background: rgba(0, 240, 255, 0.1);
-  color: var(--text-primary);
-  border-color: rgba(0, 240, 255, 0.3);
+/* Fondo degradado sutil (azul oscuro a cyan) */
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #0a0e27, #1a3a6e, #00f0ff);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 8px;
 }
 
+/* Destello brillante */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 2;
+}
+
+/* Estados hover */
+.nav-item:hover {
+  color: #ffffff;
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 0 12px 24px rgba(0, 240, 255, 0.25),
+              0 4px 10px rgba(26, 58, 110, 0.4);
+}
+
+.nav-item:hover::before {
+  transform: scaleX(1);
+}
+
+.nav-item:hover::after {
+  left: 150%;
+  transition: left 0.6s ease-in-out;
+}
+
+.nav-item:hover .nav-icon {
+  color: #00f0ff;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
+}
+
+.nav-item:hover .nav-label {
+  transform: translateX(4px);
+}
+
+/* Estado activo */
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
-  color: var(--text-primary);
-  border: 1px solid rgba(0, 240, 255, 0.5);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(10, 14, 39, 0.8), rgba(26, 58, 110, 0.6), rgba(0, 240, 255, 0.15));
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15),
+              inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.nav-item.active::before,
+.nav-item.active::after {
+  display: none;
+}
+
+.nav-item.active .nav-icon {
+  color: #00f0ff;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6));
 }
 
 .nav-icon {
   font-size: 20px;
   width: 20px;
   height: 20px;
+  transition: all 0.3s ease;
+  color: #a0aec0;
 }
 
 .nav-label {
   font-size: 14px;
   font-weight: 500;
+  transition: transform 0.3s ease;
 }
 
 /* ============================================
-   Contenido Principal
+   Contenido principal
    ============================================ */
 
 .main-content {
