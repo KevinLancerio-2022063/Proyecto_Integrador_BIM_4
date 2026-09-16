@@ -13,7 +13,7 @@ import {
 })
 export class AsignacionPersonalService {
   // URL base de la API del backend
-  private apiUrl = "http://localhost:3000/api/asignaciones-personal";
+  private apiUrl = "http://localhost:3000/api/asignacion_personal";
 
   // Inyecta el cliente HTTP para hacer peticiones
   constructor(private http: HttpClient) {}
