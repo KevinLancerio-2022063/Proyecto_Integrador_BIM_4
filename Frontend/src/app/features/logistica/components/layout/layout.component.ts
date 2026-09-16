@@ -15,6 +15,7 @@ import { MatIconModule } from "@angular/material/icon";
 export class LayoutComponent {
   // Define los enlaces del menú lateral
   menuItems = [
+    { label: "Dashboard", icon: "dashboard", route: "/logistica/dashboard" },
     { label: "Recursos", route: "/logistica/recursos", icon: "inventory_2" },
     { label: "Refugios", route: "/logistica/refugios", icon: "home" },
     { label: "Asignaciones", route: "/logistica/asignaciones", icon: "assignment" }
