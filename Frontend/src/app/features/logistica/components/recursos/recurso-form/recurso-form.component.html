@@ -35,34 +35,68 @@
 
       <!-- Campos tipo y unidad de medida -->
       <div class="form-row">
-        <div class="form-group form-group-half">
-          <label class="form-label">Tipo*</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">category</mat-icon>
-            <mat-select formControlName="tipo" class="form-select">
-              <mat-option *ngFor="let tipo of tiposRecurso" [value]="tipo">
-                {{ tipo }}
-              </mat-option>
-            </mat-select>
-          </div>
-          <mat-error *ngIf="form.get('tipo')?.hasError('required')" class="error-message">
-            El tipo es obligatorio
-          </mat-error>
+<!-- Campo tipo -->
+<div class="form-group form-group-half">
+  <label class="form-label">Tipo*</label>
+  <div class="input-wrapper select-wrapper">
+    <mat-select formControlName="tipo" class="form-select" placeholder="Seleccionar...">
+      
+      <!-- Valor seleccionado con icono y color -->
+      <mat-select-trigger>
+        <div class="opcion-contenido" *ngIf="form.get('tipo')?.value">
+          <mat-icon class="opcion-icono" [style.color]="getTipoColor(form.get('tipo')?.value)">
+            {{ getTipoIcono(form.get('tipo')?.value) }}
+          </mat-icon>
+          <span class="opcion-texto">{{ form.get('tipo')?.value }}</span>
         </div>
-        <div class="form-group form-group-half">
-          <label class="form-label">Unidad de medida*</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">straighten</mat-icon>
-            <mat-select formControlName="unidad_medida" class="form-select">
-              <mat-option *ngFor="let unidad of unidadesMedida" [value]="unidad">
-                {{ unidad }}
-              </mat-option>
-            </mat-select>
-          </div>
-          <mat-error *ngIf="form.get('unidad_medida')?.hasError('required')" class="error-message">
-            La unidad es obligatoria
-          </mat-error>
+      </mat-select-trigger>
+      
+      <!-- Opciones del select -->
+      <mat-option *ngFor="let tipo of tiposRecurso" [value]="tipo.valor">
+        <div class="opcion-contenido">
+          <mat-icon class="opcion-icono" [style.color]="tipo.color">
+            {{ tipo.icono }}
+          </mat-icon>
+          <span class="opcion-texto">{{ tipo.texto }}</span>
         </div>
+      </mat-option>
+    </mat-select>
+  </div>
+  <mat-error *ngIf="form.get('tipo')?.hasError('required')" class="error-message">
+    El tipo es obligatorio
+  </mat-error>
+</div>
+          <!-- Campo unidad de medida -->
+          <div class="form-group form-group-half">
+            <label class="form-label">Unidad de medida*</label>
+            <div class="input-wrapper select-wrapper">
+              <mat-select formControlName="unidad_medida" class="form-select" placeholder="Seleccionar...">
+                
+                <!-- Valor seleccionado con icono y color -->
+                <mat-select-trigger>
+                  <div class="opcion-contenido" *ngIf="form.get('unidad_medida')?.value">
+                    <mat-icon class="opcion-icono" [style.color]="getUnidadColor(form.get('unidad_medida')?.value)">
+                      {{ getUnidadIcono(form.get('unidad_medida')?.value) }}
+                    </mat-icon>
+                    <span class="opcion-texto">{{ form.get('unidad_medida')?.value }}</span>
+                  </div>
+                </mat-select-trigger>
+                
+                <!-- Opciones del select -->
+                <mat-option *ngFor="let unidad of unidadesMedida" [value]="unidad.valor">
+                  <div class="opcion-contenido">
+                    <mat-icon class="opcion-icono" [style.color]="unidad.color">
+                      {{ unidad.icono }}
+                    </mat-icon>
+                    <span class="opcion-texto">{{ unidad.texto }}</span>
+                  </div>
+                </mat-option>
+              </mat-select>
+            </div>
+            <mat-error *ngIf="form.get('unidad_medida')?.hasError('required')" class="error-message">
+              La unidad es obligatoria
+            </mat-error>
+          </div>
       </div>
 
       <!-- Campo cantidad -->
