@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from '@angular/router';
@@ -32,19 +32,11 @@ import { IncidenteFormComponent } from "../incidente-form/incidente-form.compone
   styleUrls: ["./incidente-list.component.css"]
 })
 export class IncidenteListComponent implements OnInit {
-  // Almacena la lista de incidentes obtenidos del backend
   incidentes: Incidente[] = [];
-
-  // Almacena el filtro activo seleccionado
   filtroActivo: string = "todos";
-
-  // Almacena el término de búsqueda
   busqueda: string = "";
-
-  // Indica si los datos están cargando
   loading: boolean = true;
 
-  // Filtros disponibles basados en el enum tipo de Incidente
   filtros = [
     { id: "todos", etiqueta: "Todos", icono: "dashboard" },
     { id: "INUNDACION", etiqueta: "Inundaciones", icono: "flood" },
@@ -57,67 +49,81 @@ export class IncidenteListComponent implements OnInit {
 
   constructor(
     private incidenteService: IncidenteService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.cargarIncidentes();
   }
 
-  // Llama al servicio para obtener los incidentes
   cargarIncidentes(): void {
-    this.loading = true;
-    this.incidenteService.getAll().subscribe({
-      next: (data: Incidente[]) => {
-        // Asignación directa: el servicio ya retornó el arreglo limpio mediante .pipe(map(...))
-        this.incidentes = data || [];
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error("Error al cargar incidentes:", error);
-        this.loading = false;
+  this.loading = true;
+  
+  this.incidenteService.getAll().subscribe({
+    next: (data: Incidente[]) => {
+      this.incidentes = data || [];
+      this.loading = false; 
+      this.cdr.detectChanges();
+    },
+    error: (error) => {
+      console.error("Error al cargar incidentes:", error);
+      this.loading = false; 
+      this.cdr.detectChanges(); 
+    }
+  });
+}
+
+  abrirModalCrear(): void {
+    const dialogRef = this.dialog.open(IncidenteFormComponent, {
+      width: '600px',
+      disableClose: true,
+      panelClass: 'modal-transparente-panel' 
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        this.cargarIncidentes();
       }
     });
   }
 
-  // Abre el modal para reportar/crear un incidente
-  abrirModalCrear(): void {
-    const dialogRef = this.dialog.open(IncidenteFormComponent, {
-      width: "600px",
-      data: { modo: "crear" }
-    });
-    dialogRef.afterClosed().subscribe((resultado) => {
-      if (resultado) this.cargarIncidentes();
-    });
-  }
-
-  // Abre el modal para editar un incidente
   abrirModalEditar(incidente: Incidente): void {
     const dialogRef = this.dialog.open(IncidenteFormComponent, {
       width: "600px",
-      data: { modo: "editar", incidente }
+      data: { modo: "editar", incidente },
+      panelClass: 'modal-transparente-panel'
     });
     dialogRef.afterClosed().subscribe((resultado) => {
-      if (resultado) this.cargarIncidentes();
+      if (resultado) {
+        this.cargarIncidentes();
+      }
     });
   }
 
-  // Elimina un incidente tras confirmación
-  eliminarIncidente(id: number): void {
+  eliminarIncidente(incidenteObj: any): void {
+    const idReal = incidenteObj.id || incidenteObj._id;
+
+    if (!idReal) {
+      console.error("No se encontró un ID válido para eliminar");
+      return;
+    }
+
     if (confirm("¿Estás seguro de eliminar este incidente?")) {
-      this.incidenteService.delete(id).subscribe({
-        next: () => this.cargarIncidentes(),
+      this.incidenteService.delete(idReal).subscribe({
+        next: () => {
+          this.incidentes = this.incidentes.filter(i => (i.id || (i as any)._id) !== idReal);
+          this.cdr.detectChanges();
+        },
         error: (error) => console.error("Error al eliminar incidente:", error)
       });
     }
   }
 
-  // Establece el filtro activo por tipo
   setFiltro(filtroId: string): void {
     this.filtroActivo = filtroId;
   }
 
-  // Filtra por tipo de incidente, título o descripción
   get incidentesFiltrados(): Incidente[] {
     let resultado = this.incidentes;
 
@@ -129,7 +135,7 @@ export class IncidenteListComponent implements OnInit {
       const busquedaLower = this.busqueda.toLowerCase();
       resultado = resultado.filter(
         (i) =>
-          i.titulo.toLowerCase().includes(busquedaLower) ||
+          i.titulo?.toLowerCase().includes(busquedaLower) ||
           i.descripcion?.toLowerCase().includes(busquedaLower) ||
           i.observaciones?.toLowerCase().includes(busquedaLower)
       );
@@ -138,7 +144,14 @@ export class IncidenteListComponent implements OnInit {
     return resultado;
   }
 
-  // Color de badge según nivel de emergencia
+  getNivelEmergencia(incidente: any): string {
+    return incidente.nivelEmergencia || incidente.nivel_emergencia || 'BAJA';
+  }
+
+  getPersonasAfectadas(incidente: any): number {
+    return incidente.personasAfectadas ?? incidente.cantidad_personas_afectadas ?? 0;
+  }
+
   getColorNivel(nivel: string): string {
     const colores: { [key: string]: string } = {
       BAJA: "bg-info text-dark",
@@ -149,7 +162,6 @@ export class IncidenteListComponent implements OnInit {
     return colores[nivel] || "bg-secondary text-white";
   }
 
-  // Color de badge según estado del incidente
   getColorEstado(estado: string): string {
     const colores: { [key: string]: string } = {
       REPORTADO: "bg-warning text-dark",
@@ -160,7 +172,6 @@ export class IncidenteListComponent implements OnInit {
     return colores[estado] || "bg-secondary text-white";
   }
 
-  // Icono Material según el tipo de incidente
   getIconoTipo(tipo: string): string {
     const iconos: { [key: string]: string } = {
       INUNDACION: "flood",
