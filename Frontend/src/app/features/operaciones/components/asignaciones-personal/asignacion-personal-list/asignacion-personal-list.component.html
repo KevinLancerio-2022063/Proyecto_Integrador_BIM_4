@@ -1,0 +1,350 @@
+<!-- Contenedor principal -->
+<div class="container-page">
+
+  <!-- Encabezado -->
+  <div class="page-header">
+
+    <h1 class="page-title">
+      Gestión de Asignaciones de Personal
+    </h1>
+
+    <p class="page-subtitle">
+      Consulta, registra y gestiona las asignaciones de personal
+    </p>
+
+  </div>
+
+
+  <!-- Barra de búsqueda y botón -->
+  <div class="header-actions">
+
+    <div class="search-container">
+
+      <mat-icon class="search-icon">
+        search
+      </mat-icon>
+
+      <input
+        type="text"
+        [(ngModel)]="busqueda"
+        placeholder="Búsqueda global (ej: Usuario, Incidente, Rescate, Activo)..."
+        class="search-input"
+      />
+
+    </div>
+
+
+    <button
+      class="btn-primary-cyber"
+      (click)="abrirModalCrear()">
+
+      <mat-icon>
+        person_add
+      </mat-icon>
+
+      Registrar Nueva Asignación
+
+    </button>
+
+  </div>
+
+
+  <!-- Filtros -->
+  <div class="filtros-container">
+
+    <div
+      *ngFor="let filtro of filtros"
+      class="filtro-hex"
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)">
+
+      <div class="hexagon-wrapper">
+
+        <div
+          class="hexagon"
+          [class]="'hex-' + filtro.id.toLowerCase()">
+
+          <mat-icon>
+            {{ filtro.icono }}
+          </mat-icon>
+
+        </div>
+
+      </div>
+
+      <span class="filtro-label">
+        {{ filtro.etiqueta }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- Estado de carga -->
+  <div
+    *ngIf="loading"
+    class="estado-carga">
+
+    <mat-spinner
+      diameter="50"
+      class="mx-auto">
+    </mat-spinner>
+
+    <p class="text-secondary mt-4">
+      Cargando asignaciones de personal...
+    </p>
+
+  </div>
+
+
+  <!-- Grid de asignaciones -->
+  <div
+    *ngIf="!loading && asignacionesFiltradas.length > 0"
+    class="recursos-grid">
+
+    <div
+      *ngFor="
+        let asignacion of asignacionesFiltradas;
+        let i = index
+      "
+      class="recurso-card"
+      [style.animation-delay]="(i * 80) + 'ms'">
+
+
+      <!-- ============================================
+           Encabezado de la asignación
+           ============================================ -->
+
+      <div class="recurso-header">
+
+        <div
+          class="icono-container"
+          [class]="'icono-' + asignacion.estado.toLowerCase()">
+
+          <mat-icon>
+            {{ getIconoEstado(asignacion.estado) }}
+          </mat-icon>
+
+        </div>
+
+
+        <!-- Rol asignado -->
+        <span
+          class="tipo-badge"
+          [ngClass]="getColorRol(asignacion.rol_asignado)">
+
+          {{ asignacion.rol_asignado }}
+
+        </span>
+
+      </div>
+
+
+      <!-- ============================================
+           Estado
+           ============================================ -->
+
+      <div class="alerta-nivel">
+
+        <span class="nivel-label">
+          Estado:
+        </span>
+
+        <span
+          class="nivel-badge"
+          [ngClass]="getColorEstado(asignacion.estado)">
+
+          {{ asignacion.estado }}
+
+        </span>
+
+      </div>
+
+
+      <!-- ============================================
+           Usuario
+           ============================================ -->
+
+      <h3 class="recurso-nombre">
+
+        <mat-icon>
+          person
+        </mat-icon>
+
+        Usuario #{{ asignacion.usuario_id }}
+
+      </h3>
+
+
+      <!-- ============================================
+           Información relacionada
+           ============================================ -->
+
+      <p
+        *ngIf="asignacion.incidente_id"
+        class="recurso-descripcion">
+
+        <mat-icon>
+          report_problem
+        </mat-icon>
+
+        Incidente:
+        {{ asignacion.incidente_id }}
+
+      </p>
+
+
+      <p
+        *ngIf="asignacion.refugio_id"
+        class="recurso-descripcion">
+
+        <mat-icon>
+          home
+        </mat-icon>
+
+        Refugio:
+        {{ asignacion.refugio_id }}
+
+      </p>
+
+
+      <!-- ============================================
+           Rol asignado
+           ============================================ -->
+
+      <p class="recurso-descripcion">
+
+        <mat-icon>
+          assignment_ind
+        </mat-icon>
+
+        Rol:
+        {{ asignacion.rol_asignado }}
+
+      </p>
+
+
+      <!-- ============================================
+           Observaciones
+           ============================================ -->
+
+      <p
+        *ngIf="asignacion.observaciones"
+        class="recurso-descripcion">
+
+        <mat-icon>
+          notes
+        </mat-icon>
+
+        {{ asignacion.observaciones }}
+
+      </p>
+
+
+      <!-- ============================================
+           Fecha de asignación
+           ============================================ -->
+
+      <p class="recurso-fecha">
+
+        <mat-icon class="fecha-icono">
+          calendar_today
+        </mat-icon>
+
+        Asignada:
+        {{ asignacion.fecha_asignacion | date:'dd/MM/yyyy HH:mm' }}
+
+      </p>
+
+
+      <!-- ============================================
+           Fecha de finalización
+           ============================================ -->
+
+      <p
+        *ngIf="asignacion.fecha_finalizacion"
+        class="recurso-fecha">
+
+        <mat-icon class="fecha-icono">
+          event_available
+        </mat-icon>
+
+        Finalizada:
+        {{ asignacion.fecha_finalizacion | date:'dd/MM/yyyy HH:mm' }}
+
+      </p>
+
+
+      <!-- ============================================
+           Acciones
+           ============================================ -->
+
+      <div class="recurso-acciones">
+
+        <!-- Editar -->
+        <button
+          class="btn-accion btn-editar"
+          (click)="abrirModalEditar(asignacion)"
+          title="Editar">
+
+          <mat-icon>
+            edit
+          </mat-icon>
+
+        </button>
+
+
+        <!-- Eliminar -->
+        <button
+          class="btn-accion btn-eliminar"
+          (click)="eliminarAsignacion(asignacion.id)"
+          title="Eliminar">
+
+          <mat-icon>
+            delete
+          </mat-icon>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============================================
+       Estado vacío
+       ============================================ -->
+
+  <div
+    *ngIf="
+      !loading &&
+      asignacionesFiltradas.length === 0
+    "
+    class="estado-vacio">
+
+    <mat-icon class="estado-vacio-icono">
+      assignment_late
+    </mat-icon>
+
+
+    <h3 class="estado-vacio-titulo">
+      No hay asignaciones disponibles
+    </h3>
+
+
+    <p class="estado-vacio-texto">
+
+      {{
+        busqueda
+          ? 'No se encontraron asignaciones con ese criterio'
+          : 'Comienza registrando tu primera asignación de personal'
+      }}
+
+    </p>
+
+  </div>
+
+</div>
