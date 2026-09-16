@@ -19,12 +19,17 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrls: ["./layout.component.css"]
 })
 export class LayoutComponent {
-  // Define los enlaces del menú lateral
+  // *Define los enlaces del menú lateral*
   menuItems = [
     {
       label: "Alertas",
       route: "/alertas",
       icon: "notifications"
+    },
+    {
+      label: "Notificaciones",
+      route: "/alertas/notificaciones",
+      icon: "notifications_active"
     }
   ];
 }
