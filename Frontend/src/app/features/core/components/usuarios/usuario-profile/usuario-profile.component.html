@@ -1,0 +1,51 @@
+<!-- src/app/features/core/components/usuarios/usuario-profile/usuario-profile.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <h1>Mi Perfil</h1>
+        <a routerLink="/usuarios" class="btn-secondary">← Volver</a>
+    </header>
+
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+        <div class="loading">Cargando...</div>
+    } @else if (usuario()) {
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar">{{ usuario()!.nombre.charAt(0).toUpperCase() }}</div>
+                <h2>{{ usuario()!.nombre }}</h2>
+                <span class="badge" [class]="'badge-' + usuario()!.rol.toLowerCase()">
+                    {{ usuario()!.rol | rolLabel }}
+                </span>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-row">
+                    <span class="label">Email</span>
+                    <span>{{ usuario()!.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Teléfono</span>
+                    <span>{{ usuario()!.telefono | telefono }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Disponibilidad</span>
+                    <span>
+                        <span class="dot" [class.active]="usuario()!.disponible"></span>
+                        {{ usuario()!.disponible | disponible }}
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Miembro desde</span>
+                    <span>{{ usuario()!.created_at | fecha }}</span>
+                </div>
+                <div class="info-row full">
+                    <span class="label">Habilidades</span>
+                    <span>{{ usuario()!.habilidades || '—' }}</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
