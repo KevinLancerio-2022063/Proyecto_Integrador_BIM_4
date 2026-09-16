@@ -1,0 +1,95 @@
+<!-- src/app/features/core/components/usuarios/usuario-list/usuario-list.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <div>
+            <h1>Gestión de Usuarios</h1>
+            <p class="page-subtitle">Bienvenido, {{ (authService.currentUser$ | async)?.nombre }}</p>
+        </div>
+        <div class="header-actions">
+            <a routerLink="/perfil" class="btn-secondary">Mi perfil</a>
+            @if (isAdmin()) {
+                <a routerLink="/usuarios/nuevo" class="btn-primary">+ Nuevo Usuario</a>
+            }
+            <button class="btn-danger" (click)="logout()">Cerrar sesión</button>
+        </div>
+    </header>
+
+    @if (successMessage()) {
+        <div class="alert alert-success">{{ successMessage() }}</div>
+    }
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    <div class="toolbar">
+        <input
+            type="text"
+            placeholder="Buscar por nombre, email o rol..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchChange($event)"
+            class="search-input" />
+        <span class="result-count">{{ filteredUsuarios().length }} usuarios</span>
+    </div>
+
+    @if (loading()) {
+        <div class="loading">Cargando usuarios...</div>
+    } @else if (filteredUsuarios().length === 0) {
+        <div class="empty-state">
+            @if (searchTerm()) {
+                No se encontraron resultados para "{{ searchTerm() }}"
+            } @else {
+                No hay usuarios registrados
+            }
+        </div>
+    } @else {
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Rol</th>
+                        <th>Disponible</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (u of filteredUsuarios(); track u.id) {
+                        <tr>
+                            <td>{{ u.id }}</td>
+                            <td class="strong">{{ u.nombre }}</td>
+                            <td>{{ u.email }}</td>
+                            <td>{{ u.telefono | telefono }}</td>
+                            <td>
+                                <span class="badge" [class]="'badge-' + u.rol.toLowerCase()">
+                                    {{ u.rol | rolLabel }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="dot" [class.active]="u.disponible"></span>
+                                {{ u.disponible | disponible }}
+                            </td>
+                            <td>{{ u.created_at | fecha }}</td>
+                            <td class="actions">
+                                <a [routerLink]="['/usuarios', u.id]" class="btn-icon" title="Ver">👁</a>
+                                @if (isAdmin()) {
+                                    <a [routerLink]="['/usuarios', u.id, 'editar']" class="btn-icon" title="Editar">✏️</a>
+                                    <button
+                                        class="btn-icon btn-icon-danger"
+                                        title="Eliminar"
+                                        [disabled]="deletingId() === u.id"
+                                        (click)="confirmDelete(u)">
+                                        🗑
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
