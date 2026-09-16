@@ -39,12 +39,25 @@ export class RecursoFormComponent implements OnInit {
   // Indica si el formulario está en modo edición
   isEdit: boolean = false;
   
-  // Lista de tipos válidos para el select
-  tiposRecurso: string[] = ["AGUA", "ALIMENTO", "MEDICAMENTO", "EQUIPO", "VEHICULO", "OTRO"];
+  // Lista de tipos de recurso con iconos y colores
+  tiposRecurso = [
+    { valor: "AGUA", texto: "Agua", icono: "water_drop", color: "#1fa882" },
+    { valor: "ALIMENTO", texto: "Alimento", icono: "restaurant", color: "#e68529" },
+    { valor: "MEDICAMENTO", texto: "Medicamento", icono: "medical_services", color: "#d94141" },
+    { valor: "EQUIPO", texto: "Equipo", icono: "build", color: "#2da160" },
+    { valor: "VEHICULO", texto: "Vehículo", icono: "local_shipping", color: "#e69a2e" },
+    { valor: "OTRO", texto: "Otro", icono: "category", color: "#6b7280" }
+  ];
   
-  // Lista de unidades de medida válidas
-  unidadesMedida: string[] = ["UNIDAD", "CAJA", "KILOGRAMO", "LITRO", "PERSONA", "OTRO"];
-
+  // Lista de unidades de medida con iconos y colores
+  unidadesMedida = [
+    { valor: "UNIDAD", texto: "Unidad", icono: "inventory_2", color: "#00f0ff" },
+    { valor: "CAJA", texto: "Caja", icono: "inventory", color: "#a0522d" },
+    { valor: "KILOGRAMO", texto: "Kilogramo", icono: "scale", color: "#10b981" },
+    { valor: "LITRO", texto: "Litro", icono: "water_drop", color: "#0ea5e9" },
+    { valor: "PERSONA", texto: "Persona", icono: "person", color: "#8338ec" },
+    { valor: "OTRO", texto: "Otro", icono: "category", color: "#6b7280" }
+  ];
   // Inyecta los servicios necesarios
   constructor(
     private fb: FormBuilder,
@@ -56,7 +69,7 @@ export class RecursoFormComponent implements OnInit {
     this.form = this.fb.group({
       nombre: ["", [Validators.required, Validators.maxLength(120)]],
       tipo: ["", Validators.required],
-      unidad_medida: ["UNIDAD", Validators.required],
+      unidad_medida: ["", Validators.required], // ← Cambiado de "UNIDAD" a ""
       cantidad_total: [0, [Validators.required, Validators.min(0)]],
       descripcion: [""]
     });
@@ -104,6 +117,30 @@ export class RecursoFormComponent implements OnInit {
       });
     }
   }
+
+// Obtiene el icono correspondiente al tipo seleccionado
+getTipoIcono(valor: string): string {
+  const tipo = this.tiposRecurso.find(t => t.valor === valor);
+  return tipo ? tipo.icono : "category";
+}
+
+// Obtiene el color correspondiente al tipo seleccionado
+getTipoColor(valor: string): string {
+  const tipo = this.tiposRecurso.find(t => t.valor === valor);
+  return tipo ? tipo.color : "#00f0ff";
+}
+
+// Obtiene el icono correspondiente a la unidad seleccionada
+getUnidadIcono(valor: string): string {
+  const unidad = this.unidadesMedida.find(u => u.valor === valor);
+  return unidad ? unidad.icono : "straighten";
+}
+
+// Obtiene el color correspondiente a la unidad seleccionada
+getUnidadColor(valor: string): string {
+  const unidad = this.unidadesMedida.find(u => u.valor === valor);
+  return unidad ? unidad.color : "#00f0ff";
+}
 
   // Cierra el modal sin guardar
   onCancel(): void {
