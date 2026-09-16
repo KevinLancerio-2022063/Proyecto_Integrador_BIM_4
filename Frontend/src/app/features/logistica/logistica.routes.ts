@@ -1,4 +1,3 @@
-// Importa las rutas de Angular
 import { Routes } from "@angular/router";
 
 // Importa los componentes de Recursos
@@ -13,6 +12,8 @@ import { RefugioFormComponent } from "./components/refugios/refugio-form/refugio
 // Importa los componentes de Asignaciones
 import { AsignacionRecursoListComponent } from "./components/asignaciones-recurso/asignacion-recurso-list/asignacion-recurso-list.component";
 import { AsignacionRecursoFormComponent } from "./components/asignaciones-recurso/asignacion-recurso-form/asignacion-recurso-form.component";
+
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
 
 // Define las rutas del módulo de logística
 export const LOGISTICA_ROUTES: Routes = [
@@ -43,6 +44,11 @@ export const LOGISTICA_ROUTES: Routes = [
       { path: "nuevo", component: AsignacionRecursoFormComponent },
       { path: ":id/editar", component: AsignacionRecursoFormComponent }
     ]
+  },
+
+  // Ruta para el Dashboard
+  { path: "dashboard",
+    component: DashboardComponent
   },
   // Redirección por defecto a recursos
   {
