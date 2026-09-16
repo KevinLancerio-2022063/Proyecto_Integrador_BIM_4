@@ -392,3 +392,27 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.5rem;
   }
 }
+
+/* ============================================
+   Modal cyberpunk - eliminar bordes blancos
+   ============================================ */
+
+.modal-cyberpunk .mat-mdc-dialog-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+.modal-cyberpunk .mat-mdc-dialog-surface {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.backdrop-cyberpunk {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(4px);
+}
