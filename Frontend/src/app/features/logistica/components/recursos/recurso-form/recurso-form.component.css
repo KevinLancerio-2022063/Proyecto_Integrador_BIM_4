@@ -83,15 +83,27 @@
 
 /* Logo del header */
 .modal-header-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #00f0ff;
   background: rgba(0, 240, 255, 0.1);
-  padding: 8px;
   border-radius: 12px;
   border: 1px solid rgba(0, 240, 255, 0.3);
   filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* Para asegurar que el mat-icon dentro se vea completo */
+.modal-header-icon mat-icon {
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 1;
 }
 
 /* Título del modal */
@@ -230,10 +242,10 @@
 
 /* Select del formulario */
 .form-select {
-  width: 100%;
-  padding: 14px 14px 14px 44px;
-  border: none;
-  border-radius: 12px;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
   font-size: 14px;
   color: #ffffff;
   background: transparent;
@@ -431,37 +443,175 @@
 }
 
 /* ============================================
-   Ajustes para selects de Material
-   ============================================ */
-
-/* Fondo oscuro para el panel de opciones */
-::ng-deep .mat-mdc-select-panel {
-  background: #0a0e27 !important;
-  border: 1px solid rgba(0, 240, 255, 0.2) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* Opciones del select */
-::ng-deep .mat-mdc-option {
-  background: transparent !important;
-  color: #ffffff !important;
-  border: none !important;
-}
-
-::ng-deep .mat-mdc-option:hover {
-  background: rgba(0, 240, 255, 0.1) !important;
-}
-
-::ng-deep .mat-mdc-option:focus {
-  background: rgba(0, 240, 255, 0.15) !important;
-}
-
-/* ============================================
    Ajustes para el backdrop del modal
    ============================================ */
 
 ::ng-deep .cdk-overlay-backdrop {
   background: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(4px);
+}
+
+/* ============================================
+   Opciones del select con iconos y colores
+   ============================================ */
+
+/* Wrapper del select para alinear correctamente */
+.select-wrapper {
+  align-items: center !important;
+  padding: 0 !important;
+}
+
+/* Contenedor interno de cada opción */
+.opcion-contenido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+  width: 100%;
+}
+
+/* Icono dentro de la opción */
+.opcion-icono {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  filter: drop-shadow(0 0 4px currentColor);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Texto de la opción */
+.opcion-texto {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Efecto hover en las opciones */
+.opcion-contenido:hover .opcion-icono {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* ============================================
+   Ajustes para el panel de opciones de Material
+   ============================================ */
+
+/* Fondo oscuro para el panel desplegable */
+::ng-deep .mat-mdc-select-panel {
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%) !important;
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+              0 0 20px rgba(0, 240, 255, 0.1) !important;
+  padding: 8px 0 !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Opciones individuales */
+::ng-deep .mat-mdc-option {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: none !important;
+  min-height: 48px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Hover en las opciones */
+::ng-deep .mat-mdc-option:hover {
+  background: rgba(0, 240, 255, 0.08) !important;
+}
+
+/* Opción enfocada */
+::ng-deep .mat-mdc-option:focus {
+  background: rgba(0, 240, 255, 0.12) !important;
+}
+
+/* Opción seleccionada */
+::ng-deep .mat-mdc-option.mat-mdc-selected {
+  background: rgba(0, 240, 255, 0.15) !important;
+}
+
+/* Check de la opción seleccionada */
+::ng-deep .mat-mdc-option .mat-pseudo-checkbox-checked {
+  background: #00f0ff !important;
+  border-color: #00f0ff !important;
+}
+
+/* ============================================
+   Valor mostrado en el select cerrado
+   ============================================ */
+
+/* Contenedor del valor seleccionado */
+::ng-deep .mat-mdc-select-value {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+/* Texto del valor seleccionado */
+::ng-deep .mat-mdc-select-value-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Trigger personalizado */
+::ng-deep .mat-mdc-select-trigger {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 14px !important; /* Padding uniforme */
+  margin: 0 !important;
+  gap: 12px;
+}
+
+/* Remove any leftover icon spacing */
+.select-wrapper .input-icon {
+  display: none !important;
+}
+
+/* Eliminar cualquier padding residual del contenedor */
+::ng-deep .mat-mdc-select-trigger-placeholder {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   Placeholder del select
+   ============================================ */
+
+/* Estilo del placeholder cuando no hay valor seleccionado */
+::ng-deep .mat-mdc-select-placeholder {
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  opacity: 1 !important;
+}
+
+/* Placeholder en hover */
+::ng-deep .mat-mdc-select:hover .mat-mdc-select-placeholder {
+  color: #00f0ff !important;
+  opacity: 0.7 !important;
+}
+
+/* Placeholder cuando el select está enfocado */
+::ng-deep .mat-mdc-select:focus .mat-mdc-select-placeholder {
+  color: #00f0ff !important;
+  opacity: 1 !important;
 }
