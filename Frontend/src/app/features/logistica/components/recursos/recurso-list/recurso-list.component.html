@@ -7,23 +7,25 @@
     <p class="page-subtitle">Consulta, registra y edita recursos tácticos de emergencia</p>
   </div>
 
-  <!-- Barra de búsqueda y botón -->
-  <div class="header-actions">
-    <div class="search-container">
+<!-- Barra de búsqueda y botón -->
+<div class="header-actions">
+  <div class="search-container">
+    <!-- Contenedor con glow -->
+    <div class="search-icon-wrapper">
       <mat-icon class="search-icon">search</mat-icon>
-      <input 
-        type="text" 
-        [(ngModel)]="busqueda" 
-        placeholder="Búsqueda global (ej: Alimentos 5km, Unidades Sector B)..."
-        class="search-input"
-      />
     </div>
-    <button class="btn-primary-cyber" (click)="abrirModalCrear()">
-      <mat-icon>add</mat-icon>
-      Iniciar Nuevo Registro Táctico
-    </button>
+    <input 
+      type="text" 
+      [(ngModel)]="busqueda" 
+      placeholder="Búsqueda global (ej: Alimentos 5km, Unidades Sector B)..."
+      class="search-input"
+    />
   </div>
-
+  <button class="btn-primary-cyber" (click)="abrirModalCrear()">
+    <mat-icon>add</mat-icon>
+    Iniciar Nuevo Registro Táctico
+  </button>
+</div>
   <!-- Filtros hexagonales -->
   <div class="filtros-container">
     <div 
