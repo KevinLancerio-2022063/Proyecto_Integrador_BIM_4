@@ -1,0 +1,210 @@
+/* src/app/features/core/components/usuarios/usuario-list/usuario-list.component.css */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.75rem;
+}
+
+.page-subtitle {
+    margin: 0.25rem 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    padding: 0.55rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.btn-primary { background: #1e3a8a; color: #fff; }
+.btn-secondary { background: #e2e8f0; color: #1e293b; }
+.btn-danger { background: #ef4444; color: #fff; }
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+.alert-success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 0.6rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.result-count {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.loading,
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #64748b;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.data-table thead {
+    background: #f1f5f9;
+}
+
+.data-table th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    padding: 0.85rem 1rem;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+}
+
+.data-table tr:hover {
+    background: #f8fafc;
+}
+
+.data-table .strong {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.badge-admin { background: #dbeafe; color: #1e40af; }
+.badge-coordinador { background: #ede9fe; color: #6d28d9; }
+.badge-rescatista { background: #fee2e2; color: #b91c1c; }
+.badge-voluntario { background: #dcfce7; color: #166534; }
+.badge-gestor_refugio { background: #ffedd5; color: #c2410c; }
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    margin-right: 0.35rem;
+    vertical-align: middle;
+}
+
+.dot.active {
+    background: #22c55e;
+}
+
+.actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: #f1f5f9;
+}
+
+.btn-icon-danger:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.btn-icon:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
