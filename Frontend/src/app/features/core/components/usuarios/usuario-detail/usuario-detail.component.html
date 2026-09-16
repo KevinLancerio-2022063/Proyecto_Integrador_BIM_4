@@ -1,0 +1,78 @@
+<!-- src/app/features/core/components/usuarios/usuario-detail/usuario-detail.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <h1>Detalle de Usuario</h1>
+        <div class="header-actions">
+            @if (authService.isAdmin() && usuario()) {
+                <a [routerLink]="['/usuarios', usuario()!.id, 'editar']" class="btn-primary">Editar</a>
+            }
+            <a routerLink="/usuarios" class="btn-secondary">← Volver</a>
+        </div>
+    </header>
+
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+        <div class="loading">Cargando...</div>
+    } @else if (usuario()) {
+        <div class="detail-card">
+            <div class="detail-header">
+                <div class="avatar">{{ usuario()!.nombre.charAt(0).toUpperCase() }}</div>
+                <div>
+                    <h2>{{ usuario()!.nombre }}</h2>
+                    <span class="badge" [class]="'badge-' + usuario()!.rol.toLowerCase()">
+                        {{ usuario()!.rol | rolLabel }}
+                    </span>
+                </div>
+            </div>
+
+            <dl class="detail-grid">
+                <div class="detail-item">
+                    <dt>ID</dt>
+                    <dd>{{ usuario()!.id }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Email</dt>
+                    <dd>{{ usuario()!.email }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Teléfono</dt>
+                    <dd>{{ usuario()!.telefono | telefono }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Rol</dt>
+                    <dd>{{ usuario()!.rol | rolLabel }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Estado</dt>
+                    <dd>
+                        <span class="dot" [class.active]="usuario()!.activo"></span>
+                        {{ usuario()!.activo ? 'Activo' : 'Inactivo' }}
+                    </dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Disponibilidad</dt>
+                    <dd>
+                        <span class="dot" [class.active]="usuario()!.disponible"></span>
+                        {{ usuario()!.disponible | disponible }}
+                    </dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Creado</dt>
+                    <dd>{{ usuario()!.created_at | fecha: 'larga' }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Actualizado</dt>
+                    <dd>{{ usuario()!.updated_at | fecha: 'larga' }}</dd>
+                </div>
+            </dl>
+
+            <div class="detail-item full">
+                <dt>Habilidades</dt>
+                <dd>{{ usuario()!.habilidades || '—' }}</dd>
+            </div>
+        </div>
+    }
+</div>
