@@ -116,18 +116,19 @@
 }
 
 .page-title {
+  font-family: var(--font-display);
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 700;
   background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 50%, #8338ec 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 0.5rem;
-  text-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
   letter-spacing: -0.02em;
 }
 
 .page-subtitle {
+  font-family: var(--font-body);
   color: #a0aec0;
   font-size: 1rem;
   font-weight: 400;
@@ -148,11 +149,39 @@
 .search-container {
   flex: 1;
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Contenedor del icono con glow */
+.search-icon-wrapper {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  /* El glow se aplica al contenedor, no al icono */
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.6));
+}
+
+/* Icono nítido sin filtros */
+.search-icon {
+  color: #00f0ff;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  /* Sin filtros para mantener nitidez */
 }
 
 .search-input {
   width: 100%;
-  padding: 1rem 1.25rem 1rem 3.25rem;
+  padding: 1rem 1.25rem 1rem 3.5rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(0, 240, 255, 0.2);
   border-radius: 14px;
@@ -178,19 +207,6 @@
 
 .search-input::placeholder {
   color: #64748b;
-}
-
-.search-icon {
-  position: absolute;
-  left: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #00f0ff;
-  font-size: 1.25rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.5));
-  pointer-events: none;
 }
 
 /* ============================================
@@ -261,7 +277,7 @@
 }
 
 /* ============================================
-   Filtros hexagonales sin fondo cuadrado
+   Filtros hexagonales con degradado y destello
    ============================================ */
 
 .filtros-container {
@@ -280,7 +296,7 @@
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   position: relative;
   background: transparent;
   border: none;
@@ -305,7 +321,7 @@
   box-shadow: none !important;
 }
 
-/* El hexágono con clip-path */
+/* El hexágono con clip-path y degradado */
 .hexagon {
   width: 100%;
   height: 100%;
@@ -316,6 +332,7 @@
   transition: all 0.4s ease;
   position: relative;
   transform-style: preserve-3d;
+  overflow: hidden;
 }
 
 /* Efecto de relieve en el hexágono */
@@ -331,6 +348,32 @@
     rgba(0, 0, 0, 0.3) 100%
   );
   pointer-events: none;
+  z-index: 1;
+}
+
+/* Destello blanco que cruza el hexágono */
+.hexagon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Activa el destello al hacer hover */
+.filtro-hex:hover .hexagon::after {
+  left: 150%;
+  transition: left 0.6s ease-in-out;
 }
 
 .hexagon mat-icon {
@@ -340,14 +383,15 @@
   color: white;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
   transition: all 0.3s ease;
-  z-index: 1;
+  z-index: 3;
 }
 
 .filtro-hex:hover .hexagon mat-icon {
   transform: scale(1.15) rotate(10deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
 }
 
-/* Hexágono activo - usar drop-shadow en lugar de box-shadow */
+/* Hexágono activo con glow */
 .filtro-hex.active .hexagon-wrapper {
   filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
 }
@@ -370,33 +414,33 @@
   text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
 }
 
-/* Colores de hexágonos con degradados */
+/* Degradados mejorados para cada hexágono */
 .hex-todos {
-  background: linear-gradient(135deg, #2955a6 0%, #1c3b75 100%);
+  background: linear-gradient(135deg, #3b6dd9 0%, #2955a6 40%, #1c3b75 100%);
 }
 
 .hex-agua {
-  background: linear-gradient(135deg, #1fa882 0%, #136f56 100%);
+  background: linear-gradient(135deg, #2dd4a8 0%, #1fa882 40%, #136f56 100%);
 }
 
 .hex-alimento {
-  background: linear-gradient(135deg, #e68529 0%, #b8641a 100%);
+  background: linear-gradient(135deg, #f5a04a 0%, #e68529 40%, #b8641a 100%);
 }
 
 .hex-medicamento {
-  background: linear-gradient(135deg, #d94141 0%, #9e2a2a 100%);
+  background: linear-gradient(135deg, #e86060 0%, #d94141 40%, #9e2a2a 100%);
 }
 
 .hex-equipo {
-  background: linear-gradient(135deg, #2da160 0%, #1b663d 100%);
+  background: linear-gradient(135deg, #3fc47a 0%, #2da160 40%, #1b663d 100%);
 }
 
 .hex-vehiculo {
-  background: linear-gradient(135deg, #e69a2e 0%, #b0711c 100%);
+  background: linear-gradient(135deg, #f0b04a 0%, #e69a2e 40%, #b0711c 100%);
 }
 
 .hex-otro {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  background: linear-gradient(135deg, #8b95a5 0%, #6b7280 40%, #4b5563 100%);
 }
 
 /* ============================================
