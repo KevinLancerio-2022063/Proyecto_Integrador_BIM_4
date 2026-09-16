@@ -9,4 +9,20 @@ export class AuthRepository {
         );
         return result.rows[0] || null;
     }
+
+    // ⬇️ NUEVO MÉTODO
+    async create(usuario: Usuario): Promise<void> {
+        await pool.query(
+            'CALL sp_agregar_usuario($1, $2, $3, $4, $5, $6, $7)',
+            [
+                usuario.nombre,
+                usuario.email,
+                usuario.password_hash,
+                usuario.telefono || null,
+                usuario.rol,
+                usuario.habilidades || null,
+                usuario.disponible ?? false
+            ]
+        );
+    }
 }
