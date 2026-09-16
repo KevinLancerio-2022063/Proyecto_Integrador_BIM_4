@@ -44,6 +44,10 @@
   /* Sombras */
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 40px rgba(0, 240, 255, 0.15);
+
+  /* Tipografías */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 /* ============================================
@@ -61,7 +65,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-body);
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -69,8 +73,22 @@ body {
   min-height: 100vh;
 }
 
+/* Títulos con Space Grotesk */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Texto de botones y badges */
+button, .btn, .badge {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* Números y estadísticas */
+.stat-number, .card-numero {
+  font-family: var(--font-display);
   font-weight: 700;
 }
 
