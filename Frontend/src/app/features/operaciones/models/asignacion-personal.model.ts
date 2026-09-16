@@ -3,7 +3,7 @@ export interface AsignacionPersonal {
     usuario_id: number;
     incidente_id?: number;
     refugio_id?: number;
-    rol_asignado: "Coodinacion" | "Rescate" | "Apoyo" | "Logistica" | "Gestion_refugio";
+    rol_asignado: "Coordinacion" | "Rescate" | "Apoyo" | "Logistica" | "Gestion_refugio";
     estado: "Asignado" | "En_camino" | "Activo" | "Finalizado" | "Cancelado";
     fecha_asignacion: Date;
     fecha_finalizacion?: Date;
