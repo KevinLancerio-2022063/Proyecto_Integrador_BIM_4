@@ -1,7 +1,11 @@
 // Importa las dependencias necesarias de Angular
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterOutlet, RouterLink, RouterLinkActive } from "@angular/router";
+import {
+  RouterOutlet,
+  RouterLink,
+  RouterLinkActive
+} from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 
 // Define el componente como independiente
@@ -19,17 +23,23 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrls: ["./layout.component.css"]
 })
 export class LayoutComponent {
-  // *Define los enlaces del menú lateral*
+
+  // Define los enlaces del menú lateral
   menuItems = [
     {
       label: "Alertas",
-      route: "/alertas",
+      route: "/operaciones/alertas",
       icon: "notifications"
     },
     {
       label: "Notificaciones",
-      route: "/alertas/notificaciones",
+      route: "/operaciones/alertas/notificaciones",
       icon: "notifications_active"
+    },
+    {
+      label: "Asignación de Personal",
+      route: "/operaciones/asignaciones-personal",
+      icon: "assignment_ind"
     }
   ];
 }
