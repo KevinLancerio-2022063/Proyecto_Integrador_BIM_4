@@ -1,0 +1,102 @@
+<!-- src/app/features/core/components/usuarios/usuario-form/usuario-form.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <h1>{{ isEditMode() ? 'Editar Usuario' : 'Nuevo Usuario' }}</h1>
+        <a routerLink="/usuarios" class="btn-secondary">← Volver</a>
+    </header>
+
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+        <div class="loading">Cargando...</div>
+    } @else {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo *</label>
+                    <input id="nombre" type="text" formControlName="nombre"
+                           [class.invalid]="nombre.invalid && nombre.touched" />
+                    @if (nombre.invalid && nombre.touched) {
+                        <small class="error-text">Requerido (máx 120)</small>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input id="email" type="email" formControlName="email"
+                           [class.invalid]="email.invalid && email.touched" />
+                    @if (email.invalid && email.touched) {
+                        <small class="error-text">
+                            @if (email.errors?.['required']) { Requerido }
+                            @if (email.errors?.['email']) { Formato inválido }
+                        </small>
+                    }
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input id="telefono" type="text" formControlName="telefono" />
+                </div>
+
+                <div class="form-group">
+                    <label for="rol">Rol *</label>
+                    <select id="rol" formControlName="rol">
+                        @for (r of roles; track r.value) {
+                            <option [value]="r.value">{{ r.label }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="habilidades">Habilidades</label>
+                <textarea id="habilidades" formControlName="habilidades" rows="3"></textarea>
+            </div>
+
+            <div class="form-group form-checkbox">
+                <label>
+                    <input type="checkbox" formControlName="disponible" />
+                    Disponible para asignaciones
+                </label>
+            </div>
+
+            @if (!isEditMode()) {
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password_hash">Contraseña *</label>
+                        <input id="password_hash" type="password" formControlName="password_hash"
+                               [class.invalid]="password_hash.invalid && password_hash.touched" />
+                        @if (password_hash.invalid && password_hash.touched) {
+                            <small class="error-text">Mínimo 6 caracteres</small>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar contraseña *</label>
+                        <input id="confirmPassword" type="password" formControlName="confirmPassword"
+                               [class.invalid]="(confirmPassword.invalid || form.errors?.['passwordsMismatch']) && confirmPassword.touched" />
+                        @if (confirmPassword.touched) {
+                            @if (confirmPassword.errors?.['required']) {
+                                <small class="error-text">Requerido</small>
+                            }
+                            @if (form.errors?.['passwordsMismatch']) {
+                                <small class="error-text">No coinciden</small>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="form-actions">
+                <a routerLink="/usuarios" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-primary" [disabled]="saving()">
+                    {{ saving() ? 'Guardando...' : (isEditMode() ? 'Actualizar' : 'Crear Usuario') }}
+                </button>
+            </div>
+        </form>
+    }
+</div>
