@@ -92,20 +92,24 @@ export class RecursoListComponent implements OnInit {
 
   // Abre el modal para crear un nuevo recurso
   abrirModalCrear(): void {
-    const dialogRef = this.dialog.open(RecursoFormComponent, {
-      width: "600px",
-      data: { modo: "crear" }
-    });
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado) this.cargarRecursos();
-    });
-  }
+  const dialogRef = this.dialog.open(RecursoFormComponent, {
+    width: "600px",
+    data: { modo: "crear" },
+    panelClass: "modal-cyberpunk", 
+    backdropClass: "backdrop-cyberpunk" 
+  });
+  dialogRef.afterClosed().subscribe(resultado => {
+    if (resultado) this.cargarRecursos();
+  });
+}
 
   // Abre el modal para editar un recurso existente
   abrirModalEditar(recurso: Recurso): void {
     const dialogRef = this.dialog.open(RecursoFormComponent, {
       width: "600px",
-      data: { modo: "editar", recurso }
+      data: { modo: "editar", recurso },
+      panelClass: "modal-cyberpunk",
+      backdropClass: "backdrop-cyberpunk" 
     });
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) this.cargarRecursos();
