@@ -1,0 +1,109 @@
+<!-- src/app/features/core/components/zonas/zona-list/zona-list.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <div>
+            <h1>Zonas</h1>
+            <p class="page-subtitle">Monitoreo de zonas de riesgo</p>
+        </div>
+        <div class="header-actions">
+            <a routerLink="/usuarios" class="btn-secondary">Usuarios</a>
+            <a routerLink="/perfil" class="btn-secondary">Mi perfil</a>
+            @if (isAdmin()) {
+                <a routerLink="/zonas/nuevo" class="btn-primary">+ Nueva Zona</a>
+            }
+        </div>
+    </header>
+
+    @if (successMessage()) {
+        <div class="alert alert-success">{{ successMessage() }}</div>
+    }
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    <div class="toolbar">
+        <input
+            type="text"
+            placeholder="Buscar por nombre, municipio o departamento..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchChange($event)"
+            class="search-input" />
+
+        <select
+            class="filter-select"
+            [ngModel]="filterNivel()"
+            (ngModelChange)="onNivelChange($event)">
+            <option value="">Todos los niveles</option>
+            <option value="BAJO">Bajo</option>
+            <option value="MEDIO">Medio</option>
+            <option value="ALTO">Alto</option>
+            <option value="CRITICO">Crítico</option>
+        </select>
+
+        <span class="result-count">{{ filteredZonas().length }} zonas</span>
+    </div>
+
+    @if (loading()) {
+        <div class="loading">Cargando zonas...</div>
+    } @else if (filteredZonas().length === 0) {
+        <div class="empty-state">
+            @if (searchTerm() || filterNivel()) {
+                No se encontraron zonas con esos filtros
+            } @else {
+                No hay zonas registradas
+            }
+        </div>
+    } @else {
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Municipio</th>
+                        <th>Departamento</th>
+                        <th>País</th>
+                        <th>Coordenadas</th>
+                        <th>Riesgo</th>
+                        <th>Creada</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (z of filteredZonas(); track z.id) {
+                        <tr>
+                            <td>{{ z.id }}</td>
+                            <td class="strong">{{ z.nombre }}</td>
+                            <td>{{ z.municipio || '—' }}</td>
+                            <td>{{ z.departamento || '—' }}</td>
+                            <td>{{ z.pais }}</td>
+                            <td class="coords">
+                                {{ z.latitud | coordenadas: 'lat' }},
+                                {{ z.longitud | coordenadas: 'long' }}
+                            </td>
+                            <td>
+                                <span class="badge" [class]="'badge-' + z.nivel_riesgo.toLowerCase()">
+                                    {{ z.nivel_riesgo | nivelRiesgo }}
+                                </span>
+                            </td>
+                            <td>{{ z.created_at | fecha }}</td>
+                            <td class="actions">
+                                <a [routerLink]="['/zonas', z.id]" class="btn-icon" title="Ver">👁</a>
+                                @if (isAdmin()) {
+                                    <a [routerLink]="['/zonas', z.id, 'editar']" class="btn-icon" title="Editar">✏️</a>
+                                    <button
+                                        class="btn-icon btn-icon-danger"
+                                        title="Eliminar"
+                                        [disabled]="deletingId() === z.id"
+                                        (click)="confirmDelete(z)">
+                                        🗑
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
