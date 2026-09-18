@@ -1,33 +1,55 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { testConnection } from "./config/database.config";
 
-// Importa las rutas de los modulos
+// Importar rutas
+import authRoutes from "./routes/auth.routes";
+import usuarioRoutes from "./routes/usuario.routes";
+import zonaRoutes from "./routes/zona.routes";
 import recursoRoutes from "./routes/recurso.routes";
 import refugioRoutes from "./routes/refugio.routes";
-import asignacionRecursoRoutes from "./routes/asignacion_recurso.routes";
+import asignacionRoutes from "./routes/asignacion_recurso.routes";
 
 dotenv.config();
 
 const app = express();
 
-// Configura los middlewares globales
-app.use(cors());
+// Middlewares
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:4200"
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Registra las rutas de los modulos
+// Rutas de API
+app.use("/api/auth", authRoutes);
+app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/zonas", zonaRoutes);
 app.use("/api/recursos", recursoRoutes);
 app.use("/api/refugios", refugioRoutes);
-app.use("/api/asignaciones-recurso", asignacionRecursoRoutes);
+app.use("/api/asignaciones-recurso", asignacionRoutes);
 
-// Ruta de prueba para verificar que el servidor funciona
-app.get("/", (req, res) => {
-    res.json({
-        nombre: "SIGED API",
-        version: "1.0.0",
-        descripcion: "Sistema Integrado de Gestion de Emergencias y Desastres",
+// Ruta de salud
+app.get("/api/health", (req, res) => {
+    res.json({ 
+        status: "OK", 
+        timestamp: new Date(),
+        message: "SIGED API is running"
     });
 });
 
+// Exportar app para que la use server.ts
 export default app;
+
+// Función para inicializar la app
+export async function initializeApp() {
+    try {
+        await testConnection();
+        console.log("Conexion a PostgreSQL establecida");
+        return app;
+    } catch (error) {
+        console.error("Error al conectar a la base de datos:", error);
+        throw error;
+    }
+}
