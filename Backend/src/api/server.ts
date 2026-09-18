@@ -1,13 +1,13 @@
-import app from "../app";
-import { pool, testConnection } from "../config/database.config";
+import app, { initializeApp } from "../app";
+import { pool } from "../config/database.config";
 
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        // Probar conexión a la base de datos
-        console.log("Conectando a PostgreSQL");
-        await testConnection();
+        // Inicializar aplicación y conectar a BD
+        console.log("Iniciando SIGED Server...");
+        await initializeApp();
         
         // Iniciar servidor HTTP
         app.listen(PORT, () => {
@@ -16,6 +16,7 @@ async function startServer() {
             console.log(`Entorno: ${process.env.NODE_ENV || "development"}`);
             console.log(`URL: http://localhost:${PORT}`);
             console.log(`API Health: http://localhost:${PORT}/api/health`);
+            console.log(`Auth: http://localhost:${PORT}/api/auth/login`);
             console.log("===========================================");
         });
     } catch (error) {
@@ -26,13 +27,13 @@ async function startServer() {
 
 // Manejo de cierre graceful
 process.on("SIGINT", async () => {
-    console.log("Cerrando servidor");
+    console.log("\n Cerrando servidor...");
     await pool.end();
     process.exit(0);
 });
 
 process.on("SIGTERM", async () => {
-    console.log("Cerrando servidor");
+    console.log("Cerrando servidor...");
     await pool.end();
     process.exit(0);
 });
