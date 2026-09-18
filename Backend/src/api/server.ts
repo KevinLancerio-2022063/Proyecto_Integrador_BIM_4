@@ -27,7 +27,7 @@ async function startServer() {
 
 // Manejo de cierre graceful
 process.on("SIGINT", async () => {
-    console.log("\n Cerrando servidor...");
+    console.log("Cerrando servidor...");
     await pool.end();
     process.exit(0);
 });

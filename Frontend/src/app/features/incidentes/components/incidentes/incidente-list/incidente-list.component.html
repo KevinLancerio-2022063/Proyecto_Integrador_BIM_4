@@ -1,0 +1,118 @@
+<div class="container-page">
+
+  <!-- Encabezado -->
+  <div class="page-header mb-3">
+    <h2 class="page-title">Gestión de Incidentes</h2>
+    <p class="page-subtitle">Reporte y seguimiento de emergencias registradas</p>
+  </div>
+
+  <!-- Barra de Búsqueda y Botón Alineados -->
+  <div class="header-actions mb-4">
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input 
+        type="text" 
+        class="search-input" 
+        [(ngModel)]="busqueda" 
+        placeholder="Buscar por título o descripción..." 
+      />
+    </div>
+
+    <button type="button" class="btn-primary-cyber" (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon> Registrar Incidente
+    </button>
+  </div>
+
+  <!-- Filtros Hexagonales -->
+  <div class="filtros-container mb-4">
+    <button 
+      *ngFor="let filtro of filtros"
+      type="button"
+      class="filtro-hex"
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)"
+    >
+      <div class="hexagon-wrapper">
+        <div class="hexagon" [ngClass]="{
+          'hex-todos': filtro.id === 'todos',
+          'hex-emergencia': filtro.id === 'INUNDACION' || filtro.id === 'TERREMOTO' || filtro.id === 'INCENDIO',
+          'hex-refugio': filtro.id === 'DESLIZAMIENTO' || filtro.id === 'ACTIVIDAD_VOLCANICA',
+          'hex-otro': filtro.id === 'OTRO'
+        }">
+          <mat-icon>{{ filtro.icono }}</mat-icon>
+        </div>
+      </div>
+      <span class="filtro-label">{{ filtro.etiqueta }}</span>
+    </button>
+  </div>
+
+  <!-- Estado de Carga -->
+  <div *ngIf="loading" class="estado-carga text-center py-5">
+    <mat-spinner diameter="40" class="mx-auto mb-3"></mat-spinner>
+    <p class="estado-vacio-texto">Cargando incidentes...</p>
+  </div>
+
+  <!-- Lista Vacía -->
+  <div *ngIf="!loading && incidentesFiltrados.length === 0" class="estado-vacio text-center py-5">
+    <mat-icon class="estado-vacio-icono">report_problem</mat-icon>
+    <h3 class="estado-vacio-titulo mt-3">No se encontraron incidentes</h3>
+    <p class="estado-vacio-texto">Intenta ajustar los criterios de búsqueda o registra uno nuevo.</p>
+  </div>
+
+  <!-- Grid de Tarjetas -->
+  <div *ngIf="!loading && incidentesFiltrados.length > 0" class="recursos-grid">
+    <div *ngFor="let incidente of incidentesFiltrados" class="recurso-card animate-modal-in">
+      
+      <!-- Header de la tarjeta -->
+      <div class="recurso-header">
+        <div class="icono-container" [ngClass]="{
+          'icono-emergencia': getNivelEmergencia(incidente) === 'ALTA' || getNivelEmergencia(incidente) === 'CRITICA',
+          'icono-seguimiento': getNivelEmergencia(incidente) === 'MEDIA',
+          'icono-recurso': getNivelEmergencia(incidente) === 'BAJA'
+        }">
+          <mat-icon>{{ getIconoTipo(incidente.tipo) }}</mat-icon>
+        </div>
+        <span class="tipo-badge">{{ incidente.tipo }}</span>
+      </div>
+
+      <!-- Título -->
+      <h3 class="recurso-nombre text-truncate" [title]="incidente.titulo">{{ incidente.titulo }}</h3>
+
+      <!-- Cantidad de personas afectadas -->
+      <div class="recurso-cantidad">
+        <mat-icon class="cantidad-icono">group</mat-icon>
+        <span class="cantidad-texto">Afectados: {{ getPersonasAfectadas(incidente) }} personas</span>
+      </div>
+
+      <!-- Descripción -->
+      <p class="recurso-descripcion">
+        {{ incidente.descripcion || 'Sin descripción detallada proporcionada para este reporte.' }}
+      </p>
+
+      <!-- Badges de Nivel y Estado -->
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <span class="badge px-2 py-1" [ngClass]="getColorNivel(getNivelEmergencia(incidente))">
+          Nivel: {{ getNivelEmergencia(incidente) }}
+        </span>
+        <span class="badge px-2 py-1" [ngClass]="getColorEstado(incidente.estado)">
+          Estado: {{ incidente.estado }}
+        </span>
+      </div>
+
+      <!-- Acciones de tarjeta -->
+      <div class="recurso-acciones">
+        <button type="button" class="btn-accion btn-editar" [routerLink]="['/incidentes', incidente.id || (incidente + '')]" title="Ver detalle">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button type="button" class="btn-accion btn-editar" (click)="abrirModalEditar(incidente)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button type="button" class="btn-accion btn-eliminar" (click)="eliminarIncidente(incidente)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

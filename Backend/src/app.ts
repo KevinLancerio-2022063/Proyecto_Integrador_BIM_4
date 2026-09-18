@@ -10,6 +10,9 @@ import zonaRoutes from "./routes/zona.routes";
 import recursoRoutes from "./routes/recurso.routes";
 import refugioRoutes from "./routes/refugio.routes";
 import asignacionRoutes from "./routes/asignacion_recurso.routes";
+import incidenteRoutes from "./routes/incidente.routes";
+import historialIncidenteRoutes from "./routes/historial_incidente.routes";
+
 
 dotenv.config();
 
@@ -29,6 +32,8 @@ app.use("/api/zonas", zonaRoutes);
 app.use("/api/recursos", recursoRoutes);
 app.use("/api/refugios", refugioRoutes);
 app.use("/api/asignaciones-recurso", asignacionRoutes);
+app.use("/api/incidentes", incidenteRoutes);
+app.use("/api/historial-incidentes", historialIncidenteRoutes);
 
 // Ruta de salud
 app.get("/api/health", (req, res) => {

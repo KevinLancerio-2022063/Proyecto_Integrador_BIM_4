@@ -1,0 +1,78 @@
+<div class="container mt-4" *ngIf="incidente">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h3 class="mb-0">{{ incidente.titulo }}</h3>
+      <span class="badge bg-light text-dark">{{ incidente.tipo }}</span>
+    </div>
+
+    <div class="card-body">
+      <p class="lead">{{ incidente.descripcion || 'Sin descripción disponible.' }}</p>
+
+      <hr />
+
+      <div class="row g-3">
+        <!-- Nivel de Emergencia -->
+        <div class="col-md-6">
+          <strong>Nivel de Emergencia:</strong>
+          <span 
+            class="badge ms-2"
+            [ngClass]="{
+              'bg-info': incidente.nivel_emergencia === 'BAJA',
+              'bg-warning text-dark': incidente.nivel_emergencia === 'MEDIA',
+              'bg-danger': incidente.nivel_emergencia === 'ALTA',
+              'bg-dark': incidente.nivel_emergencia === 'CRITICA'
+            }">
+            {{ incidente.nivel_emergencia }}
+          </span>
+        </div>
+
+        <!-- Estado del Incidente -->
+        <div class="col-md-6">
+          <strong>Estado:</strong>
+          <span 
+            class="badge ms-2"
+            [ngClass]="{
+              'bg-warning text-dark': incidente.estado === 'REPORTADO',
+              'bg-primary': incidente.estado === 'EN_ATENCION',
+              'bg-info text-dark': incidente.estado === 'MITIGADO',
+              'bg-success': incidente.estado === 'CERRADO'
+            }">
+            {{ incidente.estado }}
+          </span>
+        </div>
+
+        <!-- Personas Afectadas -->
+        <div class="col-md-6">
+          <strong>Personas Afectadas:</strong> 
+          {{ incidente.cantidad_personas_afectadas ?? 0 }} 
+          {{ (incidente.cantidad_personas_afectadas === 1) ? 'persona' : 'personas' }}
+        </div>
+
+        <!-- Zona ID -->
+        <div class="col-md-6">
+          <strong>ID de Zona:</strong> {{ incidente.zona_id }}
+        </div>
+
+        <!-- Fechas -->
+        <div class="col-md-6">
+          <strong>Fecha de Reporte:</strong> {{ incidente.fecha_reporte | date:'medium' }}
+        </div>
+
+        <div class="col-md-6" *ngIf="incidente.fecha_cierre">
+          <strong>Fecha de Cierre:</strong> {{ incidente.fecha_cierre | date:'medium' }}
+        </div>
+
+        <!-- Coordenadas -->
+        <div class="col-md-12" *ngIf="incidente.latitud && incidente.longitud">
+          <strong>Ubicación:</strong> Lat: {{ incidente.latitud }}, Lng: {{ incidente.longitud }}
+        </div>
+
+        <!-- Observaciones -->
+        <div class="col-md-12" *ngIf="incidente.observaciones">
+          <strong>Observaciones:</strong>
+          <p class="mb-0 text-muted">{{ incidente.observaciones }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

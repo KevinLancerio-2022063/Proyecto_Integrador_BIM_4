@@ -8,7 +8,6 @@
   --bg-secondary: #111638;
   --bg-card: rgba(17, 22, 56, 0.6);
   --bg-sidebar: #070a1f;
-  
   /* Colores de acento neón */
   --neon-cyan: #00f0ff;
   --neon-pink: #ff006e;
@@ -16,7 +15,6 @@
   --neon-green: #06ffa5;
   --neon-orange: #ff6b35;
   --neon-yellow: #ffbe0b;
-  
   /* Colores de hexágonos */
   --hex-todos: linear-gradient(135deg, #2955a6 0%, #1c3b75 100%);
   --hex-agua: linear-gradient(135deg, #1fa882 0%, #136f56 100%);
@@ -26,28 +24,22 @@
   --hex-vehiculo: linear-gradient(135deg, #e69a2e 0%, #b0711c 100%);
   --hex-personal: linear-gradient(135deg, #d65697 0%, #9c356b 100%);
   --hex-refugio: linear-gradient(135deg, #3873b3 0%, #234a78 100%);
-  
   /* Colores de texto */
   --text-primary: #ffffff;
   --text-secondary: #a0aec0;
   --text-muted: #718096;
-  
   /* Efectos neón */
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.5);
   --glow-pink: 0 0 20px rgba(255, 0, 110, 0.5);
   --glow-green: 0 0 20px rgba(6, 255, 165, 0.5);
-  
+
   /* Bordes */
   --border-glow: 1px solid rgba(0, 240, 255, 0.3);
   --border-subtle: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   /* Sombras */
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 40px rgba(0, 240, 255, 0.15);
-
-  /* Tipografías */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
 }
 
 /* ============================================
@@ -65,7 +57,7 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -73,22 +65,13 @@ body {
   min-height: 100vh;
 }
 
-/* Títulos con Space Grotesk */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-/* Texto de botones y badges */
-button, .btn, .badge {
-  font-family: var(--font-body);
-  font-weight: 600;
-}
-
-/* Números y estadísticas */
-.stat-number, .card-numero {
-  font-family: var(--font-display);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   font-weight: 700;
 }
 
@@ -96,7 +79,6 @@ button, .btn, .badge {
    Efectos neón y animaciones
    ============================================ */
 
-/* Efecto glow para elementos activos */
 .neon-glow {
   box-shadow: var(--glow-cyan);
   transition: box-shadow 0.3s ease;
@@ -106,7 +88,6 @@ button, .btn, .badge {
   box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
 }
 
-/* Animación de entrada */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -122,7 +103,6 @@ button, .btn, .badge {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Animación de entrada con escala */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -138,7 +118,6 @@ button, .btn, .badge {
   animation: fadeInScale 0.4s ease-out forwards;
 }
 
-/* Animación de slide up */
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -154,11 +133,12 @@ button, .btn, .badge {
   animation: slideUp 0.6s ease-out forwards;
 }
 
-/* Animación de pulso para elementos activos */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }
@@ -168,13 +148,14 @@ button, .btn, .badge {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Animación de pulso ring */
 @keyframes pulseRing {
   0% {
     transform: scale(0.8);
     opacity: 0.7;
   }
-  80%, 100% {
+
+  80%,
+  100% {
     transform: scale(2);
     opacity: 0;
   }
@@ -184,7 +165,6 @@ button, .btn, .badge {
   animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Animación de brillo */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -203,7 +183,15 @@ button, .btn, .badge {
    ============================================ */
 
 .hexagon {
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
+
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -233,13 +221,18 @@ button, .btn, .badge {
 }
 
 .card-cyber::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-cyan),
+    transparent
+  );
 }
 
 .card-cyber:hover {
@@ -253,7 +246,12 @@ button, .btn, .badge {
    ============================================ */
 
 .btn-cyber {
-  background: linear-gradient(135deg, #ff006e 0%, #ff6b35 100%);
+  background: linear-gradient(
+    135deg,
+    #ff006e 0%,
+    #ff6b35 100%
+  );
+
   color: white;
   border: none;
   border-radius: 12px;
@@ -306,22 +304,24 @@ button, .btn, .badge {
    Utilidades
    ============================================ */
 
-/* Texto con gradiente */
 .text-gradient {
-  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 100%);
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #0ea5e9 100%
+  );
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Efecto glass */
 .glass-effect {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Contenedor de página */
 .container-page {
   max-width: 1280px;
   margin: 0 auto;
@@ -354,13 +354,11 @@ button, .btn, .badge {
    Ajustes para Angular Material
    ============================================ */
 
-/* Fondo oscuro para dialogs de Material */
 .mat-mdc-dialog-container {
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
 }
 
-/* Ajustes para selects de Material */
 .mat-mdc-select-value {
   color: var(--text-primary) !important;
 }
@@ -374,7 +372,6 @@ button, .btn, .badge {
   background: rgba(0, 240, 255, 0.1) !important;
 }
 
-/* Ajustes para form fields */
 .mat-mdc-form-field {
   color: var(--text-primary);
 }
@@ -391,11 +388,11 @@ button, .btn, .badge {
   .container-page {
     padding: 0 1rem;
   }
-  
+
   h1 {
     font-size: 1.8rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
   }
@@ -405,32 +402,21 @@ button, .btn, .badge {
   .container-page {
     padding: 0 0.75rem;
   }
-  
   h1 {
     font-size: 1.5rem;
   }
 }
 
 /* ============================================
-   Modal cyberpunk - eliminar bordes blancos
+   Sobrescritura para Modales Transparentes/Cyber
    ============================================ */
 
-.modal-cyberpunk .mat-mdc-dialog-container {
+/* Quita el fondo blanco por defecto y las esquinas en los modales de Angular Material */
+.modal-transparente-panel .mdc-dialog__surface,
+.modal-transparente-panel .mat-mdc-dialog-container {
   background: transparent !important;
-  border: none !important;
   box-shadow: none !important;
-  padding: 0 !important;
+  overflow: visible !important;
   border-radius: 20px !important;
-  overflow: hidden;
 }
 
-.modal-cyberpunk .mat-mdc-dialog-surface {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.backdrop-cyberpunk {
-  background: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: blur(4px);
-}

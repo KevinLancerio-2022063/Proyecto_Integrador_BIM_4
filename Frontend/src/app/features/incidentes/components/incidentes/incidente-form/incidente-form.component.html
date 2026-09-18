@@ -1,0 +1,130 @@
+<div class="modal-container animate-modal-in">
+  
+  <div class="modal-header">
+    <div class="modal-header-content">
+      <mat-icon class="modal-header-icon">warning</mat-icon>
+      <h2 class="modal-titulo">{{ modo === 'crear' ? 'Registrar Incidente' : 'Editar Incidente' }}</h2>
+    </div>
+    <button type="button" class="btn-cerrar" (click)="cancelar()" [disabled]="loading">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="formulario-contenido">
+
+      <div class="form-group">
+        <label class="form-label">Título del Incidente*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">title</mat-icon>
+          <input 
+            type="text" 
+            class="form-input" 
+            formControlName="titulo" 
+            placeholder="Ej. Inundación Sector Norte" />
+        </div>
+        <span class="error-message" *ngIf="form.get('titulo')?.touched && form.get('titulo')?.hasError('required')">
+          El título es obligatorio
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Tipo*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">category</mat-icon>
+            <select class="form-select" formControlName="tipo">
+              <option value="INUNDACION">Inundación</option>
+              <option value="TERREMOTO">Terremoto</option>
+              <option value="INCENDIO">Incendio</option>
+              <option value="DESLIZAMIENTO">Deslizamiento</option>
+              <option value="ACTIVIDAD_VOLCANICA">Volcanes</option>
+              <option value="OTRO">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group form-group-half">
+          <label class="form-label">Nivel de Emergencia*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">report_problem</mat-icon>
+            <select class="form-select" formControlName="nivelEmergencia">
+              <option value="BAJA">Baja</option>
+              <option value="MEDIA">Media</option>
+              <option value="ALTA">Alta</option>
+              <option value="CRITICA">Crítica</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado -->
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Estado*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">info</mat-icon>
+            <select class="form-select" formControlName="estado">
+              <option value="REPORTADO">Reportado</option>
+              <option value="EN_ATENCION">En Atención</option>
+              <option value="MITIGADO">Mitigado</option>
+              <option value="CERRADO">Cerrado</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Personas Afectadas -->
+        <div class="form-group form-group-half">
+          <label class="form-label">Personas Afectadas</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">groups</mat-icon>
+            <input 
+              type="number" 
+              class="form-input" 
+              formControlName="personasAfectadas" 
+              min="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">description</mat-icon>
+          <textarea 
+            class="form-textarea" 
+            formControlName="descripcion" 
+            placeholder="Escriba una descripción detallada...">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="form-group">
+        <label class="form-label">Observaciones</label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">notes</mat-icon>
+          <textarea 
+            class="form-textarea" 
+            formControlName="observaciones" 
+            placeholder="Observaciones adicionales...">
+          </textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="botones-accion">
+      <button type="button" class="btn-cancelar" (click)="cancelar()" [disabled]="loading">
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn-registrar" [disabled]="form.invalid || loading">
+        <mat-icon *ngIf="!loading">check</mat-icon>
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        <span>{{ modo === 'crear' ? 'Registrar' : 'Actualizar' }}</span>
+      </button>
+    </div>
+  </form>
+</div>
