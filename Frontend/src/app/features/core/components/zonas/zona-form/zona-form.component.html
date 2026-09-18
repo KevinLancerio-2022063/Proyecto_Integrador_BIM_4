@@ -1,0 +1,85 @@
+<!-- src/app/features/core/components/zonas/zona-form/zona-form.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <h1>{{ isEditMode() ? 'Editar Zona' : 'Nueva Zona' }}</h1>
+        <a routerLink="/zonas" class="btn-secondary">← Volver</a>
+    </header>
+
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+        <div class="loading">Cargando...</div>
+    } @else {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-card">
+            <div class="form-group">
+                <label for="nombre">Nombre de la zona *</label>
+                <input id="nombre" type="text" formControlName="nombre"
+                       placeholder="Ej: Zona 1 Guatemala"
+                       [class.invalid]="nombre.invalid && nombre.touched" />
+                @if (nombre.invalid && nombre.touched) {
+                    <small class="error-text">Requerido (máx 120)</small>
+                }
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="municipio">Municipio</label>
+                    <input id="municipio" type="text" formControlName="municipio" />
+                </div>
+                <div class="form-group">
+                    <label for="departamento">Departamento</label>
+                    <input id="departamento" type="text" formControlName="departamento" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pais">País *</label>
+                    <input id="pais" type="text" formControlName="pais"
+                           [class.invalid]="pais.invalid && pais.touched" />
+                    @if (pais.invalid && pais.touched) {
+                        <small class="error-text">Requerido</small>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="nivel_riesgo">Nivel de riesgo *</label>
+                    <select id="nivel_riesgo" formControlName="nivel_riesgo">
+                        @for (n of niveles; track n) {
+                            <option [value]="n">{{ n }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="latitud">Latitud (-90 a 90)</label>
+                    <input id="latitud" type="number" step="0.000001" formControlName="latitud"
+                           placeholder="14.634900"
+                           [class.invalid]="latitud.invalid && latitud.touched" />
+                    @if (latitud.invalid && latitud.touched) {
+                        <small class="error-text">Debe estar entre -90 y 90</small>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="longitud">Longitud (-180 a 180)</label>
+                    <input id="longitud" type="number" step="0.000001" formControlName="longitud"
+                           placeholder="-90.506900"
+                           [class.invalid]="longitud.invalid && longitud.touched" />
+                    @if (longitud.invalid && longitud.touched) {
+                        <small class="error-text">Debe estar entre -180 y 180</small>
+                    }
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a routerLink="/zonas" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-primary" [disabled]="saving()">
+                    {{ saving() ? 'Guardando...' : (isEditMode() ? 'Actualizar' : 'Crear Zona') }}
+                </button>
+            </div>
+        </form>
+    }
+</div>
