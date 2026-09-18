@@ -1,22 +1,17 @@
-// src/app/features/core/core.routes.ts
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
-
+import { authGuard, adminGuard } from './guards/auth.guard';
 export const coreRoutes: Routes = [
     {
         path: 'login',
         loadComponent: () =>
-            import('./components/auth/login/login.component').then(
-                (m) => m.LoginComponent
-            )
+            import('./components/auth/login/login.component').then((m) => m.LoginComponent)
     },
     {
         path: 'register',
         loadComponent: () =>
-            import('./components/auth/register/register.component').then(
-                (m) => m.RegisterComponent
-            )
+            import('./components/auth/register/register.component').then((m) => m.RegisterComponent)
     },
+    // ============ USUARIOS (solo admin por guard) ============
     {
         path: 'usuarios',
         canActivate: [authGuard],
@@ -51,6 +46,42 @@ export const coreRoutes: Routes = [
             }
         ]
     },
+    // ============ ZONAS (cualquier rol autenticado) ============
+    {
+        path: 'zonas',
+        canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                loadComponent: () =>
+                    import('./components/zonas/zona-list/zona-list.component').then(
+                        (m) => m.ZonaListComponent
+                    )
+            },
+            {
+                path: 'nuevo',
+                loadComponent: () =>
+                    import('./components/zonas/zona-form/zona-form.component').then(
+                        (m) => m.ZonaFormComponent
+                    )
+            },
+            {
+                path: ':id',
+                loadComponent: () =>
+                    import('./components/zonas/zona-detail/zona-detail.component').then(
+                        (m) => m.ZonaDetailComponent
+                    )
+            },
+            {
+                path: ':id/editar',
+                loadComponent: () =>
+                    import('./components/zonas/zona-form/zona-form.component').then(
+                        (m) => m.ZonaFormComponent
+                    )
+            }
+        ]
+    },
+    // ============ PERFIL ============
     {
         path: 'perfil',
         canActivate: [authGuard],
