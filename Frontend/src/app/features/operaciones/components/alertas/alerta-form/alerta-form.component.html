@@ -1,14 +1,21 @@
-<!-- Contenedor del modal con animación de entrada -->
 <div class="modal-container animate-modal-in">
 
-  <!-- Encabezado del modal -->
+  <!-- ============================================
+       HEADER
+       ============================================ -->
+
   <div class="modal-header">
+
     <div class="modal-header-content">
-      <mat-icon class="modal-header-icon">notifications_active</mat-icon>
+
+      <mat-icon class="modal-header-icon">
+        notifications_active
+      </mat-icon>
 
       <h2 class="modal-titulo">
         {{ isEdit ? "Editar alerta" : "Registrar alerta" }}
       </h2>
+
     </div>
 
     <button
@@ -16,27 +23,46 @@
       class="btn-cerrar"
       (click)="onCancel()"
       [disabled]="loading">
-      <mat-icon>close</mat-icon>
+
+      <mat-icon>
+        close
+      </mat-icon>
+
     </button>
+
   </div>
 
 
-  <!-- Formulario reactivo -->
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- ============================================
+       FORMULARIO
+       ============================================ -->
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()">
 
     <div class="formulario-contenido">
 
-      <!-- Tipo y nivel -->
+
+      <!-- ==========================================
+           TIPO Y NIVEL
+           ========================================== -->
+
       <div class="form-row">
 
-        <!-- Tipo -->
+        <!-- TIPO -->
+
         <div class="form-group form-group-half">
+
           <label class="form-label">
             Tipo*
           </label>
 
           <div class="input-wrapper">
-            <mat-icon class="input-icon">category</mat-icon>
+
+            <mat-icon class="input-icon">
+              category
+            </mat-icon>
 
             <mat-select
               formControlName="tipo"
@@ -45,28 +71,39 @@
               <mat-option
                 *ngFor="let tipo of tiposAlerta"
                 [value]="tipo">
+
                 {{ tipo }}
+
               </mat-option>
 
             </mat-select>
+
           </div>
 
           <mat-error
             *ngIf="form.get('tipo')?.hasError('required')"
             class="error-message">
+
             El tipo es obligatorio
+
           </mat-error>
+
         </div>
 
 
-        <!-- Nivel -->
+        <!-- NIVEL -->
+
         <div class="form-group form-group-half">
+
           <label class="form-label">
             Nivel*
           </label>
 
           <div class="input-wrapper">
-            <mat-icon class="input-icon">priority_high</mat-icon>
+
+            <mat-icon class="input-icon">
+              priority_high
+            </mat-icon>
 
             <mat-select
               formControlName="nivel"
@@ -75,23 +112,75 @@
               <mat-option
                 *ngFor="let nivel of nivelesAlerta"
                 [value]="nivel">
+
                 {{ nivel }}
+
               </mat-option>
 
             </mat-select>
+
           </div>
 
           <mat-error
             *ngIf="form.get('nivel')?.hasError('required')"
             class="error-message">
+
             El nivel es obligatorio
+
           </mat-error>
+
         </div>
 
       </div>
 
 
-      <!-- Mensaje -->
+      <!-- ==========================================
+           ESTADO
+           ========================================== -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Estado*
+        </label>
+
+        <div class="input-wrapper">
+
+          <mat-icon class="input-icon">
+            flag
+          </mat-icon>
+
+          <mat-select
+            formControlName="estado"
+            class="form-select">
+
+            <mat-option
+              *ngFor="let estado of estadosAlerta"
+              [value]="estado">
+
+              {{ estado }}
+
+            </mat-option>
+
+          </mat-select>
+
+        </div>
+
+        <mat-error
+          *ngIf="form.get('estado')?.hasError('required')"
+          class="error-message">
+
+          El estado es obligatorio
+
+        </mat-error>
+
+      </div>
+
+
+      <!-- ==========================================
+           MENSAJE
+           ========================================== -->
+
       <div class="form-group">
 
         <label class="form-label">
@@ -99,6 +188,7 @@
         </label>
 
         <div class="input-wrapper textarea-wrapper">
+
           <mat-icon class="input-icon textarea-icon">
             message
           </mat-icon>
@@ -110,27 +200,36 @@
             placeholder="Escriba el mensaje de la alerta"
             class="form-textarea">
           </textarea>
+
         </div>
 
         <mat-error
           *ngIf="form.get('mensaje')?.hasError('required')"
           class="error-message">
+
           El mensaje es obligatorio
+
         </mat-error>
 
         <mat-error
           *ngIf="form.get('mensaje')?.hasError('maxlength')"
           class="error-message">
+
           El mensaje no puede superar los 500 caracteres
+
         </mat-error>
 
       </div>
 
 
-      <!-- IDs relacionados -->
+      <!-- ==========================================
+           ID INCIDENTE Y ID ZONA
+           ========================================== -->
+
       <div class="form-row">
 
-        <!-- Incidente -->
+        <!-- ID INCIDENTE -->
+
         <div class="form-group form-group-half">
 
           <label class="form-label">
@@ -138,6 +237,7 @@
           </label>
 
           <div class="input-wrapper">
+
             <mat-icon class="input-icon">
               report_problem
             </mat-icon>
@@ -150,12 +250,14 @@
               placeholder="Opcional"
               class="form-input"
             />
+
           </div>
 
         </div>
 
 
-        <!-- Zona -->
+        <!-- ID ZONA -->
+
         <div class="form-group form-group-half">
 
           <label class="form-label">
@@ -163,6 +265,7 @@
           </label>
 
           <div class="input-wrapper">
+
             <mat-icon class="input-icon">
               location_on
             </mat-icon>
@@ -175,6 +278,7 @@
               placeholder="Opcional"
               class="form-input"
             />
+
           </div>
 
         </div>
@@ -182,7 +286,10 @@
       </div>
 
 
-      <!-- Refugio -->
+      <!-- ==========================================
+           ID REFUGIO
+           ========================================== -->
+
       <div class="form-group">
 
         <label class="form-label">
@@ -190,6 +297,7 @@
         </label>
 
         <div class="input-wrapper">
+
           <mat-icon class="input-icon">
             home
           </mat-icon>
@@ -202,14 +310,32 @@
             placeholder="Opcional"
             class="form-input"
           />
+
         </div>
+
+      </div>
+
+
+      <!-- ==========================================
+           VALIDACIÓN DE DESTINO
+           ========================================== -->
+
+      <div
+        class="error-message"
+        *ngIf="!isEdit && mostrarErrorDestino">
+
+        Debe ingresar al menos un ID:
+        incidente, zona o refugio.
 
       </div>
 
     </div>
 
 
-    <!-- Botones de acción -->
+    <!-- ============================================
+         BOTONES
+         ============================================ -->
+
     <div class="botones-accion">
 
       <button
@@ -217,8 +343,11 @@
         (click)="onCancel()"
         class="btn-cancelar"
         [disabled]="loading">
+
         Cancelar
+
       </button>
+
 
       <button
         type="submit"
