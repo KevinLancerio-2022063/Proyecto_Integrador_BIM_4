@@ -1,4 +1,5 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+// src/app/features/core/guards/auth.guard.ts
+import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import {
     ActivatedRouteSnapshot,
@@ -8,35 +9,49 @@ import {
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * Solo valida que haya sesión activa.
+ * Uso: /zonas, /perfil → cualquier rol autenticado.
+ */
 export const authGuard: CanActivateFn = (
-    route: ActivatedRouteSnapshot,
+    _route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
 ) => {
     const authService = inject(AuthService);
     const router = inject(Router);
     const platformId = inject(PLATFORM_ID);
 
-    // En SSR permitimos el paso para que la hidratación no rompa
-    // (el guard se re-ejecuta en el cliente)
-    if (!isPlatformBrowser(platformId)) {
-        return true;
-    }
+    if (!isPlatformBrowser(platformId)) return true;
 
-    // 1. ¿Está autenticado?
     if (!authService.isLoggedIn()) {
-        router.navigate(['/login'], {
-            queryParams: { returnUrl: state.url }
-        });
+        router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+        return false;
+    }
+    return true;
+};
+
+/**
+ * Valida sesión + rol ADMIN.
+ * Uso: /usuarios/** → solo admin.
+ */
+export const adminGuard: CanActivateFn = (
+    _route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+) => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+    const platformId = inject(PLATFORM_ID);
+
+    if (!isPlatformBrowser(platformId)) return true;
+
+    if (!authService.isLoggedIn()) {
+        router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
         return false;
     }
 
-    // 2. ¿Es ADMIN?
     if (!authService.isAdmin()) {
-        router.navigate(['/login'], {
-            queryParams: { error: 'no-admin' }
-        });
+        router.navigate(['/login'], { queryParams: { error: 'no-admin' } });
         return false;
     }
-
     return true;
 };
