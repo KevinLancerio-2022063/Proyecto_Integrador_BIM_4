@@ -55,17 +55,25 @@
       class="recurso-card"
       [style.animation-delay]="(i * 80) + 'ms'">
       
-      <div class="recurso-header">
-        <div class="icono-container" [class]="'icono-' + recurso.tipo.toLowerCase()">
-          <mat-icon>{{ getIconoTipo(recurso.tipo) }}</mat-icon>
-        </div>
-        <span class="tipo-badge">{{ recurso.tipo }}</span>
+    <div class="recurso-header">
+      <!-- Icono del tipo con color dinámico -->
+      <div 
+        class="icono-container" 
+        [style.background]="getColorTipo(recurso.tipo)">
+        <mat-icon>{{ getIconoTipo(recurso.tipo) }}</mat-icon>
       </div>
+      <span class="tipo-badge">{{ recurso.tipo }}</span>
+    </div>
 
       <h3 class="recurso-nombre">{{ recurso.nombre }}</h3>
 
+      <!-- Cantidad con icono de unidad de medida -->
       <div class="recurso-cantidad">
-        <mat-icon class="cantidad-icono">inventory</mat-icon>
+        <mat-icon 
+          class="cantidad-icono" 
+          [style.color]="getColorUnidad(recurso.unidad_medida)">
+          {{ getIconoUnidad(recurso.unidad_medida) }}
+        </mat-icon>
         <span class="cantidad-texto">
           {{ recurso.cantidad_total }} {{ recurso.unidad_medida }}
         </span>
