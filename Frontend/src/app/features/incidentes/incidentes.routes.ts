@@ -1,34 +1,66 @@
 import { Routes } from "@angular/router";
+
 import { IncidenteDetailComponent } from "./components/incidentes/incidente-detail/incidente-detail.component";
 import { IncidenteFormComponent } from "./components/incidentes/incidente-form/incidente-form.component";
 import { IncidenteListComponent } from "./components/incidentes/incidente-list/incidente-list.component";
 
-// Define las rutas del módulo de logística
+import { HistorialListComponent } from "./components/historial/historial-list/historial-list.component";
+import { HistorialDetailComponent } from "./components/historial/historial-detail/historial-detail.component";
+
+
+// Define las rutas del módulo de incidentes
 export const INCIDENTES_ROUTES: Routes = [
-  // Redirige la ruta base de logística a la lista de recursos
+
+  // Ruta base
   {
     path: "",
     redirectTo: "incidentes",
     pathMatch: "full"
   },
-  // Ruta para listar todos los recursos
+
+  // ==============================
+  // INCIDENTES
+  // ==============================
+
+  // Lista de incidentes
   {
     path: "incidentes",
     component: IncidenteListComponent
   },
-  // Ruta para crear un nuevo recurso
+
+  // Crear incidente
   {
     path: "incidente/nuevo",
     component: IncidenteFormComponent
   },
-  // Ruta para ver el detalle de un recurso específico
+
+  // Detalle de incidente
   {
     path: "incidentes/:id",
     component: IncidenteDetailComponent
   },
-  // Ruta para editar un recurso existente
+
+  // Editar incidente
   {
     path: "incidentes/:id/editar",
     component: IncidenteFormComponent
+  },
+
+
+  // ==============================
+  // HISTORIAL
+  // ==============================
+
+  // Lista del historial
+  {
+    path: "historial",
+    component: HistorialListComponent
+  },
+
+  // Detalle de un registro del historial
+  {
+    path: "historial/:id",
+    component: HistorialDetailComponent
   }
+
 ];
