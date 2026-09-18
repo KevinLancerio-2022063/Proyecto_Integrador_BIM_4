@@ -120,7 +120,9 @@ export class AlertaListComponent implements OnInit {
 
   // Establece el filtro activo
   setFiltro(filtroId: string): void {
-    this.filtroActivo = filtroId;
+    this.filtroActivo = filtroId === "todos"
+      ? "todos"
+      : filtroId.toUpperCase();
   }
 
   // Obtiene las alertas filtradas según el filtro activo y la búsqueda
