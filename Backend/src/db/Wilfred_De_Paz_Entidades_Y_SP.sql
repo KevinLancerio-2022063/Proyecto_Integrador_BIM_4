@@ -57,7 +57,7 @@ begin
            i.fecha_reporte, i.fecha_cierre, i.zona_id, i.reportado_por,
            i.latitud, i.longitud, i.cantidad_personas_afectadas, i.created_at
     from incidente i
-    order by i.fecha_reporte desc;
+    order by i.id asc;
 end;
 $$ language plpgsql;
 
@@ -126,7 +126,7 @@ begin
 end;
 $$ language plpgsql;
 
--- eliminar incidente (marcar como cerrado)
+-- eliminar incidente (soft delete - marcar como cerrado)
 create or replace procedure sp_eliminar_incidente(p_id bigint) as $$
 begin
     update incidente
@@ -156,7 +156,7 @@ begin
     from historial_incidente h
     left join usuario u on u.id = h.usuario_id
     where h.incidente_id = p_incidente_id
-    order by h.fecha desc;
+    order by h.id asc;
 end;
 $$ language plpgsql;
 
