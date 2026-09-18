@@ -75,33 +75,45 @@ export class RecursoListComponent implements OnInit {
   // Llama al servicio para obtener los datos
   cargarRecursos(): void {
     this.loading = true;
+    this.cdr.markForCheck(); // Marcar para verificación inmediata
+    
     this.recursoService.getAll().subscribe({
       next: (data) => {
         console.log("Recursos cargados:", data);
-        this.recursos = data;
+        // Forzar una nueva referencia de array (spread operator)
+        // Esto garantiza que Angular detecte que el objeto cambió
+        this.recursos = [...data]; 
         this.loading = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error("Error al cargar recursos:", error);
         this.loading = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       }
     });
   }
 
   // Abre el modal para crear un nuevo recurso
   abrirModalCrear(): void {
-  const dialogRef = this.dialog.open(RecursoFormComponent, {
-    width: "600px",
-    data: { modo: "crear" },
-    panelClass: "modal-cyberpunk", 
-    backdropClass: "backdrop-cyberpunk" 
-  });
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado) this.cargarRecursos();
-  });
-}
+    const dialogRef = this.dialog.open(RecursoFormComponent, {
+      width: "600px",
+      data: { modo: "crear" },
+      panelClass: "modal-cyberpunk", 
+      backdropClass: "backdrop-cyberpunk" 
+    });
+    
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        console.log("Recurso creado, recargando...");
+        // 3. Pequeño delay para asegurar que el backend liberó la BD 
+        // y el modal terminó su animación de cierre
+        setTimeout(() => {
+          this.cargarRecursos();
+        }, 300);
+      }
+    });
+  }
 
   // Abre el modal para editar un recurso existente
   abrirModalEditar(recurso: Recurso): void {
@@ -111,8 +123,14 @@ export class RecursoListComponent implements OnInit {
       panelClass: "modal-cyberpunk",
       backdropClass: "backdrop-cyberpunk" 
     });
+    
     dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado) this.cargarRecursos();
+      if (resultado) {
+        console.log("Recurso editado, recargando...");
+        setTimeout(() => {
+          this.cargarRecursos();
+        }, 300);
+      }
     });
   }
 
@@ -120,8 +138,15 @@ export class RecursoListComponent implements OnInit {
   eliminarRecurso(id: number): void {
     if (confirm("¿Estás seguro de eliminar este recurso?")) {
       this.recursoService.delete(id).subscribe({
-        next: () => this.cargarRecursos(),
-        error: (error) => console.error("Error al eliminar:", error)
+        next: () => {
+          console.log("Recurso eliminado, recargando...");
+          setTimeout(() => {
+            this.cargarRecursos();
+          }, 300);
+        },
+        error: (error) => {
+          console.error("Error al eliminar:", error);
+        }
       });
     }
   }
@@ -152,29 +177,64 @@ export class RecursoListComponent implements OnInit {
     return resultado;
   }
 
-  // Obtiene el color del badge según el tipo de recurso
-  getColorTipo(tipo: string): string {
-    const colores: { [key: string]: string } = {
-      AGUA: "bg-sky-100 text-sky-700",
-      ALIMENTO: "bg-emerald-100 text-emerald-700",
-      MEDICAMENTO: "bg-red-100 text-red-700",
-      EQUIPO: "bg-amber-100 text-amber-700",
-      VEHICULO: "bg-purple-100 text-purple-700",
-      OTRO: "bg-gray-100 text-gray-700"
-    };
-    return colores[tipo] || "bg-gray-100 text-gray-700";
-  }
+// Mapeo de iconos por tipo de recurso
+iconosPorTipo: { [key: string]: string } = {
+  AGUA: "water_drop",
+  ALIMENTO: "restaurant",
+  MEDICAMENTO: "medical_services",
+  EQUIPO: "build",
+  VEHICULO: "local_shipping",
+  OTRO: "category"
+};
 
-  // Obtiene el icono Material según el tipo de recurso
-  getIconoTipo(tipo: string): string {
-    const iconos: { [key: string]: string } = {
-      AGUA: "water_drop",
-      ALIMENTO: "restaurant",
-      MEDICAMENTO: "medical_services",
-      EQUIPO: "construction",
-      VEHICULO: "local_shipping",
-      OTRO: "category"
-    };
-    return iconos[tipo] || "inventory_2";
-  }
+// Mapeo de colores por tipo de recurso
+coloresPorTipo: { [key: string]: string } = {
+  AGUA: "#1fa882",
+  ALIMENTO: "#e68529",
+  MEDICAMENTO: "#d94141",
+  EQUIPO: "#2da160",
+  VEHICULO: "#e69a2e",
+  OTRO: "#6b7280"
+};
+
+// Mapeo de iconos por unidad de medida
+iconosPorUnidad: { [key: string]: string } = {
+  UNIDAD: "inventory_2",
+  CAJA: "inventory",
+  KILOGRAMO: "scale",
+  LITRO: "water_drop",
+  PERSONA: "person",
+  OTRO: "category"
+};
+
+// Mapeo de colores por unidad de medida
+coloresPorUnidad: { [key: string]: string } = {
+  UNIDAD: "#00f0ff",
+  CAJA: "#a0522d",
+  KILOGRAMO: "#10b981",
+  LITRO: "#0ea5e9",
+  PERSONA: "#8338ec",
+  OTRO: "#6b7280"
+};
+
+// Método para obtener el icono del tipo
+getIconoTipo(tipo: string): string {
+  return this.iconosPorTipo[tipo] || "category";
+}
+
+// Método para obtener el color del tipo
+getColorTipo(tipo: string): string {
+  return this.coloresPorTipo[tipo] || "#6b7280";
+}
+
+// Método para obtener el icono de la unidad
+getIconoUnidad(unidad: string): string {
+  return this.iconosPorUnidad[unidad] || "category";
+}
+
+// Método para obtener el color de la unidad
+getColorUnidad(unidad: string): string {
+  return this.coloresPorUnidad[unidad] || "#6b7280";
+}
+  
 }
