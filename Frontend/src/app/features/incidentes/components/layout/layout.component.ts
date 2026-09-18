@@ -13,9 +13,8 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrls: ["./layout.component.css"]
 })
 export class LayoutComponent {
-  // Define los enlaces del menú lateral
   menuItems = [
-    { label: "Incidentes", route: "/incidentes", icon: "warning" },
-    { label: "Historial", route: "/historial", icon: "history" },
+    { label: "Incidentes", route: "/Incidentes/incidentes/incidentes", icon: "warning" },
+    { label: "Historial", route: "/Incidentes/incidentes/historial", icon: "history" },
   ];
 }
