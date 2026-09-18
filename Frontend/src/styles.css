@@ -1,5 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
 /* src/styles.css */
+
+/* --- RESETEO Y CONFIGURACIÓN BASE --- */
 * {
     box-sizing: border-box;
 }
@@ -7,12 +8,50 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #f8fafc;
-    color: #1e293b;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* Fondo oscuro unificado de alta tecnología */
+    background-color: #060919;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 240, 255, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 0, 127, 0.02) 0px, transparent 50%);
+    color: #e2e8f0;
     min-height: 100vh;
+    letter-spacing: 0.3px;
+    -webkit-font-smoothing: antialiased;
 }
 
 a {
     color: inherit;
+    text-decoration: none;
+}
+
+/* --- CURSOR TÁCTICO GLOBAL (SEGURO PARA LA NAVEGACIÓN) --- */
+html, body {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v3M12 19v3M2 12h3M19 12h3'/%3E%3C/svg%3E") 12 12, auto;
+}
+
+/* Cursor interactivo para botones y enlaces */
+button, a, input, select, textarea, th, td, [role="button"], .btn-icon {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ff007f' stroke-width='2'%3E%3Cpath d='M12 2v4M12 18v4M2 12h4M18 12h4'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23ff007f'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* --- ESTILIZACIÓN DE BARRAS DE DESPLAZAMIENTO SCI-FI --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0f24;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.2);
+    border-radius: 4px;
+    border: 2px solid #0a0f24;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 240, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
