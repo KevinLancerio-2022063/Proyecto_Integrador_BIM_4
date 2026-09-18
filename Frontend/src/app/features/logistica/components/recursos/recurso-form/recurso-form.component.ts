@@ -69,7 +69,7 @@ export class RecursoFormComponent implements OnInit {
     this.form = this.fb.group({
       nombre: ["", [Validators.required, Validators.maxLength(120)]],
       tipo: ["", Validators.required],
-      unidad_medida: ["", Validators.required], // ← Cambiado de "UNIDAD" a ""
+      unidad_medida: ["", Validators.required],
       cantidad_total: [0, [Validators.required, Validators.min(0)]],
       descripcion: [""]
     });
