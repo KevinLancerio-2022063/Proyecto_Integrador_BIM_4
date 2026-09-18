@@ -1,0 +1,229 @@
+<div class="timeline-container">
+
+  <!-- ENCABEZADO -->
+  <div class="timeline-header">
+
+    <div class="header-title">
+      <div class="header-icon">
+        <mat-icon>timeline</mat-icon>
+      </div>
+
+      <div>
+        <h2>Línea de tiempo</h2>
+        <p>
+          Historial de cambios del incidente
+        </p>
+      </div>
+    </div>
+
+    <button
+      mat-icon-button
+      class="refresh-button"
+      type="button"
+      (click)="recargar()"
+      title="Actualizar historial"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+
+  </div>
+
+
+  <!-- CARGANDO -->
+  <div
+    class="loading-container"
+    *ngIf="loading"
+  >
+
+    <mat-spinner diameter="35"></mat-spinner>
+
+    <span>
+      Cargando historial...
+    </span>
+
+  </div>
+
+
+  <!-- ERROR -->
+  <div
+    class="error-container"
+    *ngIf="!loading && error"
+  >
+
+    <mat-icon>error_outline</mat-icon>
+
+    <p>{{ error }}</p>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="recargar()"
+    >
+      <mat-icon>refresh</mat-icon>
+      Reintentar
+    </button>
+
+  </div>
+
+
+  <!-- SIN REGISTROS -->
+  <div
+    class="empty-container"
+    *ngIf="!loading && !error && historiales.length === 0"
+  >
+
+    <mat-icon>history</mat-icon>
+
+    <h3>Sin historial</h3>
+
+    <p>
+      Este incidente todavía no tiene cambios registrados.
+    </p>
+
+  </div>
+
+
+  <!-- TIMELINE -->
+  <div
+    class="timeline"
+    *ngIf="!loading && !error && historiales.length > 0"
+  >
+
+    <div
+      class="timeline-item"
+      *ngFor="let historial of historiales; let i = index"
+    >
+
+      <!-- LÍNEA -->
+      <div class="timeline-line-container">
+
+        <div
+          class="timeline-dot"
+          [ngClass]="getClaseEstado(historial.estado_nuevo)"
+        >
+
+          <mat-icon>
+            {{ getIconoEstado(historial.estado_nuevo) }}
+          </mat-icon>
+
+        </div>
+
+        <div
+          class="timeline-line"
+          *ngIf="!esUltimo(i)"
+        ></div>
+
+      </div>
+
+
+      <!-- CONTENIDO -->
+      <div class="timeline-content">
+
+        <!-- CABECERA -->
+        <div class="timeline-item-header">
+
+          <div>
+
+            <span class="timeline-date">
+              {{ formatearFecha(historial.fecha) }}
+              ·
+              {{ formatearHora(historial.fecha) }}
+            </span>
+
+            <h3>
+              {{ historial.estado_nuevo }}
+            </h3>
+
+          </div>
+
+          <span
+            class="status-badge"
+            [ngClass]="getClaseEstado(historial.estado_nuevo)"
+          >
+
+            <mat-icon>
+              {{ getIconoEstado(historial.estado_nuevo) }}
+            </mat-icon>
+
+            {{ historial.estado_nuevo }}
+
+          </span>
+
+        </div>
+
+
+        <!-- CAMBIO DE ESTADO -->
+        <div class="state-change">
+
+          <div class="state previous">
+
+            <span>
+              Estado anterior
+            </span>
+
+            <strong>
+              {{ getEstadoAnterior(historial) }}
+            </strong>
+
+          </div>
+
+          <mat-icon>
+            arrow_forward
+          </mat-icon>
+
+          <div class="state current">
+
+            <span>
+              Estado nuevo
+            </span>
+
+            <strong>
+              {{ historial.estado_nuevo }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- COMENTARIO -->
+        <div
+          class="timeline-comment"
+          *ngIf="historial.comentario"
+        >
+
+          <mat-icon>
+            comment
+          </mat-icon>
+
+          <p>
+            {{ historial.comentario }}
+          </p>
+
+        </div>
+
+
+        <!-- USUARIO -->
+        <div class="timeline-user">
+
+          <mat-icon>
+            person
+          </mat-icon>
+
+          <span>
+            Usuario:
+          </span>
+
+          <strong>
+            {{ historial.usuario_id || 'N/A' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
