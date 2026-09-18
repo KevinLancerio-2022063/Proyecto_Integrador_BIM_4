@@ -1,0 +1,252 @@
+/* --- CONFIGURACIÓN DE CURSOR PERSONALIZADO --- */
+/* Se aplica a todo el contenedor de la aplicación */
+.app-layout {
+  display: flex;
+  background-color: #0a0f24;
+  color: #e2e8f0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  /* Cursor normal: Mira el SVG incrustado */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300c6ff' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v3M12 19v3M2 12h3M19 12h3'/%3E%3C/svg%3E") 12 12, auto;
+}
+
+/* Cursor interactivo para botones, enlaces y menús */
+button, a, select, input, th, td, .menu-item, .btn-icon {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ff7f' stroke-width='2'%3E%3Cpath d='M12 2v4M12 18v4M2 12h4M18 12h4'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%2300ff7f'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* --- ESTILOS DE LA BARRA LATERAL --- */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background-color: #0e132b; 
+  border-right: 1px solid rgba(0, 198, 255, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+ 
+.sidebar-brand {
+  padding: 30px 24px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.siged-logo-svg {
+  width: 65px;
+  height: 65px;
+  filter: drop-shadow(0 0 8px rgba(34, 197, 148, 0.3));
+}
+
+.siged-text {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0, 198, 255, 0.4);
+}
+ 
+.sidebar-menu {
+  margin-top: 20px;
+}
+ 
+.sidebar-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ 
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;      
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;      
+  border-radius: 8px;
+  margin: 6px 14px;  
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.menu-icon {
+  font-size: 1.25rem;
+}
+ 
+/* 1. EL FONDO DEGRADADO (Llenado de izquierda a derecha) */
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Modificado a la paleta Cyan/Azul de tu barra de herramientas */
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+ 
+/* 2. EL DESTELLO BRILLANTE DIAGONAL */
+.menu-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%; 
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg); 
+  z-index: 2; 
+}
+ 
+/* --- HOVER Y ESTADO ACTIVO --- */
+.menu-item:hover, .menu-item.active {
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.02); 
+  box-shadow: 0 8px 20px rgba(0, 198, 255, 0.3);
+}
+
+.menu-item.active {
+  box-shadow: inset 4px 0 0 #00c6ff, 0 4px 15px rgba(0, 198, 255, 0.15);
+}
+ 
+.menu-item:hover::before, .menu-item.active::before {
+  transform: scaleX(1);
+}
+ 
+.menu-item:hover::after {
+  left: 150%; 
+  transition: left 0.6s ease-in-out; 
+}
+ 
+/* --- CONTENEDOR PRINCIPAL DERECHO --- */
+.main-content {
+  margin-left: 260px; 
+  padding: 2.5rem 2rem;
+  width: calc(100% - 260px);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* --- ESTILOS DE TABLAS Y COMPONENTES RESTANTES --- */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 198, 255, 0.15);
+  padding-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 2.2rem;
+  text-shadow: 0 0 12px rgba(0, 198, 255, 0.3);
+}
+
+.page-subtitle {
+  margin: 0.4rem 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-primary, .btn-secondary, .btn-danger {
+  padding: 0.65rem 1.25rem;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary { background: linear-gradient(90deg, #ff007f 0%, #ff6600 100%); color: #fff; }
+.btn-secondary { background: rgba(18, 24, 56, 0.8); color: #00f0ff; border: 1px solid rgba(0, 198, 255, 0.4); }
+.btn-danger { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.4); }
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+}
+
+.search-input {
+  flex: 1;
+  background: rgba(18, 24, 56, 0.8);
+  border: 1px solid rgba(0, 198, 255, 0.3);
+  padding: 0.75rem 1.25rem;
+  border-radius: 30px;
+  color: #fff;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: linear-gradient(180deg, rgba(18, 24, 56, 0.85) 0%, rgba(10, 15, 36, 0.85) 100%);
+  border: 1px solid rgba(0, 198, 255, 0.2);
+  border-radius: 12px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  padding: 1rem;
+  color: #00f0ff;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.data-table td {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.badge { padding: 0.3rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+.badge-admin { background: rgba(0, 240, 255, 0.15); color: #00f0ff; }
+
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.5rem; }
+.dot.active { background: #39ff14; box-shadow: 0 0 10px #39ff14; }
+
+.btn-icon {
+  background: rgba(10, 15, 36, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  color: #e2e8f0;
+}

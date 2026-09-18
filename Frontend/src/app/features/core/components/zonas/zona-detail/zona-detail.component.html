@@ -1,0 +1,82 @@
+<!-- src/app/features/core/components/zonas/zona-detail/zona-detail.component.html -->
+<div class="page-container">
+    <header class="page-header">
+        <h1>Detalle de Zona</h1>
+        <div class="header-actions">
+            @if (authService.isAdmin() && zona()) {
+                <a [routerLink]="['/zonas', zona()!.id, 'editar']" class="btn-primary">Editar</a>
+            }
+            <a routerLink="/zonas" class="btn-secondary">← Volver</a>
+        </div>
+    </header>
+
+    @if (errorMessage()) {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+        <div class="loading">Cargando...</div>
+    } @else if (zona()) {
+        <div class="detail-card">
+            <div class="detail-header">
+                <div class="zona-icon">📍</div>
+                <div>
+                    <h2>{{ zona()!.nombre }}</h2>
+                    <span class="badge" [class]="'badge-' + zona()!.nivel_riesgo.toLowerCase()">
+                        Riesgo {{ zona()!.nivel_riesgo | nivelRiesgo }}
+                    </span>
+                </div>
+            </div>
+
+            <dl class="detail-grid">
+                <div class="detail-item">
+                    <dt>ID</dt>
+                    <dd>{{ zona()!.id }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>País</dt>
+                    <dd>{{ zona()!.pais }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Departamento</dt>
+                    <dd>{{ zona()!.departamento || '—' }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Municipio</dt>
+                    <dd>{{ zona()!.municipio || '—' }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Latitud</dt>
+                    <dd>{{ zona()!.latitud | coordenadas: 'lat' }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Longitud</dt>
+                    <dd>{{ zona()!.longitud | coordenadas: 'long' }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Estado</dt>
+                    <dd>
+                        <span class="dot" [class.active]="zona()!.activo"></span>
+                        {{ zona()!.activo ? 'Activa' : 'Inactiva' }}
+                    </dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Creada</dt>
+                    <dd>{{ zona()!.created_at | fecha: 'larga' }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Actualizada</dt>
+                    <dd>{{ zona()!.updated_at | fecha: 'larga' }}</dd>
+                </div>
+            </dl>
+
+            @if (getMapUrl(); as mapUrl) {
+                <div class="map-actions">
+                    <a [href]="mapUrl" target="_blank" rel="noopener noreferrer" class="btn-map">
+                        🗺 Ver ubicación en OpenStreetMap
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>

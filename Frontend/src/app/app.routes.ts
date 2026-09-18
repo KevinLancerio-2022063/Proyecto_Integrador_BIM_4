@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { LayoutComponent } from "./features/logistica/components/layout/layout.component";
+import { coreRoutes } from './features/core/core.routes';
 
 // Define las rutas principales de la aplicación
 export const routes: Routes = [
@@ -11,7 +12,18 @@ export const routes: Routes = [
         // Carga el módulo de logística en la ruta base de logistica
         path: "",
         loadChildren: () => import("./features/logistica/logistica.module").then((m) => m.LogisticaModule)
-      }
+      },
+
+    {
+        path: '',
+        redirectTo: 'usuarios',
+        pathMatch: 'full'
+    },
+    ...coreRoutes,
+    {
+        path: '**',
+        redirectTo: 'usuarios'
+    }
     ]
   },
   {
@@ -20,4 +32,5 @@ export const routes: Routes = [
     redirectTo: "/logistica",
     pathMatch: "full"
   }
+
 ];

@@ -26,7 +26,6 @@ pool.on('error', (err) => {
     console.error('Error inesperado en el pool de PostgreSQL:', err);
     process.exit(-1);
 });
-
 export const testConnection = async (): Promise<void> => {
     try {
         const client = await pool.connect();
@@ -39,7 +38,6 @@ export const testConnection = async (): Promise<void> => {
         throw error;
     }
 };
-
 export const closePool = async (): Promise<void> => {
     await pool.end();
     console.log('Pool de conexiones cerrado');

@@ -1,5 +1,5 @@
 import { testConnection, closePool } from './config/database.config';
-
+ 
 async function main() {
     try {
         await testConnection();
@@ -11,5 +11,5 @@ async function main() {
         process.exit(0);
     }
 }
-
+ 
 main();
