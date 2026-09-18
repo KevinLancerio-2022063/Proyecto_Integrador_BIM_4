@@ -8,6 +8,7 @@
   --bg-secondary: #111638;
   --bg-card: rgba(17, 22, 56, 0.6);
   --bg-sidebar: #070a1f;
+
   /* Colores de acento neón */
   --neon-cyan: #00f0ff;
   --neon-pink: #ff006e;
@@ -15,6 +16,7 @@
   --neon-green: #06ffa5;
   --neon-orange: #ff6b35;
   --neon-yellow: #ffbe0b;
+
   /* Colores de hexágonos */
   --hex-todos: linear-gradient(135deg, #2955a6 0%, #1c3b75 100%);
   --hex-agua: linear-gradient(135deg, #1fa882 0%, #136f56 100%);
@@ -24,10 +26,12 @@
   --hex-vehiculo: linear-gradient(135deg, #e69a2e 0%, #b0711c 100%);
   --hex-personal: linear-gradient(135deg, #d65697 0%, #9c356b 100%);
   --hex-refugio: linear-gradient(135deg, #3873b3 0%, #234a78 100%);
+
   /* Colores de texto */
   --text-primary: #ffffff;
   --text-secondary: #a0aec0;
   --text-muted: #718096;
+
   /* Efectos neón */
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.5);
   --glow-pink: 0 0 20px rgba(255, 0, 110, 0.5);
@@ -93,6 +97,7 @@ h6 {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -108,6 +113,7 @@ h6 {
     opacity: 0;
     transform: scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -123,6 +129,7 @@ h6 {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -169,6 +176,7 @@ h6 {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -260,6 +268,7 @@ h6 {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
   transition: all 0.3s ease;
+
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -420,3 +429,7 @@ h6 {
   border-radius: 20px !important;
 }
 
+
+  h1 {
+    font-size: 1.5rem;
+  }

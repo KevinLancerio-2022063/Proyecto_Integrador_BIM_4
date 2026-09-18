@@ -12,11 +12,13 @@ import refugioRoutes from "./routes/refugio.routes";
 import asignacionRoutes from "./routes/asignacion_recurso.routes";
 import incidenteRoutes from "./routes/incidente.routes";
 import historialIncidenteRoutes from "./routes/historial_incidente.routes";
-
+import asignacionPersonalRoutes from "./routes/asignacion_personal.routes";
+import alertaRoutes from "./routes/alerta.routes";
 
 dotenv.config();
 
 const app = express();
+
 
 // Middlewares
 app.use(cors({
@@ -34,6 +36,8 @@ app.use("/api/refugios", refugioRoutes);
 app.use("/api/asignaciones-recurso", asignacionRoutes);
 app.use("/api/incidentes", incidenteRoutes);
 app.use("/api/historial-incidentes", historialIncidenteRoutes);
+app.use("/api/alertas", alertaRoutes);
+app.use("/api/asignacion_personal", asignacionPersonalRoutes);
 
 // Ruta de salud
 app.get("/api/health", (req, res) => {
