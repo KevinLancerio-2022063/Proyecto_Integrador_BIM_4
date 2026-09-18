@@ -28,7 +28,7 @@ import { TelefonoPipe } from '../../../pipes/telefono.pipe';
 })
 export class UsuarioListComponent implements OnInit {
     private readonly usuarioService = inject(UsuarioService);
-    private readonly authService = inject(AuthService);
+    public readonly authService = inject(AuthService);
 
     readonly usuarios = signal<UsuarioResponse[]>([]);
     readonly loading = signal(false);
