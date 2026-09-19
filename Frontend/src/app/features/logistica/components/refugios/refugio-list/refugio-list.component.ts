@@ -11,8 +11,11 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { RefugioService } from "../../../services/refugio.service";
 import { Refugio } from "../../../models/refugio.model";
 import { RefugioFormComponent } from "../refugio-form/refugio-form.component";
+import { ConfirmDialogComponent } from "../../confirm-dialog/confirm-dialog.component";
+import { EstadoRefugioPipe } from "../../../pipes/estado-refugio.pipe";
+import { PorcentajeOcupacionPipe } from "../../../pipes/porcentaje-ocupacion.pipe";
+import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
 
-// Define el componente como independiente (standalone)
 @Component({
   selector: "app-refugio-list",
   standalone: true,
@@ -25,108 +28,167 @@ import { RefugioFormComponent } from "../refugio-form/refugio-form.component";
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ConfirmDialogComponent,
+    EstadoRefugioPipe,
+    PorcentajeOcupacionPipe,
+    FechaFormateadaPipe
   ],
   templateUrl: "./refugio-list.component.html",
   styleUrls: ["./refugio-list.component.css"]
 })
 export class RefugioListComponent implements OnInit {
-  // Almacena la lista de refugios obtenidos del backend
   refugios: Refugio[] = [];
-  
-  // Almacena el término de búsqueda
+  filtroActivo: string = "todos";
   busqueda: string = "";
-  
-  // Indica si los datos están cargando
   loading: boolean = true;
 
-  // Inyecta el servicio de refugios y el diálogo
+  mostrarDialogoEliminacion: boolean = false;
+  refugioSeleccionadoParaEliminar: Refugio | null = null;
+
+    filtros = [
+    { id: "todos", etiqueta: "Todos", icono: "home" },
+    { id: "disponible", etiqueta: "Disponibles", icono: "check_circle" },
+    { id: "parcial", etiqueta: "Parcial", icono: "remove_circle" },
+    { id: "lleno", etiqueta: "Lleno", icono: "cancel" },
+    { id: "inactivo", etiqueta: "Inactivo", icono: "block" }
+  ];
+
   constructor(
     private refugioService: RefugioService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Se ejecuta al inicializar el componente
   ngOnInit(): void {
     this.cargarRefugios();
   }
 
-  // Llama al servicio para obtener los datos
   cargarRefugios(): void {
     this.loading = true;
+    this.cdr.markForCheck();
+    
     this.refugioService.getAll().subscribe({
       next: (data) => {
-        console.log("Refugios cargados:", data); 
-        this.refugios = data;
+        this.refugios = [...data];
         this.loading = false;
-        this.cdr.detectChanges();  
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error("Error al cargar refugios:", error);
         this.loading = false;
-        this.cdr.detectChanges(); 
+        this.cdr.markForCheck();
       }
     });
   }
 
-  // Abre el modal para crear un nuevo refugio
   abrirModalCrear(): void {
     const dialogRef = this.dialog.open(RefugioFormComponent, {
       width: "700px",
-      data: { modo: "crear" }
+      data: { modo: "crear" },
+      panelClass: "modal-cyberpunk",
+      backdropClass: "backdrop-cyberpunk"
     });
     dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado) this.cargarRefugios();
+      if (resultado) {
+        setTimeout(() => {
+          this.cargarRefugios();
+        }, 300);
+      }
     });
   }
 
-  // Abre el modal para editar un refugio existente
   abrirModalEditar(refugio: Refugio): void {
     const dialogRef = this.dialog.open(RefugioFormComponent, {
       width: "700px",
-      data: { modo: "editar", refugio }
+      data: { modo: "editar", refugio },
+      panelClass: "modal-cyberpunk",
+      backdropClass: "backdrop-cyberpunk"
     });
     dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado) this.cargarRefugios();
+      if (resultado) {
+        setTimeout(() => {
+          this.cargarRefugios();
+        }, 300);
+      }
     });
   }
 
-  // Elimina un refugio tras confirmar con el usuario
-  eliminarRefugio(id: number): void {
-    if (confirm("¿Estás seguro de eliminar este refugio?")) {
-      this.refugioService.delete(id).subscribe({
-        next: () => this.cargarRefugios(),
-        error: (error) => console.error("Error al eliminar:", error)
-      });
-    }
+  prepararEliminacion(refugio: Refugio): void {
+    this.refugioSeleccionadoParaEliminar = refugio;
+    this.mostrarDialogoEliminacion = true;
   }
 
-  // Obtiene los refugios filtrados según la búsqueda
+  cerrarDialogoEliminacion(): void {
+    this.mostrarDialogoEliminacion = false;
+    this.refugioSeleccionadoParaEliminar = null;
+  }
+
+  confirmarEliminacion(): void {
+    if (!this.refugioSeleccionadoParaEliminar?.id) return;
+
+    this.refugioService.delete(this.refugioSeleccionadoParaEliminar.id).subscribe({
+      next: () => {
+        this.cerrarDialogoEliminacion();
+        setTimeout(() => {
+          this.cargarRefugios();
+        }, 300);
+      },
+      error: (error) => {
+        console.error("Error al eliminar:", error);
+        this.cerrarDialogoEliminacion();
+      }
+    });
+  }
+
+  getColorProgreso(porcentaje: number): string {
+    if (porcentaje >= 90) return "#ef4444";
+    if (porcentaje >= 70) return "#f59e0b";
+    return "#10b981";
+  }
+
+   setFiltro(filtroId: string): void {
+    this.filtroActivo = filtroId;
+  }
+
   get refugiosFiltrados(): Refugio[] {
-    if (!this.busqueda) return this.refugios;
+    let resultado = this.refugios;
     
-    const busquedaLower = this.busqueda.toLowerCase();
-    return this.refugios.filter(r => 
-      r.nombre.toLowerCase().includes(busquedaLower) ||
-      r.direccion?.toLowerCase().includes(busquedaLower)
-    );
+    // Aplica filtro por estado
+    if (this.filtroActivo !== "todos") {
+      resultado = resultado.filter(r => r.estado.toLowerCase() === this.filtroActivo);
+    }
+    
+    // Aplica filtro por búsqueda
+    if (this.busqueda) {
+      const busquedaLower = this.busqueda.toLowerCase();
+      resultado = resultado.filter(r => 
+        r.nombre.toLowerCase().includes(busquedaLower) ||
+        r.direccion?.toLowerCase().includes(busquedaLower)
+      );
+    }
+    
+    return resultado;
   }
 
-  // Obtiene el color del badge según el estado del refugio
-  getColorEstado(estado: string): string {
-    const colores: { [key: string]: string } = {
-      DISPONIBLE: "bg-emerald-100 text-emerald-700",
-      PARCIAL: "bg-amber-100 text-amber-700",
-      LLENO: "bg-red-100 text-red-700",
-      INACTIVO: "bg-gray-100 text-gray-700"
+  getEstadoIcono(estado: string): string {
+    const iconos: { [key: string]: string } = {
+      DISPONIBLE: "check_circle",
+      PARCIAL: "remove_circle",
+      LLENO: "cancel",
+      INACTIVO: "block"
     };
-    return colores[estado] || "bg-gray-100 text-gray-700";
+    return iconos[estado] || "help";
   }
 
-  // Calcula el porcentaje de ocupación
-  getPorcentajeOcupacion(ocupacion: number, capacidad: number): number {
-    if (!capacidad || capacidad === 0) return 0;
-    return Math.min(Math.round((ocupacion / capacidad) * 100), 100);
+  getEstadoColor(estado: string): string {
+    const colores: { [key: string]: string } = {
+      DISPONIBLE: "#10b981",
+      PARCIAL: "#f59e0b",
+      LLENO: "#ef4444",
+      INACTIVO: "#6b7280"
+    };
+    return colores[estado] || "#6b7280";
   }
+
 }
