@@ -1,23 +1,38 @@
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
 .page-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem;
 }
 
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+
   border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+
   padding-bottom: 1.5rem;
 }
 
 .page-header h1 {
   margin: 0;
+
   color: #fff;
+
   font-size: 2rem;
-  text-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+
+  text-shadow:
+    0 0 12px rgba(0, 240, 255, 0.3);
 }
 
 .header-actions {
@@ -25,145 +40,687 @@
   gap: 0.75rem;
 }
 
-.btn-primary, .btn-secondary {
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.btn-primary,
+.btn-secondary {
   padding: 0.65rem 1.25rem;
+
   border-radius: 30px;
+
   font-weight: bold;
   font-size: 0.875rem;
+
   text-decoration: none;
+
   border: none;
-  transition: all 0.2s;
+
+  transition: all 0.2s ease;
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #ff007f 0%, #ff6600 100%);
+  background:
+    linear-gradient(
+      90deg,
+      #ff007f 0%,
+      #ff6600 100%
+    );
+
   color: #fff;
-  box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+
+  box-shadow:
+    0 0 15px rgba(255, 0, 127, 0.4);
 }
+
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(255, 0, 127, 0.7);
+
+  box-shadow:
+    0 0 25px rgba(255, 0, 127, 0.7);
 }
 
 .btn-secondary {
   background: rgba(18, 24, 56, 0.8);
+
   color: #00f0ff;
-  border: 1px solid rgba(0, 240, 255, 0.4);
-}
-.btn-secondary:hover {
-  background: rgba(0, 240, 255, 0.15);
+
+  border:
+    1px solid rgba(0, 240, 255, 0.4);
 }
 
-/* --- TARJETA DE DETALLES EXCLUSIVA (ESTILO DE LA IMAGEN CENTRAL) --- */
-.detail-card {
-  background: linear-gradient(135deg, rgba(18, 24, 56, 0.9) 0%, rgba(10, 15, 36, 0.9) 100%);
-  border: 1px solid rgba(0, 240, 255, 0.25);
-  border-radius: 14px;
-  padding: 2.5rem;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-  position: relative;
+.btn-secondary:hover {
+  background:
+    rgba(0, 240, 255, 0.15);
+
+  box-shadow:
+    0 0 18px rgba(0, 240, 255, 0.15);
 }
+
+
+/* =========================================================
+   TARJETA DE DETALLES
+   ========================================================= */
+
+.detail-card {
+  position: relative;
+
+  /*
+   * Crea un contexto independiente para los
+   * pseudo-elementos.
+   */
+  isolation: isolate;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(18, 24, 56, 0.96) 0%,
+      rgba(10, 15, 36, 0.98) 100%
+    );
+
+  border:
+    1px solid rgba(0, 240, 255, 0.25);
+
+  border-radius: 14px;
+
+  padding: 2.5rem;
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 240, 255, 0.015);
+
+  /*
+   * MUY IMPORTANTE:
+   *
+   * La estela nunca podrá salir del tamaño
+   * original de la tarjeta.
+   */
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   PROPIEDAD PARA ANIMAR EL GRADIENTE
+   ========================================================= */
+
+@property --trail-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+
+/* =========================================================
+   ESTELA NEÓN
+   ========================================================= */
+
+/*
+ * Esta capa NO se mueve.
+ *
+ * El elemento tiene exactamente el mismo tamaño
+ * que la tarjeta.
+ *
+ * Lo único que cambia es --trail-angle.
+ *
+ * Por tanto:
+ *
+ *     ❌ no hay diagonales gigantes
+ *     ❌ no hay líneas fuera de la tarjeta
+ *     ❌ no se modifica el layout
+ *     ❌ no se ilumina el centro
+ *
+ *     ✅ solamente se mueve la luz por el borde
+ */
+
+
+/* ---------------------------------------------------------
+   GLOW DEL BORDE
+   --------------------------------------------------------- */
+
+.detail-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    conic-gradient(
+      from var(--trail-angle),
+
+      transparent 0deg,
+      transparent 300deg,
+
+      rgba(0, 240, 255, 0.12) 312deg,
+      rgba(0, 240, 255, 0.45) 322deg,
+      rgba(0, 240, 255, 0.9) 330deg,
+      rgba(0, 240, 255, 0.35) 338deg,
+
+      transparent 350deg,
+      transparent 360deg
+    );
+
+  /*
+   * ELIMINA EL CENTRO.
+   *
+   * Solo queda el borde.
+   */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+
+  /*
+   * El glow es muy pequeño.
+   * No crea una mancha dentro de la tarjeta.
+   */
+  filter:
+    drop-shadow(0 0 4px rgba(0, 240, 255, 0.55))
+    drop-shadow(0 0 8px rgba(0, 240, 255, 0.2));
+
+  opacity: 0.75;
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  animation:
+    trailRotation 4.5s linear infinite;
+}
+
+
+/* ---------------------------------------------------------
+   LÍNEA NEÓN PRINCIPAL
+   --------------------------------------------------------- */
+
+.detail-card::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    conic-gradient(
+      from var(--trail-angle),
+
+      /*
+       * GRAN PARTE DEL BORDE APAGADO
+       */
+      rgba(0, 240, 255, 0.12) 0deg,
+      rgba(0, 240, 255, 0.12) 250deg,
+
+      transparent 265deg,
+
+      /*
+       * ESTELA PRINCIPAL
+       */
+      rgba(0, 240, 255, 0.15) 275deg,
+      rgba(0, 240, 255, 0.55) 282deg,
+      #00f0ff 290deg,
+      rgba(0, 240, 255, 0.55) 298deg,
+
+      /*
+       * TRANSICIÓN
+       */
+      rgba(168, 85, 247, 0.25) 306deg,
+
+      /*
+       * PEQUEÑO TOQUE MAGENTA
+       */
+      rgba(255, 0, 127, 0.45) 313deg,
+      rgba(255, 0, 127, 0.15) 320deg,
+
+      transparent 330deg,
+
+      rgba(0, 240, 255, 0.12) 340deg,
+      rgba(0, 240, 255, 0.12) 360deg
+    );
+
+  /*
+   * RECORTAR EL CENTRO.
+   *
+   * Este es el punto clave.
+   *
+   * El gradiente NO pinta el área interna.
+   * Solo pinta el perímetro.
+   */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  animation:
+    trailRotation 4.5s linear infinite;
+}
+
+
+/* =========================================================
+   ANIMACIÓN
+   ========================================================= */
+
+/*
+ * IMPORTANTE:
+ *
+ * NO usamos:
+ *
+ * transform: rotate(...)
+ *
+ * porque eso era lo que provocaba que la estela
+ * se saliera de la tarjeta.
+ *
+ * Ahora solamente cambia el ángulo del gradiente.
+ */
+
+@keyframes trailRotation {
+  from {
+    --trail-angle: 0deg;
+  }
+
+  to {
+    --trail-angle: 360deg;
+  }
+}
+
+
+/* =========================================================
+   HEADER DE LA TARJETA
+   ========================================================= */
 
 .detail-header {
   display: flex;
   align-items: center;
+
   gap: 1.5rem;
+
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+
+  border-bottom:
+    1px solid rgba(0, 240, 255, 0.15);
+
   margin-bottom: 2rem;
 }
 
 .detail-header h2 {
   margin: 0 0 0.5rem;
+
   color: #ffffff;
+
   font-size: 1.6rem;
+
   letter-spacing: 0.5px;
+
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.08);
 }
 
-/* Avatar Hexagonal Táctico */
+
+/* =========================================================
+   AVATAR HEXAGONAL
+   ========================================================= */
+
+/*
+ * HEXÁGONO:
+ * Se mantiene exactamente como estaba.
+ */
+
 .avatar {
+  position: relative;
+
+  flex: 0 0 70px;
+
   width: 70px;
   height: 70px;
-  background: rgba(0, 240, 255, 0.1);
-  border: 2px solid #00f0ff;
-  color: #00f0ff;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  color: #00f0ff;
+
   font-size: 2rem;
   font-weight: bold;
-  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0, 240, 255, 0.25),
+      rgba(0, 100, 160, 0.12)
+    );
+
+  clip-path: polygon(
+    50% 0%,
+    92% 24%,
+    92% 76%,
+    50% 100%,
+    8% 76%,
+    8% 24%
+  );
+
+  filter:
+    drop-shadow(
+      0 0 5px rgba(0, 240, 255, 0.65)
+    )
+    drop-shadow(
+      0 0 14px rgba(0, 240, 255, 0.18)
+    );
+
+  text-shadow:
+    0 0 8px rgba(0, 240, 255, 0.8),
+    0 0 18px rgba(0, 240, 255, 0.25);
+
+  isolation: isolate;
 }
 
-/* --- REJILLA DE DATOS (GRID) --- */
+
+/* Interior del hexágono */
+
+.avatar::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: -1;
+
+  inset: 2px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 35, 60, 0.98),
+      rgba(8, 18, 42, 0.98)
+    );
+
+  clip-path: polygon(
+    50% 0%,
+    92% 24%,
+    92% 76%,
+    50% 100%,
+    8% 76%,
+    8% 24%
+  );
+}
+
+
+/* Brillo interior del hexágono */
+
+.avatar::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: -1;
+
+  width: 28px;
+  height: 28px;
+
+  top: 50%;
+  left: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  background:
+    rgba(0, 240, 255, 0.12);
+
+  filter: blur(12px);
+
+  border-radius: 50%;
+}
+
+
+/* =========================================================
+   GRID DE DATOS
+   ========================================================= */
+
 .detail-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap: 1.5rem;
+
   margin: 0;
 }
 
 @media (max-width: 600px) {
-  .detail-grid { grid-template-columns: 1fr; }
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .detail-item {
   display: flex;
+
   flex-direction: column;
+
   gap: 0.4rem;
 }
 
 .detail-item.full {
   grid-column: 1 / -1;
+
   margin-top: 1.5rem;
+
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.05);
 }
 
 .detail-item dt {
   font-size: 0.75rem;
+
   text-transform: uppercase;
+
   color: #00f0ff;
+
   font-weight: bold;
+
   letter-spacing: 1px;
+
+  text-shadow:
+    0 0 8px rgba(0, 240, 255, 0.2);
 }
 
 .detail-item dd {
   margin: 0;
+
   font-size: 1.05rem;
+
   color: #e2e8f0;
 }
 
-/* Badges de Roles del Detalle */
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
 .badge {
   padding: 0.3rem 0.75rem;
+
   border-radius: 4px;
+
   font-size: 0.75rem;
+
   font-weight: bold;
+
   letter-spacing: 0.5px;
+
   text-transform: uppercase;
+
   display: inline-block;
 }
-.badge-admin { background: rgba(0, 240, 255, 0.15); color: #00f0ff; border: 1px solid #00f0ff; }
-.badge-coordinador { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid #a855f7; }
-.badge-rescatista { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; }
-.badge-voluntario { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid #22c55e; }
-.badge-gestor_refugio { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid #f97316; }
 
-/* Estados Neón */
+.badge-admin {
+  background:
+    rgba(0, 240, 255, 0.15);
+
+  color: #00f0ff;
+
+  border:
+    1px solid #00f0ff;
+
+  box-shadow:
+    0 0 8px rgba(0, 240, 255, 0.15);
+}
+
+.badge-coordinador {
+  background:
+    rgba(168, 85, 247, 0.15);
+
+  color: #a855f7;
+
+  border:
+    1px solid #a855f7;
+
+  box-shadow:
+    0 0 8px rgba(168, 85, 247, 0.15);
+}
+
+.badge-rescatista {
+  background:
+    rgba(239, 68, 68, 0.15);
+
+  color: #ef4444;
+
+  border:
+    1px solid #ef4444;
+
+  box-shadow:
+    0 0 8px rgba(239, 68, 68, 0.15);
+}
+
+.badge-voluntario {
+  background:
+    rgba(34, 197, 94, 0.15);
+
+  color: #22c55e;
+
+  border:
+    1px solid #22c55e;
+
+  box-shadow:
+    0 0 8px rgba(34, 197, 94, 0.15);
+}
+
+.badge-gestor_refugio {
+  background:
+    rgba(249, 115, 22, 0.15);
+
+  color: #f97316;
+
+  border:
+    1px solid #f97316;
+
+  box-shadow:
+    0 0 8px rgba(249, 115, 22, 0.15);
+}
+
+
+/* =========================================================
+   ESTADOS NEÓN
+   ========================================================= */
+
 .dot {
   display: inline-block;
+
   width: 8px;
   height: 8px;
+
   border-radius: 50%;
+
   background: #64748b;
+
   margin-right: 0.5rem;
+
   vertical-align: middle;
 }
-.dot.active { background: #39ff14; box-shadow: 0 0 10px #39ff14; }
 
-.alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; }
-.alert-error { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; }
+.dot.active {
+  background: #39ff14;
 
-.loading { padding: 4rem 1rem; text-align: center; color: #64748b; }
+  box-shadow:
+    0 0 6px #39ff14,
+    0 0 12px rgba(57, 255, 20, 0.8),
+    0 0 20px rgba(57, 255, 20, 0.35);
+}
+
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+
+.alert {
+  padding: 1rem;
+
+  border-radius: 8px;
+
+  margin-bottom: 1.5rem;
+
+  font-size: 0.9rem;
+}
+
+.alert-error {
+  background:
+    rgba(255, 77, 77, 0.1);
+
+  color: #ff4d4d;
+
+  border:
+    1px solid #ff4d4d;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading {
+  padding: 4rem 1rem;
+
+  text-align: center;
+
+  color: #64748b;
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-card::before,
+  .detail-card::after {
+    animation: none;
+  }
+}
