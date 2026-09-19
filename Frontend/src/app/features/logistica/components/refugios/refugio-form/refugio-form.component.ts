@@ -11,7 +11,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { RefugioService } from "../../../services/refugio.service";
 import { Refugio } from "../../../models/refugio.model";
 
-// Define el componente como independiente (standalone)
 @Component({
   selector: "app-refugio-form",
   standalone: true,
@@ -30,26 +29,23 @@ import { Refugio } from "../../../models/refugio.model";
   styleUrls: ["./refugio-form.component.css"]
 })
 export class RefugioFormComponent implements OnInit {
-  // Define el grupo de formularios reactivo
   form: FormGroup;
-  
-  // Indica si el formulario está cargando
   loading: boolean = false;
-  
-  // Indica si el formulario está en modo edición
   isEdit: boolean = false;
   
-  // Lista de estados válidos para el select
-  estadosRefugio: string[] = ["DISPONIBLE", "PARCIAL", "LLENO", "INACTIVO"];
+  estadosRefugio = [
+    { valor: "DISPONIBLE", texto: "Disponible", icono: "check_circle", color: "#10b981" },
+    { valor: "PARCIAL", texto: "Parcial", icono: "remove_circle", color: "#f59e0b" },
+    { valor: "LLENO", texto: "Lleno", icono: "cancel", color: "#ef4444" },
+    { valor: "INACTIVO", texto: "Inactivo", icono: "block", color: "#6b7280" }
+  ];
 
-  // Inyecta los servicios necesarios
   constructor(
     private fb: FormBuilder,
     private refugioService: RefugioService,
     public dialogRef: MatDialogRef<RefugioFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { modo: string; refugio?: Refugio }
   ) {
-    // Crea la estructura del formulario con sus validaciones
     this.form = this.fb.group({
       nombre: ["", [Validators.required, Validators.maxLength(160)]],
       capacidad_total: [0, [Validators.required, Validators.min(1)]],
@@ -65,7 +61,6 @@ export class RefugioFormComponent implements OnInit {
     });
   }
 
-  // Se ejecuta al inicializar el componente
   ngOnInit(): void {
     this.isEdit = this.data.modo === "editar";
     if (this.isEdit && this.data.refugio) {
@@ -73,14 +68,12 @@ export class RefugioFormComponent implements OnInit {
     }
   }
 
-  // Maneja el envío del formulario
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    // Valida que la ocupación no exceda la capacidad
     if (this.form.value.ocupacion_actual > this.form.value.capacidad_total) {
       alert("La ocupación actual no puede exceder la capacidad total");
       return;
@@ -114,7 +107,16 @@ export class RefugioFormComponent implements OnInit {
     }
   }
 
-  // Cierra el modal sin guardar
+  getEstadoIcono(valor: string): string {
+    const estado = this.estadosRefugio.find(e => e.valor === valor);
+    return estado ? estado.icono : "help";
+  }
+
+  getEstadoColor(valor: string): string {
+    const estado = this.estadosRefugio.find(e => e.valor === valor);
+    return estado ? estado.color : "#6b7280";
+  }
+
   onCancel(): void {
     this.dialogRef.close(false);
   }
