@@ -1,4 +1,5 @@
 // src/app/features/core/components/zonas/zona-list/zona-list.component.ts
+
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -48,7 +49,9 @@ export class ZonaListComponent implements OnInit {
                 z.nombre.toLowerCase().includes(term) ||
                 (z.municipio ?? '').toLowerCase().includes(term) ||
                 (z.departamento ?? '').toLowerCase().includes(term);
+
             const matchNivel = !nivel || z.nivel_riesgo === nivel;
+
             return matchTerm && matchNivel;
         });
     });
@@ -60,6 +63,7 @@ export class ZonaListComponent implements OnInit {
     loadZonas(): void {
         this.loading.set(true);
         this.errorMessage.set(null);
+
         this.zonaService.findAll().subscribe({
             next: (data) => {
                 this.zonas.set(data);
@@ -82,18 +86,35 @@ export class ZonaListComponent implements OnInit {
 
     confirmDelete(zona: ZonaResponse): void {
         if (!confirm(`¿Eliminar la zona "${zona.nombre}"?`)) return;
+
         this.deletingId.set(zona.id);
+
         this.zonaService.delete(zona.id).subscribe({
             next: () => {
-                this.zonas.update((list) => list.filter((z) => z.id !== zona.id));
-                this.successMessage.set(`Zona "${zona.nombre}" eliminada`);
+                this.zonas.update((list) =>
+                    list.filter((z) => z.id !== zona.id)
+                );
+
+                this.successMessage.set(
+                    `Zona "${zona.nombre}" eliminada`
+                );
+
                 this.deletingId.set(null);
-                setTimeout(() => this.successMessage.set(null), 3000);
+
+                setTimeout(
+                    () => this.successMessage.set(null),
+                    3000
+                );
             },
+
             error: (err: Error) => {
                 this.errorMessage.set(err.message);
                 this.deletingId.set(null);
             }
         });
+    }
+
+    logout(): void {
+        this.authService.logout();
     }
 }
