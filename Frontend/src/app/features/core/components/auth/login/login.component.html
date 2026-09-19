@@ -1,62 +1,412 @@
 <!-- src/app/features/core/components/auth/login/login.component.html -->
+
 <div class="auth-container">
-    <div class="auth-card">
-        <h1 class="auth-title">SIGED</h1>
-        <p class="auth-subtitle">Iniciar sesión</p>
 
-        @if (successMessage()) {
-            <div class="alert alert-success">{{ successMessage() }}</div>
-        }
+    <!-- =====================================================
+         PANEL IZQUIERDO
+         ===================================================== -->
 
-        @if (errorMessage()) {
-            <div class="alert alert-error">{{ errorMessage() }}</div>
-        }
+    <section class="visual-panel">
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input
-                    id="email"
-                    type="email"
-                    formControlName="email"
-                    placeholder="correo@ejemplo.com"
-                    autocomplete="email"
-                    [class.invalid]="email.invalid && email.touched" />
+        <!-- Fondo decorativo -->
+        <div class="visual-glow visual-glow-one"></div>
+        <div class="visual-glow visual-glow-two"></div>
 
-                @if (email.invalid && email.touched) {
-                    <small class="error-text">
-                        @if (email.errors?.['required']) { El correo es requerido }
-                        @if (email.errors?.['email']) { Correo inválido }
-                    </small>
-                }
+
+        <!-- Logo -->
+        <div class="visual-brand">
+
+            <img
+                src="/logo_SIGED.png"
+                alt="SIGED"
+                class="visual-logo" />
+
+        </div>
+
+
+        <!-- =================================================
+             ILUSTRACIÓN
+             ================================================= -->
+
+        <div class="disaster-illustration">
+
+            <div class="moon"></div>
+
+            <!-- Nubes -->
+            <div class="cloud cloud-one"></div>
+            <div class="cloud cloud-two"></div>
+            <div class="cloud cloud-three"></div>
+
+
+            <!-- Relámpagos -->
+            <div class="lightning lightning-one"></div>
+            <div class="lightning lightning-two"></div>
+
+
+            <!-- Lluvia -->
+            <div class="rain rain-one"></div>
+            <div class="rain rain-two"></div>
+            <div class="rain rain-three"></div>
+            <div class="rain rain-four"></div>
+            <div class="rain rain-five"></div>
+            <div class="rain rain-six"></div>
+            <div class="rain rain-seven"></div>
+            <div class="rain rain-eight"></div>
+
+
+            <!-- Montañas -->
+            <div class="mountain mountain-back"></div>
+            <div class="mountain mountain-front"></div>
+
+
+            <!-- Casa -->
+            <div class="emergency-house">
+
+                <div class="house-roof"></div>
+
+                <div class="house-body">
+
+                    <div class="house-door"></div>
+
+                    <div class="house-window">
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input
-                    id="password"
-                    type="password"
-                    formControlName="password"
-                    placeholder="••••••••"
-                    autocomplete="current-password"
-                    [class.invalid]="password.invalid && password.touched" />
 
-                @if (password.invalid && password.touched) {
-                    <small class="error-text">
-                        @if (password.errors?.['required']) { La contraseña es requerida }
-                        @if (password.errors?.['minlength']) { Mínimo 6 caracteres }
-                    </small>
-                }
+            <!-- Líneas de terreno / sismo -->
+            <div class="ground-line ground-one"></div>
+            <div class="ground-line ground-two"></div>
+            <div class="ground-line ground-three"></div>
+
+        </div>
+
+
+        <!-- =================================================
+             TEXTO
+             ================================================= -->
+
+        <div class="visual-content">
+
+            <span class="visual-tag">
+                <i class="bi bi-shield-check"></i>
+                PREVENCIÓN Y RESPUESTA
+            </span>
+
+            <h2>
+                Preparados ante
+                <span>cualquier emergencia.</span>
+            </h2>
+
+            <p>
+                SIGED integra la gestión de recursos, refugios,
+                usuarios y asignaciones para apoyar la respuesta
+                ante lluvias, tormentas, terremotos, sismos
+                y otros desastres.
+            </p>
+
+        </div>
+
+
+        <!-- Indicadores -->
+        <div class="visual-features">
+
+            <div class="visual-feature">
+
+                <i class="bi bi-cloud-lightning"></i>
+
+                <span>
+                    Monitoreo
+                </span>
+
             </div>
 
-            <button type="submit" class="btn-primary" [disabled]="loading()">
-                {{ loading() ? 'Ingresando...' : 'Ingresar' }}
-            </button>
-        </form>
 
-        <p class="auth-footer">
-            ¿No tienes cuenta?
-            <a routerLink="/register">Regístrate aquí</a>
-        </p>
-    </div>
+            <div class="visual-feature">
+
+                <i class="bi bi-house-heart"></i>
+
+                <span>
+                    Refugios
+                </span>
+
+            </div>
+
+
+            <div class="visual-feature">
+
+                <i class="bi bi-box-seam"></i>
+
+                <span>
+                    Recursos
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PANEL DERECHO
+         ===================================================== -->
+
+    <section class="login-panel">
+
+        <div class="login-content">
+
+            <!-- Encabezado -->
+            <div class="login-header">
+
+                <div class="mobile-logo">
+
+                    <img
+                        src="/logo_SIGED.png"
+                        alt="SIGED" />
+
+                </div>
+
+                <span class="welcome-label">
+                    Bienvenido
+                </span>
+
+                <h1>
+                    Inicia sesión
+                </h1>
+
+                <p>
+                    Accede a tu cuenta de SIGED
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 MENSAJE DE ÉXITO
+                 ================================================= -->
+
+            @if (successMessage()) {
+
+                <div
+                    class="alert alert-success"
+                    role="alert">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    <span>
+                        {{ successMessage() }}
+                    </span>
+
+                </div>
+
+            }
+
+
+            <!-- =================================================
+                 MENSAJE DE ERROR
+                 ================================================= -->
+
+            @if (errorMessage()) {
+
+                <div
+                    class="alert alert-error"
+                    role="alert">
+
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+
+                    <span>
+                        {{ errorMessage() }}
+                    </span>
+
+                </div>
+
+            }
+
+
+            <!-- =================================================
+                 FORMULARIO
+                 ================================================= -->
+
+            <form
+                [formGroup]="form"
+                (ngSubmit)="onSubmit()"
+                novalidate>
+
+
+                <!-- CORREO -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Correo electrónico
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="bi bi-envelope input-icon"></i>
+
+                        <input
+                            id="email"
+                            type="email"
+                            formControlName="email"
+                            placeholder="correo@ejemplo.com"
+                            autocomplete="email"
+                            [class.invalid]="
+                                email.invalid &&
+                                email.touched
+                            " />
+
+                    </div>
+
+
+                    @if (email.invalid && email.touched) {
+
+                        <small class="error-text">
+
+                            @if (email.errors?.['required']) {
+                                El correo es requerido
+                            }
+
+                            @if (email.errors?.['email']) {
+                                Correo inválido
+                            }
+
+                        </small>
+
+                    }
+
+                </div>
+
+
+                <!-- CONTRASEÑA -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="bi bi-lock input-icon"></i>
+
+                        <input
+                            id="password"
+                            type="password"
+                            formControlName="password"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            [class.invalid]="
+                                password.invalid &&
+                                password.touched
+                            " />
+
+                    </div>
+
+
+                    @if (
+                        password.invalid &&
+                        password.touched
+                    ) {
+
+                        <small class="error-text">
+
+                            @if (
+                                password.errors?.['required']
+                            ) {
+                                La contraseña es requerida
+                            }
+
+                            @if (
+                                password.errors?.['minlength']
+                            ) {
+                                Mínimo 6 caracteres
+                            }
+
+                        </small>
+
+                    }
+
+                </div>
+
+
+                <!-- OPCIÓN AUXILIAR -->
+
+                <div class="form-options">
+
+                    <span>
+                        <i class="bi bi-shield-lock"></i>
+                        Acceso seguro
+                    </span>
+
+                </div>
+
+
+                <!-- BOTÓN -->
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    [disabled]="loading()">
+
+                    @if (loading()) {
+
+                        <span class="button-loader"></span>
+
+                        Ingresando...
+
+                    }
+
+                    @else {
+
+                        <span>
+                            Ingresar
+                        </span>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    }
+
+                </button>
+
+            </form>
+
+
+            <!-- =================================================
+                 REGISTRO
+                 ================================================= -->
+
+            <div class="auth-footer">
+
+                <span>
+                    ¿No tienes una cuenta?
+                </span>
+
+                <a routerLink="/register">
+                    Regístrate aquí
+                </a>
+
+            </div>
+
+
+            <!-- Seguridad -->
+            <div class="security-note">
+
+                <i class="bi bi-shield-check"></i>
+
+                <span>
+                    Sistema Integral de Gestión para Desastres
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
