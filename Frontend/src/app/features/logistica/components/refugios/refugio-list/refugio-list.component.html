@@ -1,119 +1,131 @@
-<!-- Contenedor principal de la página de refugios -->
-<div class="container-page py-12 sm:py-16 animate-fade-in">
-  
-  <!-- Encabezado de la sección -->
-  <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
-    <div class="max-w-2xl">
-      <h1 class="font-display text-3xl font-extrabold text-navy-900 sm:text-4xl">
-        Gestión de refugios
-      </h1>
-      <p class="mt-3 text-navy-700">
-        Consulta, registra y edita ubicaciones de refugios
-      </p>
+<div class="container-page">
+  <div class="page-header">
+    <h1 class="page-title">Gestión de Refugios</h1>
+    <p class="page-subtitle">Consulta, registra y edita ubicaciones de refugios</p>
+  </div>
+
+  <div class="header-actions">
+    <div class="search-container">
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Búsqueda global (ej: Refugios Zona 1, Capacidad 100)..."
+        class="search-input"
+      />
     </div>
-    <button 
-      class="btn-custom-primary"
-      (click)="abrirModalCrear()">
+    <button class="btn-primary-cyber" (click)="abrirModalCrear()">
       <mat-icon>add</mat-icon>
       Registrar refugio
     </button>
   </div>
 
-  <!-- Barra de búsqueda -->
-  <div class="mb-6">
-    <div class="search-container">
-      <mat-icon class="search-icon">search</mat-icon>
-      <input 
-        type="text" 
-        [(ngModel)]="busqueda" 
-        placeholder="Buscar por nombre o dirección..."
-        class="search-input"
-      />
+  <!-- Filtros hexagonales -->
+  <div class="filtros-container">
+    <div 
+      *ngFor="let filtro of filtros" 
+      class="filtro-hex"
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)">
+      <div class="hexagon-wrapper">
+        <div class="hexagon" [class]="'hex-' + filtro.id.toLowerCase()">
+          <mat-icon>{{ filtro.icono }}</mat-icon>
+        </div>
+      </div>
+      <span class="filtro-label">{{ filtro.etiqueta }}</span>
     </div>
   </div>
 
-  <!-- Estado de carga -->
   <div *ngIf="loading" class="estado-carga">
     <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
-    <p class="text-navy-600 mt-4">Cargando refugios...</p>
+    <p class="text-secondary mt-4">Cargando refugios...</p>
   </div>
 
-  <!-- Grid de refugios -->
-  <div *ngIf="!loading && refugiosFiltrados.length > 0" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    <!-- Tarjeta de refugio -->
-    <div
-      *ngFor="let refugio of refugiosFiltrados; let i = index"
+  <div *ngIf="!loading && refugiosFiltrados.length > 0" class="refugios-grid">
+    <div 
+      *ngFor="let refugio of refugiosFiltrados; let i = index" 
       class="refugio-card"
-      [style.animation-delay]="i * 50 + 'ms'">
+      [style.animation-delay]="(i * 80) + 'ms'">
       
-      <!-- Header con estado -->
       <div class="refugio-header">
-        <div class="icono-container icono-refugio">
-          <mat-icon>home</mat-icon>
+        <div class="icono-container" [style.background]="getEstadoColor(refugio.estado)">
+          <mat-icon>{{ getEstadoIcono(refugio.estado) }}</mat-icon>
         </div>
-        <span class="estado-badge" [ngClass]="getColorEstado(refugio.estado)">
-          {{ refugio.estado }}
-        </span>
+        <span class="tipo-badge">{{ refugio.estado }}</span>
       </div>
 
-      <!-- Nombre del refugio -->
-      <h3 class="refugio-nombre">
-        {{ refugio.nombre }}
-      </h3>
+      <h3 class="refugio-nombre">{{ refugio.nombre }}</h3>
 
-      <!-- Dirección -->
       <p class="refugio-direccion">
         <mat-icon class="direccion-icono">location_on</mat-icon>
-        {{ refugio.direccion || "Sin dirección" }}
+        {{ refugio.direccion || "Sin dirección registrada" }}
       </p>
 
-      <!-- Capacidad y ocupación -->
       <div class="refugio-capacidad">
-        <div class="capacidad-info">
-          <span class="capacidad-label">Capacidad:</span>
-          <span class="capacidad-valor">{{ refugio.capacidad_total }} personas</span>
+        <div class="cantidad-info">
+          <mat-icon class="cantidad-icono">people</mat-icon>
+          <span class="cantidad-texto">
+            {{ refugio.capacidad_total }} PERSONAS
+          </span>
         </div>
         <div class="ocupacion-info">
-          <span class="ocupacion-label">Ocupación:</span>
-          <span class="ocupacion-valor">{{ refugio.ocupacion_actual }} personas</span>
-        </div>
-        
-        <!-- Barra de progreso -->
-        <div class="progress-bar-container">
-          <div class="progress-bar" 
-               [style.width.%]="getPorcentajeOcupacion(refugio.ocupacion_actual, refugio.capacidad_total)"
-               [class]="'progress-' + (getPorcentajeOcupacion(refugio.ocupacion_actual, refugio.capacidad_total) > 90 ? 'danger' : getPorcentajeOcupacion(refugio.ocupacion_actual, refugio.capacidad_total) > 70 ? 'warning' : 'success')">
-          </div>
-          <span class="progress-text">
-            {{ getPorcentajeOcupacion(refugio.ocupacion_actual, refugio.capacidad_total) }}%
+          <mat-icon class="cantidad-icono">person</mat-icon>
+          <span class="cantidad-texto">
+            {{ refugio.ocupacion_actual }} OCUPACIÓN
           </span>
         </div>
       </div>
 
-      <!-- Teléfono de contacto -->
+      <div class="progress-container">
+        <div class="progress-bar-wrapper">
+          <div class="progress-bar-fill" 
+               [style.width.%]="refugio.ocupacion_actual | porcentajeOcupacion:refugio.capacidad_total"
+               [style.background]="getColorProgreso(refugio.ocupacion_actual | porcentajeOcupacion:refugio.capacidad_total)">
+          </div>
+        </div>
+        <span class="progress-percentage" [style.color]="getColorProgreso(refugio.ocupacion_actual | porcentajeOcupacion:refugio.capacidad_total)">
+          {{ refugio.ocupacion_actual | porcentajeOcupacion:refugio.capacidad_total }}%
+        </span>
+      </div>
+
       <p class="refugio-telefono" *ngIf="refugio.telefono_contacto">
         <mat-icon class="telefono-icono">phone</mat-icon>
         {{ refugio.telefono_contacto }}
       </p>
 
-      <!-- Acciones -->
+      <p class="refugio-fecha" *ngIf="refugio.created_at">
+        <mat-icon class="fecha-icono">calendar_today</mat-icon>
+        Registrado: {{ refugio.created_at | fechaFormateada }}
+      </p>
+
       <div class="refugio-acciones">
         <button class="btn-accion btn-editar" (click)="abrirModalEditar(refugio)" title="Editar">
           <mat-icon>edit</mat-icon>
         </button>
-        <button class="btn-accion btn-eliminar" (click)="eliminarRefugio(refugio.id)" title="Eliminar">
+        <button class="btn-accion btn-eliminar" (click)="prepararEliminacion(refugio)" title="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Estado vacío -->
   <div *ngIf="!loading && refugiosFiltrados.length === 0" class="estado-vacio">
     <mat-icon class="estado-vacio-icono">home</mat-icon>
     <h3 class="estado-vacio-titulo">No hay refugios registrados</h3>
     <p class="estado-vacio-texto">
-      {{ busqueda ? 'No se encontraron refugios con ese criterio de búsqueda' : 'Comienza registrando tu primer refugio' }}
+      {{ busqueda ? 'No se encontraron refugios con ese criterio' : 'Comienza registrando tu primer refugio' }}
     </p>
   </div>
+
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="Eliminar refugio"
+    [message]="'¿Estás seguro de que deseas eliminar \'' + (refugioSeleccionadoParaEliminar?.nombre || 'este refugio') + '\'? Esta acción no se puede deshacer.'"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
 </div>
