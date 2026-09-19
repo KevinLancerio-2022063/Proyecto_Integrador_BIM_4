@@ -1,0 +1,8 @@
+"node_modules/" 
+".pnpm/" 
+"*.log" 
+".env" 
+".env.*" 
+".ignored_*" 
+"Backend/node_modules/" 
+"Frontend/node_modules/" 
