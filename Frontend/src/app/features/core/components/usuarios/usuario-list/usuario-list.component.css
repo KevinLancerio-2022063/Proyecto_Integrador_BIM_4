@@ -1,252 +1,1223 @@
-/* --- CONFIGURACIÓN DE CURSOR PERSONALIZADO --- */
-/* Se aplica a todo el contenedor de la aplicación */
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
 .app-layout {
   display: flex;
   background-color: #0a0f24;
   color: #e2e8f0;
   font-family: 'Segoe UI', Roboto, sans-serif;
+
   height: 100vh;
   width: 100vw;
+
   overflow: hidden;
-  /* Cursor normal: Mira el SVG incrustado */
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300c6ff' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v3M12 19v3M2 12h3M19 12h3'/%3E%3C/svg%3E") 12 12, auto;
 }
 
-/* Cursor interactivo para botones, enlaces y menús */
-button, a, select, input, th, td, .menu-item, .btn-icon {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ff7f' stroke-width='2'%3E%3Cpath d='M12 2v4M12 18v4M2 12h4M18 12h4'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%2300ff7f'/%3E%3C/svg%3E") 12 12, pointer !important;
+
+/* =========================================================
+   CURSOR NEÓN SIGED
+   ========================================================= */
+
+.app-layout {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 2L4 26L10.5 19.5L15 29L19 27L14.5 17.5L25 17.5Z' fill='%2300E5FF' stroke='%2307152F' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, auto;
 }
 
-/* --- ESTILOS DE LA BARRA LATERAL --- */
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"],
+.btn-icon,
+.menu-item {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 2L4 26L10.5 19.5L15 29L19 27L14.5 17.5L25 17.5Z' fill='%2339FF88' stroke='%2307152F' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, pointer !important;
+}
+
+
+button:disabled {
+  cursor: not-allowed !important;
+}
+
+
+/* =========================================================
+   BARRA LATERAL
+   ========================================================= */
+
 .sidebar {
   width: 260px;
   height: 100vh;
-  background-color: #0e132b; 
+
+  background-color: #0e132b;
+
   border-right: 1px solid rgba(0, 198, 255, 0.15);
+
   position: fixed;
+
   top: 0;
   left: 0;
+
   z-index: 10;
 }
- 
+
+
+/* =========================================================
+   MARCA / LOGO SIGED
+   ========================================================= */
+
 .sidebar-brand {
   padding: 30px 24px;
+
   text-align: center;
+
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 10px;
 }
 
-.siged-logo-svg {
-  width: 65px;
-  height: 65px;
-  filter: drop-shadow(0 0 8px rgba(34, 197, 148, 0.3));
+
+/*
+ * Logo oficial SIGED.
+ *
+ * La imagen contiene:
+ * - Símbolo de SIGED
+ * - Texto SIGED
+ *
+ * Por eso ya no necesitamos un <svg>
+ * ni un elemento separado para el texto.
+ */
+.siged-logo {
+  width: 150px;
+  height: auto;
+
+  display: block;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(34, 197, 148, 0.3)
+    );
+
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
 }
 
-.siged-text {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(0, 198, 255, 0.4);
+
+.siged-logo:hover {
+  transform: scale(1.03);
+
+  filter:
+    drop-shadow(
+      0 0 12px
+      rgba(34, 197, 148, 0.45)
+    );
 }
- 
+
+
+/* =========================================================
+   MENÚ
+   ========================================================= */
+
 .sidebar-menu {
   margin-top: 20px;
 }
- 
+
+
 .sidebar-menu ul {
   list-style: none;
+
   padding: 0;
   margin: 0;
 }
- 
+
+
 .menu-item {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   padding: 14px 20px;
+
   color: #94a3b8;
+
   text-decoration: none;
+
   font-size: 15px;
-  font-weight: 600;      
+
+  font-weight: 600;
+
   letter-spacing: 0.5px;
+
   position: relative;
+
   z-index: 1;
-  overflow: hidden;      
+
+  overflow: hidden;
+
   border-radius: 8px;
-  margin: 6px 14px;  
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+  margin: 6px 14px;
+
+  transition:
+    all 0.4s
+    cubic-bezier(0.25, 1, 0.5, 1);
 }
+
 
 .menu-icon {
   font-size: 1.25rem;
 }
- 
-/* 1. EL FONDO DEGRADADO (Llenado de izquierda a derecha) */
+
+
+/* Fondo */
 .menu-item::before {
   content: '';
+
   position: absolute;
+
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
-  /* Modificado a la paleta Cyan/Azul de tu barra de herramientas */
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
+
+  background:
+    linear-gradient(
+      90deg,
+      #00c6ff,
+      #0072ff
+    );
+
   z-index: -1;
+
   transform: scaleX(0);
+
   transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
- 
-/* 2. EL DESTELLO BRILLANTE DIAGONAL */
-.menu-item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%; 
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: skewX(-25deg); 
-  z-index: 2; 
-}
- 
-/* --- HOVER Y ESTADO ACTIVO --- */
-.menu-item:hover, .menu-item.active {
-  color: #ffffff;
-  transform: translateY(-2px) scale(1.02); 
-  box-shadow: 0 8px 20px rgba(0, 198, 255, 0.3);
+
+  transition:
+    transform 0.4s
+    cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.menu-item.active {
-  box-shadow: inset 4px 0 0 #00c6ff, 0 4px 15px rgba(0, 198, 255, 0.15);
+
+/* Destello */
+.menu-item::after {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: -150%;
+
+  width: 50%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0)
+    );
+
+  transform: skewX(-25deg);
+
+  z-index: 2;
 }
- 
-.menu-item:hover::before, .menu-item.active::before {
+
+
+.menu-item:hover,
+.menu-item.active {
+  color: #ffffff;
+
+  transform:
+    translateY(-2px)
+    scale(1.02);
+
+  box-shadow:
+    0 8px 20px
+    rgba(0, 198, 255, 0.3);
+}
+
+
+.menu-item.active {
+  box-shadow:
+    inset 4px 0 0 #00c6ff,
+    0 4px 15px
+    rgba(0, 198, 255, 0.15);
+}
+
+
+.menu-item:hover::before,
+.menu-item.active::before {
   transform: scaleX(1);
 }
- 
+
+
 .menu-item:hover::after {
-  left: 150%; 
-  transition: left 0.6s ease-in-out; 
+  left: 150%;
+
+  transition:
+    left 0.6s ease-in-out;
 }
- 
-/* --- CONTENEDOR PRINCIPAL DERECHO --- */
+
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
 .main-content {
-  margin-left: 260px; 
+  margin-left: 260px;
+
   padding: 2.5rem 2rem;
+
   width: calc(100% - 260px);
+
   overflow-y: auto;
+
   box-sizing: border-box;
 }
 
-/* --- ESTILOS DE TABLAS Y COMPONENTES RESTANTES --- */
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .page-header {
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   flex-wrap: wrap;
+
   gap: 1.5rem;
+
   margin-bottom: 2rem;
-  border-bottom: 1px solid rgba(0, 198, 255, 0.15);
+
+  border-bottom:
+    1px solid
+    rgba(0, 198, 255, 0.15);
+
   padding-bottom: 1.5rem;
 }
 
+
 .page-header h1 {
   margin: 0;
+
   color: #ffffff;
+
   font-size: 2.2rem;
-  text-shadow: 0 0 12px rgba(0, 198, 255, 0.3);
+
+  text-shadow:
+    0 0 12px
+    rgba(0, 198, 255, 0.3);
 }
+
 
 .page-subtitle {
   margin: 0.4rem 0 0;
+
   color: #64748b;
+
   font-size: 0.95rem;
 }
 
+
 .header-actions {
   display: flex;
+
   gap: 0.75rem;
 }
 
-.btn-primary, .btn-secondary, .btn-danger {
-  padding: 0.65rem 1.25rem;
+
+/* =========================================================
+   BOTONES PRINCIPALES
+   ========================================================= */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding:
+    0.65rem 1.25rem;
+
   border-radius: 30px;
+
   font-weight: bold;
+
   font-size: 0.875rem;
+
   text-decoration: none;
+
   border: none;
+
   display: inline-flex;
+
   align-items: center;
+
+  justify-content: center;
+
   gap: 0.5rem;
-  transition: all 0.2s ease;
+
+  transition:
+    all 0.2s ease;
 }
 
-.btn-primary { background: linear-gradient(90deg, #ff007f 0%, #ff6600 100%); color: #fff; }
-.btn-secondary { background: rgba(18, 24, 56, 0.8); color: #00f0ff; border: 1px solid rgba(0, 198, 255, 0.4); }
-.btn-danger { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.4); }
+
+.btn-primary {
+  background:
+    linear-gradient(
+      90deg,
+      #ff007f 0%,
+      #ff6600 100%
+    );
+
+  color: #ffffff;
+}
+
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(255, 0, 127, 0.25);
+}
+
+
+.btn-secondary {
+  background:
+    rgba(18, 24, 56, 0.8);
+
+  color: #00f0ff;
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.4);
+}
+
+
+.btn-secondary:hover {
+  background:
+    rgba(0, 198, 255, 0.1);
+
+  box-shadow:
+    0 0 15px
+    rgba(0, 198, 255, 0.15);
+}
+
+
+.btn-danger {
+  background:
+    rgba(255, 77, 77, 0.1);
+
+  color: #ff4d4d;
+
+  border:
+    1px solid
+    rgba(255, 77, 77, 0.4);
+}
+
+
+.btn-danger:hover {
+  background:
+    rgba(255, 77, 77, 0.15);
+
+  box-shadow:
+    0 0 15px
+    rgba(255, 77, 77, 0.15);
+}
+
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+
+.alert {
+  padding: 0.9rem 1.2rem;
+
+  border-radius: 8px;
+
+  margin-bottom: 1.5rem;
+
+  font-size: 0.9rem;
+}
+
+
+.alert-success {
+  background:
+    rgba(57, 255, 20, 0.08);
+
+  border:
+    1px solid
+    rgba(57, 255, 20, 0.25);
+
+  color: #39ff88;
+}
+
+
+.alert-error {
+  background:
+    rgba(255, 77, 77, 0.08);
+
+  border:
+    1px solid
+    rgba(255, 77, 77, 0.3);
+
+  color: #ff6b6b;
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
 
 .toolbar {
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   margin-bottom: 1.5rem;
+
   gap: 1.5rem;
 }
 
-.search-input {
+
+.search-wrapper {
   flex: 1;
-  background: rgba(18, 24, 56, 0.8);
-  border: 1px solid rgba(0, 198, 255, 0.3);
-  padding: 0.75rem 1.25rem;
-  border-radius: 30px;
-  color: #fff;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
 }
+
+
+.search-icon {
+  position: absolute;
+
+  left: 1.1rem;
+
+  color: #64748b;
+
+  z-index: 2;
+}
+
+
+.search-input {
+  width: 100%;
+
+  background:
+    rgba(18, 24, 56, 0.8);
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.3);
+
+  padding:
+    0.75rem
+    1.25rem
+    0.75rem
+    2.8rem;
+
+  border-radius: 30px;
+
+  color: #ffffff;
+
+  outline: none;
+
+  transition:
+    all 0.2s ease;
+}
+
+
+.search-input::placeholder {
+  color: #64748b;
+}
+
+
+.search-input:focus {
+  border-color: #00c6ff;
+
+  box-shadow:
+    0 0 15px
+    rgba(0, 198, 255, 0.12);
+}
+
+
+.result-count {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  color: #e2e8f0;
+
+  white-space: nowrap;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+}
+
+
+.result-count i {
+  color: #00f0ff;
+}
+
+
+/* =========================================================
+   TABLA
+   ========================================================= */
 
 .table-wrapper {
   overflow-x: auto;
-  background: linear-gradient(180deg, rgba(18, 24, 56, 0.85) 0%, rgba(10, 15, 36, 0.85) 100%);
-  border: 1px solid rgba(0, 198, 255, 0.2);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18, 24, 56, 0.85) 0%,
+      rgba(10, 15, 36, 0.85) 100%
+    );
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.2);
+
   border-radius: 12px;
 }
 
+
 .data-table {
   width: 100%;
+
   border-collapse: collapse;
 }
 
+
 .data-table th {
   padding: 1rem;
+
   color: #00f0ff;
+
   text-transform: uppercase;
+
   font-size: 0.8rem;
+
   text-align: left;
+
+  white-space: nowrap;
 }
+
 
 .data-table td {
   padding: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  white-space: nowrap;
 }
 
-.badge { padding: 0.3rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-.badge-admin { background: rgba(0, 240, 255, 0.15); color: #00f0ff; }
 
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.5rem; }
-.dot.active { background: #39ff14; box-shadow: 0 0 10px #39ff14; }
+.data-table tbody tr {
+  transition:
+    background 0.2s ease;
+}
+
+
+.data-table tbody tr:hover {
+  background:
+    rgba(0, 198, 255, 0.035);
+}
+
+
+/* =========================================================
+   NOMBRE / PERFIL DE USUARIO
+   ========================================================= */
+
+.strong {
+  font-weight: 600;
+
+  color: #ffffff;
+
+  white-space: nowrap;
+
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   AVATAR CIRCULAR
+   ========================================================= */
+
+.user-avatar {
+  width: 34px;
+
+  height: 34px;
+
+  min-width: 34px;
+
+  max-width: 34px;
+
+  min-height: 34px;
+
+  max-height: 34px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  vertical-align: middle;
+
+  box-sizing: border-box;
+
+  margin-right: 10px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #00c6ff 0%,
+      #0072ff 100%
+    );
+
+  border:
+    1px solid
+    rgba(0, 240, 255, 0.55);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  text-align: center;
+
+  box-shadow:
+    0 0 10px
+    rgba(0, 198, 255, 0.35);
+
+  flex-shrink: 0;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* Nombre */
+
+.user-name {
+  display: inline-block;
+
+  vertical-align: middle;
+
+  color: #ffffff;
+}
+
+
+/* Efecto del avatar al pasar el mouse */
+
+.strong:hover .user-avatar {
+  transform: scale(1.08);
+
+  box-shadow:
+    0 0 15px
+    rgba(0, 198, 255, 0.65);
+}
+
+
+/* =========================================================
+   ICONOS DE TABLA
+   ========================================================= */
+
+.table-icon {
+  color: #7da2c7;
+
+  margin-right: 0.4rem;
+}
+
+
+/* =========================================================
+   BADGES DE ROLES
+   ========================================================= */
+
+.badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 28px;
+
+  padding:
+    0.3rem
+    0.75rem;
+
+  border-radius: 5px;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  border: 1px solid transparent;
+
+  line-height: 1.2;
+}
+
+
+/* Administrador */
+
+.badge-administrador {
+  background:
+    rgba(0, 240, 255, 0.14);
+
+  color: #00f0ff;
+
+  border-color:
+    rgba(0, 240, 255, 0.3);
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 240, 255, 0.08);
+}
+
+
+/* Voluntario */
+
+.badge-voluntario {
+  background:
+    rgba(57, 255, 20, 0.10);
+
+  color: #39ff14;
+
+  border-color:
+    rgba(57, 255, 20, 0.25);
+
+  box-shadow:
+    0 0 8px
+    rgba(57, 255, 20, 0.06);
+}
+
+
+/* Rescatista */
+
+.badge-rescatista {
+  background:
+    rgba(255, 132, 0, 0.10);
+
+  color: #ff9d3d;
+
+  border-color:
+    rgba(255, 132, 0, 0.25);
+
+  box-shadow:
+    0 0 8px
+    rgba(255, 132, 0, 0.06);
+}
+
+
+/* Coordinador */
+
+.badge-coordinador {
+  background:
+    rgba(139, 92, 246, 0.12);
+
+  color: #a78bfa;
+
+  border-color:
+    rgba(139, 92, 246, 0.28);
+
+  box-shadow:
+    0 0 8px
+    rgba(139, 92, 246, 0.06);
+}
+
+
+/* Gestor de Refugio */
+
+.badge-gestor-de-refugio {
+  background:
+    rgba(0, 198, 255, 0.10);
+
+  color: #38bdf8;
+
+  border-color:
+    rgba(0, 198, 255, 0.28);
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 198, 255, 0.06);
+}
+
+
+/* =========================================================
+   DISPONIBILIDAD
+   ========================================================= */
+
+.availability-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.55rem;
+
+  padding:
+    0.4rem
+    0.8rem;
+
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  border: 1px solid;
+}
+
+
+/* Disponible */
+
+.availability-badge.available {
+  background:
+    rgba(57, 255, 20, 0.08);
+
+  color: #39ff14;
+
+  border-color:
+    rgba(57, 255, 20, 0.28);
+
+  box-shadow:
+    0 0 10px
+    rgba(57, 255, 20, 0.08);
+}
+
+
+/* No disponible */
+
+.availability-badge.unavailable {
+  background:
+    rgba(255, 45, 85, 0.09);
+
+  color: #ff476f;
+
+  border-color:
+    rgba(255, 45, 85, 0.32);
+
+  box-shadow:
+    0 0 10px
+    rgba(255, 45, 85, 0.08);
+}
+
+
+/* Punto de disponibilidad */
+
+.availability-dot {
+  width: 8px;
+
+  height: 8px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+
+/* Punto verde */
+
+.available .availability-dot {
+  background: #39ff14;
+
+  box-shadow:
+    0 0 8px
+    #39ff14;
+}
+
+
+/* Punto rojo */
+
+.unavailable .availability-dot {
+  background: #ff365f;
+
+  box-shadow:
+    0 0 8px
+    #ff365f;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.45rem;
+}
+
 
 .btn-icon {
-  background: rgba(10, 15, 36, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  padding: 0.4rem 0.6rem;
-  color: #e2e8f0;
+  width: 38px;
+
+  height: 38px;
+
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(10, 15, 36, 0.7);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 8px;
+
+  color: #8fb4df;
+
+  font-size: 1rem;
+
+  text-decoration: none;
+
+  transition:
+    all 0.2s ease;
+}
+
+
+.btn-icon:hover {
+  color: #00f0ff;
+
+  border-color:
+    rgba(0, 240, 255, 0.45);
+
+  background:
+    rgba(0, 198, 255, 0.08);
+
+  box-shadow:
+    0 0 10px
+    rgba(0, 198, 255, 0.12);
+
+  transform: translateY(-1px);
+}
+
+
+/* Editar */
+
+.btn-icon-edit:hover {
+  color: #a78bfa;
+
+  border-color:
+    rgba(167, 139, 250, 0.45);
+
+  background:
+    rgba(139, 92, 246, 0.08);
+
+  box-shadow:
+    0 0 10px
+    rgba(139, 92, 246, 0.12);
+}
+
+
+/* Eliminar */
+
+.btn-icon-danger {
+  color: #ff5c76;
+}
+
+
+.btn-icon-danger:hover {
+  color: #ff365f;
+
+  border-color:
+    rgba(255, 54, 95, 0.45);
+
+  background:
+    rgba(255, 45, 85, 0.08);
+
+  box-shadow:
+    0 0 10px
+    rgba(255, 45, 85, 0.12);
+}
+
+
+.btn-icon:disabled {
+  opacity: 0.5;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   ESTADOS
+   ========================================================= */
+
+.loading,
+.empty-state {
+  padding: 4rem 2rem;
+
+  text-align: center;
+
+  color: #64748b;
+
+  background:
+    rgba(18, 24, 56, 0.5);
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.12);
+
+  border-radius: 12px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.main-content::-webkit-scrollbar {
+  width: 8px;
+
+  height: 8px;
+}
+
+
+.main-content::-webkit-scrollbar-track {
+  background: #0a0f24;
+}
+
+
+.main-content::-webkit-scrollbar-thumb {
+  background:
+    rgba(0, 240, 255, 0.2);
+
+  border-radius: 4px;
+
+  border:
+    2px solid
+    #0a0f24;
+}
+
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(0, 240, 255, 0.5);
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 240, 255, 0.4);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .data-table {
+    min-width: 1000px;
+  }
+
+  .main-content {
+    padding:
+      2rem 1.5rem;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 80px;
+  }
+
+  .sidebar-brand {
+    padding:
+      20px 10px;
+  }
+
+  /*
+   * En móvil reducimos el logo,
+   * ya que el sidebar pasa a 80px.
+   */
+  .siged-logo {
+    width: 60px;
+    height: auto;
+  }
+
+  .menu-item {
+    justify-content: center;
+
+    padding:
+      14px 10px;
+  }
+
+  .menu-item {
+    font-size: 0;
+  }
+
+  .menu-icon {
+    font-size: 1.25rem;
+  }
+
+  .main-content {
+    margin-left: 80px;
+
+    width:
+      calc(100% - 80px);
+
+    padding:
+      1.5rem 1rem;
+  }
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
 }
