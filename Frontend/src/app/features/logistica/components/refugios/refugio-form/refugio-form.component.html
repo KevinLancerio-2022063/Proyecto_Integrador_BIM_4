@@ -1,7 +1,4 @@
-<!-- Contenedor del modal con animación de entrada -->
 <div class="modal-container animate-modal-in">
-  
-  <!-- Encabezado del modal con gradiente -->
   <div class="modal-header">
     <div class="modal-header-content">
       <mat-icon class="modal-header-icon">home</mat-icon>
@@ -12,11 +9,9 @@
     </button>
   </div>
 
-  <!-- Formulario reactivo -->
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="formulario-contenido">
       
-      <!-- Campo nombre -->
       <div class="form-group">
         <label class="form-label">Nombre del refugio*</label>
         <div class="input-wrapper">
@@ -36,7 +31,6 @@
         </mat-error>
       </div>
 
-      <!-- Campos capacidad y ocupación -->
       <div class="form-row">
         <div class="form-group form-group-half">
           <label class="form-label">Capacidad total*</label>
@@ -78,14 +72,26 @@
         </div>
       </div>
 
-      <!-- Campo estado -->
       <div class="form-group">
         <label class="form-label">Estado*</label>
-        <div class="input-wrapper">
-          <mat-icon class="input-icon">info</mat-icon>
-          <mat-select formControlName="estado" class="form-select">
-            <mat-option *ngFor="let estado of estadosRefugio" [value]="estado">
-              {{ estado }}
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="estado" class="form-select" placeholder="Seleccionar...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('estado')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getEstadoColor(form.get('estado')?.value)">
+                  {{ getEstadoIcono(form.get('estado')?.value) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ form.get('estado')?.value }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let estado of estadosRefugio" [value]="estado.valor">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="estado.color">
+                  {{ estado.icono }}
+                </mat-icon>
+                <span class="opcion-texto">{{ estado.texto }}</span>
+              </div>
             </mat-option>
           </mat-select>
         </div>
@@ -94,7 +100,6 @@
         </mat-error>
       </div>
 
-      <!-- Campo dirección -->
       <div class="form-group">
         <label class="form-label">Dirección</label>
         <div class="input-wrapper">
@@ -108,7 +113,6 @@
         </div>
       </div>
 
-      <!-- Campos latitud y longitud -->
       <div class="form-row">
         <div class="form-group form-group-half">
           <label class="form-label">Latitud</label>
@@ -144,7 +148,6 @@
         </div>
       </div>
 
-      <!-- Campo teléfono -->
       <div class="form-group">
         <label class="form-label">Teléfono de contacto</label>
         <div class="input-wrapper">
@@ -161,7 +164,6 @@
         </mat-error>
       </div>
 
-      <!-- Campo observaciones -->
       <div class="form-group">
         <label class="form-label">Observaciones</label>
         <div class="input-wrapper textarea-wrapper">
@@ -178,7 +180,6 @@
 
     </div>
 
-    <!-- Botones de acción -->
     <div class="botones-accion">
       <button 
         type="button" 
