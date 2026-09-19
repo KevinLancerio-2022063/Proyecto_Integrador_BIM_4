@@ -14,8 +14,8 @@ import { RecursoFormComponent } from "../recurso-form/recurso-form.component";
 import { TipoRecursoPipe } from "../../../pipes/tipo-recurso.pipe";
 import { UnidadMedidaPipe } from "../../../pipes/unidad-medida.pipe";
 import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
+import { ConfirmDialogComponent } from "../../confirm-dialog/confirm-dialog.component";
 
-// Define el componente como independiente (standalone)
 @Component({
   selector: "app-recurso-list",
   standalone: true,
@@ -31,25 +31,21 @@ import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
     MatProgressSpinnerModule,
     TipoRecursoPipe,
     UnidadMedidaPipe,
-    FechaFormateadaPipe
+    FechaFormateadaPipe,
+    ConfirmDialogComponent
   ],
   templateUrl: "./recurso-list.component.html",
   styleUrls: ["./recurso-list.component.css"]
 })
 export class RecursoListComponent implements OnInit {
-  // Almacena la lista de recursos obtenidos del backend
   recursos: Recurso[] = [];
-  
-  // Almacena el filtro activo seleccionado
   filtroActivo: string = "todos";
-  
-  // Almacena el término de búsqueda
   busqueda: string = "";
-  
-  // Indica si los datos están cargando
   loading: boolean = true;
   
-  // Define los filtros disponibles para recursos con sus iconos
+  mostrarDialogoEliminacion: boolean = false;
+  recursoSeleccionadoParaEliminar: Recurso | null = null;
+
   filtros = [
     { id: "todos", etiqueta: "Todos", icono: "inventory_2" },
     { id: "AGUA", etiqueta: "Agua", icono: "water_drop" },
@@ -60,28 +56,58 @@ export class RecursoListComponent implements OnInit {
     { id: "OTRO", etiqueta: "Otros", icono: "category" }
   ];
 
-  // Inyecta el servicio de recursos, el diálogo y el detector de cambios
+  iconosPorTipo: { [key: string]: string } = {
+    AGUA: "water_drop",
+    ALIMENTO: "restaurant",
+    MEDICAMENTO: "medical_services",
+    EQUIPO: "build",
+    VEHICULO: "local_shipping",
+    OTRO: "category"
+  };
+
+  coloresPorTipo: { [key: string]: string } = {
+    AGUA: "#1fa882",
+    ALIMENTO: "#e68529",
+    MEDICAMENTO: "#d94141",
+    EQUIPO: "#2da160",
+    VEHICULO: "#e69a2e",
+    OTRO: "#6b7280"
+  };
+
+  iconosPorUnidad: { [key: string]: string } = {
+    UNIDAD: "inventory_2",
+    CAJA: "inventory",
+    KILOGRAMO: "scale",
+    LITRO: "water_drop",
+    PERSONA: "person",
+    OTRO: "category"
+  };
+
+  coloresPorUnidad: { [key: string]: string } = {
+    UNIDAD: "#00f0ff",
+    CAJA: "#a0522d",
+    KILOGRAMO: "#10b981",
+    LITRO: "#0ea5e9",
+    PERSONA: "#8338ec",
+    OTRO: "#6b7280"
+  };
+
   constructor(
     private recursoService: RecursoService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Se ejecuta al inicializar el componente
   ngOnInit(): void {
     this.cargarRecursos();
   }
 
-  // Llama al servicio para obtener los datos
   cargarRecursos(): void {
     this.loading = true;
-    this.cdr.markForCheck(); // Marcar para verificación inmediata
+    this.cdr.markForCheck();
     
     this.recursoService.getAll().subscribe({
       next: (data) => {
-        console.log("Recursos cargados:", data);
-        // Forzar una nueva referencia de array (spread operator)
-        // Esto garantiza que Angular detecte que el objeto cambió
         this.recursos = [...data]; 
         this.loading = false;
         this.cdr.markForCheck();
@@ -94,7 +120,6 @@ export class RecursoListComponent implements OnInit {
     });
   }
 
-  // Abre el modal para crear un nuevo recurso
   abrirModalCrear(): void {
     const dialogRef = this.dialog.open(RecursoFormComponent, {
       width: "600px",
@@ -105,9 +130,6 @@ export class RecursoListComponent implements OnInit {
     
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        console.log("Recurso creado, recargando...");
-        // 3. Pequeño delay para asegurar que el backend liberó la BD 
-        // y el modal terminó su animación de cierre
         setTimeout(() => {
           this.cargarRecursos();
         }, 300);
@@ -115,7 +137,6 @@ export class RecursoListComponent implements OnInit {
     });
   }
 
-  // Abre el modal para editar un recurso existente
   abrirModalEditar(recurso: Recurso): void {
     const dialogRef = this.dialog.open(RecursoFormComponent, {
       width: "600px",
@@ -126,7 +147,6 @@ export class RecursoListComponent implements OnInit {
     
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        console.log("Recurso editado, recargando...");
         setTimeout(() => {
           this.cargarRecursos();
         }, 300);
@@ -134,38 +154,44 @@ export class RecursoListComponent implements OnInit {
     });
   }
 
-  // Elimina un recurso tras confirmar con el usuario
-  eliminarRecurso(id: number): void {
-    if (confirm("¿Estás seguro de eliminar este recurso?")) {
-      this.recursoService.delete(id).subscribe({
-        next: () => {
-          console.log("Recurso eliminado, recargando...");
-          setTimeout(() => {
-            this.cargarRecursos();
-          }, 300);
-        },
-        error: (error) => {
-          console.error("Error al eliminar:", error);
-        }
-      });
-    }
+  prepararEliminacion(recurso: Recurso): void {
+    this.recursoSeleccionadoParaEliminar = recurso;
+    this.mostrarDialogoEliminacion = true;
   }
 
-  // Establece el filtro activo
+  cerrarDialogoEliminacion(): void {
+    this.mostrarDialogoEliminacion = false;
+    this.recursoSeleccionadoParaEliminar = null;
+  }
+
+  confirmarEliminacion(): void {
+    if (!this.recursoSeleccionadoParaEliminar?.id) return;
+
+    this.recursoService.delete(this.recursoSeleccionadoParaEliminar.id).subscribe({
+      next: () => {
+        this.cerrarDialogoEliminacion();
+        setTimeout(() => {
+          this.cargarRecursos();
+        }, 300);
+      },
+      error: (error) => {
+        console.error("Error al eliminar:", error);
+        this.cerrarDialogoEliminacion();
+      }
+    });
+  }
+
   setFiltro(filtroId: string): void {
     this.filtroActivo = filtroId;
   }
 
-  // Obtiene los recursos filtrados según el filtro activo y la búsqueda
   get recursosFiltrados(): Recurso[] {
     let resultado = this.recursos;
     
-    // Aplica filtro por tipo
     if (this.filtroActivo !== "todos") {
       resultado = resultado.filter(r => r.tipo === this.filtroActivo);
     }
     
-    // Aplica filtro por búsqueda
     if (this.busqueda) {
       const busquedaLower = this.busqueda.toLowerCase();
       resultado = resultado.filter(r => 
@@ -177,64 +203,19 @@ export class RecursoListComponent implements OnInit {
     return resultado;
   }
 
-// Mapeo de iconos por tipo de recurso
-iconosPorTipo: { [key: string]: string } = {
-  AGUA: "water_drop",
-  ALIMENTO: "restaurant",
-  MEDICAMENTO: "medical_services",
-  EQUIPO: "build",
-  VEHICULO: "local_shipping",
-  OTRO: "category"
-};
+  getIconoTipo(tipo: string): string {
+    return this.iconosPorTipo[tipo] || "category";
+  }
 
-// Mapeo de colores por tipo de recurso
-coloresPorTipo: { [key: string]: string } = {
-  AGUA: "#1fa882",
-  ALIMENTO: "#e68529",
-  MEDICAMENTO: "#d94141",
-  EQUIPO: "#2da160",
-  VEHICULO: "#e69a2e",
-  OTRO: "#6b7280"
-};
+  getColorTipo(tipo: string): string {
+    return this.coloresPorTipo[tipo] || "#6b7280";
+  }
 
-// Mapeo de iconos por unidad de medida
-iconosPorUnidad: { [key: string]: string } = {
-  UNIDAD: "inventory_2",
-  CAJA: "inventory",
-  KILOGRAMO: "scale",
-  LITRO: "water_drop",
-  PERSONA: "person",
-  OTRO: "category"
-};
+  getIconoUnidad(unidad: string): string {
+    return this.iconosPorUnidad[unidad] || "category";
+  }
 
-// Mapeo de colores por unidad de medida
-coloresPorUnidad: { [key: string]: string } = {
-  UNIDAD: "#00f0ff",
-  CAJA: "#a0522d",
-  KILOGRAMO: "#10b981",
-  LITRO: "#0ea5e9",
-  PERSONA: "#8338ec",
-  OTRO: "#6b7280"
-};
-
-// Método para obtener el icono del tipo
-getIconoTipo(tipo: string): string {
-  return this.iconosPorTipo[tipo] || "category";
-}
-
-// Método para obtener el color del tipo
-getColorTipo(tipo: string): string {
-  return this.coloresPorTipo[tipo] || "#6b7280";
-}
-
-// Método para obtener el icono de la unidad
-getIconoUnidad(unidad: string): string {
-  return this.iconosPorUnidad[unidad] || "category";
-}
-
-// Método para obtener el color de la unidad
-getColorUnidad(unidad: string): string {
-  return this.coloresPorUnidad[unidad] || "#6b7280";
-}
-  
+  getColorUnidad(unidad: string): string {
+    return this.coloresPorUnidad[unidad] || "#6b7280";
+  }
 }
