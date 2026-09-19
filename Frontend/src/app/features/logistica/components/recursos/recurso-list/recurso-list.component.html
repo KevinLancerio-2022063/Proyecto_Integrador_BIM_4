@@ -1,32 +1,27 @@
-<!-- Contenedor principal -->
 <div class="container-page">
-  
-  <!-- Encabezado -->
   <div class="page-header">
     <h1 class="page-title">Gestión de Recursos</h1>
     <p class="page-subtitle">Consulta, registra y edita recursos tácticos de emergencia</p>
   </div>
 
-<!-- Barra de búsqueda y botón -->
-<div class="header-actions">
-  <div class="search-container">
-    <!-- Contenedor con glow -->
-    <div class="search-icon-wrapper">
-      <mat-icon class="search-icon">search</mat-icon>
+  <div class="header-actions">
+    <div class="search-container">
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Búsqueda global (ej: Alimentos 5km, Unidades Sector B)..."
+        class="search-input"
+      />
     </div>
-    <input 
-      type="text" 
-      [(ngModel)]="busqueda" 
-      placeholder="Búsqueda global (ej: Alimentos 5km, Unidades Sector B)..."
-      class="search-input"
-    />
+    <button class="btn-primary-cyber" (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon>
+      Iniciar Nuevo Registro Táctico
+    </button>
   </div>
-  <button class="btn-primary-cyber" (click)="abrirModalCrear()">
-    <mat-icon>add</mat-icon>
-    Iniciar Nuevo Registro Táctico
-  </button>
-</div>
-  <!-- Filtros hexagonales -->
+
   <div class="filtros-container">
     <div 
       *ngFor="let filtro of filtros" 
@@ -42,36 +37,28 @@
     </div>
   </div>
 
-  <!-- Estado de carga -->
   <div *ngIf="loading" class="estado-carga">
     <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
     <p class="text-secondary mt-4">Cargando recursos...</p>
   </div>
 
-  <!-- Grid de recursos -->
   <div *ngIf="!loading && recursosFiltrados.length > 0" class="recursos-grid">
     <div 
       *ngFor="let recurso of recursosFiltrados; let i = index" 
       class="recurso-card"
       [style.animation-delay]="(i * 80) + 'ms'">
       
-    <div class="recurso-header">
-      <!-- Icono del tipo con color dinámico -->
-      <div 
-        class="icono-container" 
-        [style.background]="getColorTipo(recurso.tipo)">
-        <mat-icon>{{ getIconoTipo(recurso.tipo) }}</mat-icon>
+      <div class="recurso-header">
+        <div class="icono-container" [style.background]="getColorTipo(recurso.tipo)">
+          <mat-icon>{{ getIconoTipo(recurso.tipo) }}</mat-icon>
+        </div>
+        <span class="tipo-badge">{{ recurso.tipo }}</span>
       </div>
-      <span class="tipo-badge">{{ recurso.tipo }}</span>
-    </div>
 
       <h3 class="recurso-nombre">{{ recurso.nombre }}</h3>
 
-      <!-- Cantidad con icono de unidad de medida -->
       <div class="recurso-cantidad">
-        <mat-icon 
-          class="cantidad-icono" 
-          [style.color]="getColorUnidad(recurso.unidad_medida)">
+        <mat-icon class="cantidad-icono" [style.color]="getColorUnidad(recurso.unidad_medida)">
           {{ getIconoUnidad(recurso.unidad_medida) }}
         </mat-icon>
         <span class="cantidad-texto">
@@ -92,14 +79,13 @@
         <button class="btn-accion btn-editar" (click)="abrirModalEditar(recurso)" title="Editar">
           <mat-icon>edit</mat-icon>
         </button>
-        <button class="btn-accion btn-eliminar" (click)="eliminarRecurso(recurso.id)" title="Eliminar">
+        <button class="btn-accion btn-eliminar" (click)="prepararEliminacion(recurso)" title="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Estado vacío -->
   <div *ngIf="!loading && recursosFiltrados.length === 0" class="estado-vacio">
     <mat-icon class="estado-vacio-icono">inventory_2</mat-icon>
     <h3 class="estado-vacio-titulo">No hay recursos disponibles</h3>
@@ -107,4 +93,14 @@
       {{ busqueda ? 'No se encontraron recursos con ese criterio' : 'Comienza registrando tu primer recurso' }}
     </p>
   </div>
+
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="Eliminar recurso"
+    [message]="'¿Estás seguro de que deseas eliminar \'' + (recursoSeleccionadoParaEliminar?.nombre || 'este recurso') + '\'? Esta acción no se puede deshacer.'"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
 </div>
