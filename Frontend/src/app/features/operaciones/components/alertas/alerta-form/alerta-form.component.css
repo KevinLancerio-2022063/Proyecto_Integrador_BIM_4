@@ -32,14 +32,11 @@
     #0a0e27 0%,
     #111638 100%
   );
-
   border-radius: 20px;
   overflow: hidden;
-
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.8),
     0 0 40px rgba(0, 240, 255, 0.1);
-
   border: 1px solid rgba(0, 240, 255, 0.2);
 }
 
@@ -56,90 +53,64 @@
     #0d2847 50%,
     #1a3a6e 100%
   );
-
   padding: 24px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   position: relative;
   overflow: hidden;
-
   border-bottom: 2px solid rgba(0, 240, 255, 0.3);
-
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-
 /* Efecto de brillo metálico en el header */
 .modal-header::before {
   content: '';
-
   position: absolute;
-
   top: 0;
   left: 0;
   right: 0;
-
   height: 50%;
-
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.1) 0%,
     transparent 100%
   );
-
   pointer-events: none;
 }
-
 
 /* Contenido del header */
 .modal-header-content {
   display: flex;
   align-items: center;
   gap: 12px;
-
   position: relative;
   z-index: 1;
 }
 
-
 /* Icono del header */
 .modal-header-icon {
   font-size: 28px;
-
   width: 28px;
   height: 28px;
-
   color: #00f0ff;
-
   background: rgba(0, 240, 255, 0.1);
-
   padding: 8px;
-
   border-radius: 12px;
-
   border: 1px solid rgba(0, 240, 255, 0.3);
-
   filter:
     drop-shadow(
       0 0 10px rgba(0, 240, 255, 0.5)
     );
 }
 
-
 /* Título del modal */
 .modal-titulo {
   font-size: 22px;
-
   font-weight: 700;
-
   color: white;
-
   margin: 0;
-
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -151,37 +122,24 @@
 
 .btn-cerrar {
   background: rgba(255, 255, 255, 0.1);
-
   border: 1px solid rgba(255, 255, 255, 0.2);
-
   border-radius: 12px;
-
   width: 36px;
   height: 36px;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
-
   color: white;
-
   position: relative;
-
   z-index: 1;
 }
-
 
 /* Efecto hover del botón cerrar */
 .btn-cerrar:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.2);
-
   transform: rotate(90deg);
-
   border-color: rgba(0, 240, 255, 0.5);
 }
 
@@ -192,11 +150,8 @@
 
 .formulario-contenido {
   padding: 24px;
-
   max-height: 60vh;
-
   overflow-y: auto;
-
   background: linear-gradient(
     145deg,
     #0a0e27 0%,
@@ -213,35 +168,25 @@
   margin-bottom: 20px;
 }
 
-
 /* Fila de formulario */
 .form-row {
   display: flex;
-
   gap: 16px;
 }
-
 
 /* Grupo de formulario a la mitad */
 .form-group-half {
   flex: 1;
 }
 
-
 /* Etiqueta del formulario */
 .form-label {
   display: block;
-
   font-size: 14px;
-
   font-weight: 600;
-
   color: #a0aec0;
-
   margin-bottom: 8px;
-
   text-transform: uppercase;
-
   letter-spacing: 0.5px;
 }
 
@@ -253,145 +198,156 @@
 /* Contenedor del input */
 .input-wrapper {
   position: relative;
-
   display: flex;
-
   align-items: center;
-
   background: rgba(10, 14, 39, 0.8);
-
   border: 1px solid rgba(0, 240, 255, 0.2);
-
   border-radius: 12px;
-
   transition: all 0.3s ease;
-
   box-shadow:
     inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 2px 8px rgba(0, 240, 255, 0.05);
 }
 
-
 /* Efecto focus */
 .input-wrapper:focus-within {
   border-color: #00f0ff;
-
   background: rgba(10, 14, 39, 1);
-
   box-shadow:
     inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 0 3px rgba(0, 240, 255, 0.1),
     0 0 20px rgba(0, 240, 255, 0.2);
 }
 
-
 /* Icono dentro del input */
 .input-icon {
   position: absolute;
-
   left: 12px;
-
   color: #00f0ff;
-
   font-size: 20px;
-
   width: 20px;
   height: 20px;
-
   pointer-events: none;
-
   filter:
     drop-shadow(
       0 0 5px rgba(0, 240, 255, 0.5)
     );
 }
 
-
 /* Input */
 .form-input {
   width: 100%;
-
   padding: 14px 14px 14px 44px;
-
   border: none;
-
   border-radius: 12px;
-
   font-size: 14px;
-
   color: #ffffff;
-
   background: transparent;
-
   outline: none;
-
   transition: all 0.3s ease;
 }
-
 
 /* Placeholder */
 .form-input::placeholder {
   color: #64748b;
 }
 
-
 /* Select */
 .form-select {
   width: 100%;
-
   padding: 14px 14px 14px 44px;
-
   border: none;
-
   border-radius: 12px;
-
   font-size: 14px;
-
   color: #ffffff;
-
   background: transparent;
-
   outline: none;
-
   cursor: pointer;
 }
-
 
 /* Textarea */
 .form-textarea {
   width: 100%;
-
   padding: 14px 14px 14px 44px;
-
   border: none;
-
   border-radius: 12px;
-
   font-size: 14px;
-
   color: #ffffff;
-
   background: transparent;
-
   outline: none;
-
   resize: vertical;
-
   min-height: 80px;
-
   font-family: inherit;
 }
-
 
 /* Wrapper del textarea */
 .textarea-wrapper {
   align-items: flex-start;
 }
 
-
 /* Icono del textarea */
 .textarea-icon {
   margin-top: 14px;
+}
+
+
+/* ============================================
+   Campos deshabilitados en modo edición
+   ============================================ */
+
+/* Inputs y textarea deshabilitados */
+.form-input:disabled,
+.form-textarea:disabled {
+  color: #6b7280 !important;
+  background: #1a1f35 !important;
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Contenedor de inputs deshabilitados */
+.input-wrapper:has(.form-input:disabled),
+.input-wrapper:has(.form-textarea:disabled) {
+  background: #151a2d;
+  border: 1px solid #3b425a;
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Iconos de inputs deshabilitados */
+.input-wrapper:has(.form-input:disabled) .input-icon,
+.input-wrapper:has(.form-textarea:disabled) .input-icon {
+  color: #5b6478;
+  filter: none;
+}
+
+/* Select deshabilitado */
+::ng-deep .mat-mdc-select-disabled {
+  color: #6b7280 !important;
+  cursor: not-allowed !important;
+  opacity: 0.55;
+}
+
+/* Texto del select deshabilitado */
+::ng-deep .mat-mdc-select-disabled .mat-mdc-select-value-text {
+  color: #6b7280 !important;
+}
+
+/* Contenedor del select deshabilitado */
+.input-wrapper:has(.mat-mdc-select-disabled) {
+  background: #151a2d;
+  border: 1px solid #3b425a;
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Icono del select deshabilitado */
+.input-wrapper:has(.mat-mdc-select-disabled) .input-icon {
+  color: #5b6478;
+  filter: none;
 }
 
 
@@ -401,15 +357,10 @@
 
 .error-message {
   font-size: 12px;
-
   color: #ff006e;
-
   margin-top: 6px;
-
   display: block;
-
   font-weight: 600;
-
   text-shadow:
     0 0 10px rgba(255, 0, 110, 0.3);
 }
@@ -421,120 +372,81 @@
 
 .botones-accion {
   display: flex;
-
   justify-content: flex-end;
-
   gap: 12px;
-
   padding: 20px 24px;
-
   background: linear-gradient(
     145deg,
     #0a0e27 0%,
     #111638 100%
   );
-
   border-top: 1px solid rgba(0, 240, 255, 0.2);
 }
-
 
 /* Botón cancelar */
 .btn-cancelar {
   padding: 12px 24px;
-
   background: rgba(255, 255, 255, 0.05);
-
   border: 1px solid rgba(255, 255, 255, 0.2);
-
   border-radius: 12px;
-
   font-size: 14px;
-
   font-weight: 600;
-
   color: #a0aec0;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
 }
-
 
 /* Hover cancelar */
 .btn-cancelar:hover:not(:disabled) {
   border-color: rgba(0, 240, 255, 0.5);
-
   background: rgba(0, 240, 255, 0.05);
-
   color: #00f0ff;
-
   box-shadow:
     0 0 20px rgba(0, 240, 255, 0.1);
 }
 
-
 /* Botón registrar */
 .btn-registrar {
   display: inline-flex;
-
   align-items: center;
-
   gap: 8px;
-
   padding: 12px 32px;
-
   background: linear-gradient(
     135deg,
     #00f0ff 0%,
     #0ea5e9 100%
   );
-
   border: none;
-
   border-radius: 12px;
-
   font-size: 14px;
-
   font-weight: 700;
-
   color: #0a0e27;
-
   cursor: pointer;
-
   box-shadow:
     0 4px 15px rgba(0, 240, 255, 0.4),
     0 0 20px rgba(0, 240, 255, 0.2);
-
   transition: all 0.3s ease;
-
   text-transform: uppercase;
-
   letter-spacing: 0.5px;
 }
-
 
 /* Hover registrar */
 .btn-registrar:hover:not(:disabled) {
   transform: translateY(-2px);
-
   box-shadow:
     0 8px 25px rgba(0, 240, 255, 0.6),
     0 0 30px rgba(0, 240, 255, 0.3);
 }
-
 
 /* Active registrar */
 .btn-registrar:active:not(:disabled) {
   transform: translateY(0);
 }
 
-
 /* Deshabilitado */
 .btn-registrar:disabled {
   opacity: 0.5;
-
   cursor: not-allowed;
-
   transform: none;
 }
 
@@ -553,10 +465,8 @@
    ============================================ */
 
 @media (max-width: 640px) {
-
   .form-row {
     flex-direction: column;
-
     gap: 0;
   }
 
@@ -571,7 +481,6 @@
   .btn-cancelar,
   .btn-registrar {
     width: 100%;
-
     justify-content: center;
   }
 }
