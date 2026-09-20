@@ -1,7 +1,6 @@
 /* ============================================
    Variables CSS
    ============================================ */
-
 :root {
   /* Colores principales */
   --bg-primary: #0a0e27;
@@ -49,7 +48,6 @@
 /* ============================================
    Reset y estilos base
    ============================================ */
-
 * {
   margin: 0;
   padding: 0;
@@ -82,7 +80,6 @@ h6 {
 /* ============================================
    Efectos neón y animaciones
    ============================================ */
-
 .neon-glow {
   box-shadow: var(--glow-cyan);
   transition: box-shadow 0.3s ease;
@@ -97,7 +94,6 @@ h6 {
     opacity: 0;
     transform: translateY(30px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -113,7 +109,6 @@ h6 {
     opacity: 0;
     transform: scale(0.96);
   }
-
   to {
     opacity: 1;
     transform: scale(1);
@@ -129,7 +124,6 @@ h6 {
     opacity: 0;
     transform: translateY(30px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -141,11 +135,9 @@ h6 {
 }
 
 @keyframes pulse {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
   }
-
   50% {
     opacity: 0.7;
   }
@@ -160,9 +152,7 @@ h6 {
     transform: scale(0.8);
     opacity: 0.7;
   }
-
-  80%,
-  100% {
+  80%, 100% {
     transform: scale(2);
     opacity: 0;
   }
@@ -176,7 +166,6 @@ h6 {
   0% {
     background-position: -200% 0;
   }
-
   100% {
     background-position: 200% 0;
   }
@@ -189,17 +178,8 @@ h6 {
 /* ============================================
    Hexágonos con clip-path
    ============================================ */
-
 .hexagon {
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
-
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -215,7 +195,6 @@ h6 {
 /* ============================================
    Tarjetas con borde neón
    ============================================ */
-
 .card-cyber {
   background: var(--bg-card);
   border: var(--border-subtle);
@@ -235,12 +214,7 @@ h6 {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--neon-cyan),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
 }
 
 .card-cyber:hover {
@@ -252,14 +226,8 @@ h6 {
 /* ============================================
    Botones cyberpunk
    ============================================ */
-
 .btn-cyber {
-  background: linear-gradient(
-    135deg,
-    #ff006e 0%,
-    #ff6b35 100%
-  );
-
+  background: linear-gradient(135deg, #ff006e 0%, #ff6b35 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -268,7 +236,6 @@ h6 {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
   transition: all 0.3s ease;
-
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -286,7 +253,6 @@ h6 {
 /* ============================================
    Inputs estilo cyber
    ============================================ */
-
 .input-cyber {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -312,14 +278,8 @@ h6 {
 /* ============================================
    Utilidades
    ============================================ */
-
 .text-gradient {
-  background: linear-gradient(
-    135deg,
-    #00f0ff 0%,
-    #0ea5e9 100%
-  );
-
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -338,9 +298,8 @@ h6 {
 }
 
 /* ============================================
-   Scrollbar personalizada
+   Scrollbar personalizada global
    ============================================ */
-
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -360,12 +319,70 @@ h6 {
 }
 
 /* ============================================
-   Ajustes para Angular Material
+   Overrides GLOBALES para Angular Material
+   (Eliminar bordes blancos y parpadeo en modales)
    ============================================ */
 
-.mat-mdc-dialog-container {
-  background: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
+/* Contenedor principal del diálogo */
+.mat-mdc-dialog-container,
+mat-mdc-dialog-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+/* Superficie del diálogo */
+.mat-mdc-dialog-surface,
+mat-mdc-dialog-surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 20px !important;
+}
+
+/* Panel de superposición */
+.cdk-overlay-pane,
+.cdk-global-overlay-wrapper {
+  border-radius: 20px !important;
+}
+
+/* Backdrop (fondo oscuro) */
+.cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(6px) !important;
+}
+
+/* Form fields dentro de modales */
+.mat-mdc-form-field {
+  border: none !important;
+  color: var(--text-primary);
+}
+
+.mat-mdc-form-field-infix {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.mat-mdc-form-field-label {
+  color: var(--text-secondary) !important;
+}
+
+.mat-mdc-form-field-underline,
+.mat-mdc-form-field-ripple,
+.mat-mdc-form-field-wrapper {
+  display: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Select panels */
+.mat-mdc-select-panel {
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%) !important;
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.1) !important;
 }
 
 .mat-mdc-select-value {
@@ -381,18 +398,9 @@ h6 {
   background: rgba(0, 240, 255, 0.1) !important;
 }
 
-.mat-mdc-form-field {
-  color: var(--text-primary);
-}
-
-.mat-mdc-form-field-label {
-  color: var(--text-secondary) !important;
-}
-
 /* ============================================
    Ajustes responsivos
    ============================================ */
-
 @media (max-width: 768px) {
   .container-page {
     padding: 0 1rem;
@@ -411,25 +419,8 @@ h6 {
   .container-page {
     padding: 0 0.75rem;
   }
-  h1 {
-    font-size: 1.5rem;
-  }
-}
-
-/* ============================================
-   Sobrescritura para Modales Transparentes/Cyber
-   ============================================ */
-
-/* Quita el fondo blanco por defecto y las esquinas en los modales de Angular Material */
-.modal-transparente-panel .mdc-dialog__surface,
-.modal-transparente-panel .mat-mdc-dialog-container {
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  border-radius: 20px !important;
-}
-
 
   h1 {
     font-size: 1.5rem;
   }
+}
