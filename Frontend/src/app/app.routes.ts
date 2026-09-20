@@ -1,16 +1,15 @@
 import { Routes } from "@angular/router";
 import { LayoutComponent } from "./features/logistica/components/layout/layout.component";
-import { coreRoutes } from './features/core/core.routes';
+import { coreRoutes } from "./features/core/core.routes";
 
-// 1. Filtramos las rutas de core para quitar login y register.
-// Esto evita que queden anidadas dentro del Layout (sidebar/header).
+// Filtramos las rutas de core para quitar login y register
 const protectedCoreRoutes = coreRoutes.filter(
   (route) => route.path !== "login" && route.path !== "register"
 );
 
 export const routes: Routes = [
   // ==========================================
-  // 2. RUTAS PÚBLICAS (Sin Layout)
+  // 1. RUTAS PÚBLICAS (Sin Layout)
   // ==========================================
   {
     path: "login",
@@ -28,18 +27,20 @@ export const routes: Routes = [
   },
 
   // ==========================================
-  // 3. RUTAS PROTEGIDAS (Con Layout)
+  // 2. RUTAS PROTEGIDAS (Con Layout Principal)
   // ==========================================
   {
     path: "",
     component: LayoutComponent,
     children: [
+      // Redirección por defecto al entrar al sistema
       {
-        // Redirección por defecto al entrar al layout protegido
         path: "",
-        redirectTo: "usuarios", // Cambia a "usuarios" si prefieres que sea el inicio
+        redirectTo: "logistica",
         pathMatch: "full"
       },
+      
+      // Módulo de Logística
       {
         path: "logistica",
         loadChildren: () =>
@@ -47,62 +48,38 @@ export const routes: Routes = [
             (m) => m.LogisticaModule
           )
       },
-      // Inyectamos las rutas filtradas de core (usuarios, zonas, perfil)
-      ...protectedCoreRoutes,
       
-      // Wildcard para rutas no encontradas dentro del layout
-      {
-        path: "**",
-        redirectTo: "logistica",
-      },
-      
-      {
-    path: "Incidentes",
-    component: LayoutComponent,
-    children: [
+      // Módulo de Incidentes (Incluye Historial)
       {
         path: "incidentes",
-        loadChildren: () => import("./features/incidentes/incidentes.module").then((m) => m.IncidenteModule)
+        loadChildren: () =>
+          import("./features/incidentes/incidentes.module").then(
+            (m) => m.IncidenteModule
+          )
       },
+      
+      // Módulo de Operaciones (Incluye Alertas y Asignaciones)
       {
-        path: "",
-        redirectTo: "incidentes",
-        pathMatch: "full"
-      }
-    ]
-  },
-
-    {
-    path: "operaciones",
-    component: LayoutComponent,
-    children: [
-      {
-        // Carga el módulo de operaciones en la ruta base de operaciones
-        path: "",
+        path: "operaciones",
         loadChildren: () =>
           import("./features/operaciones/operaciones.module").then(
             (m) => m.OperacionesModule
           )
+      },
+      
+      // Rutas de Core (Usuarios, Zonas, Perfil)
+      ...protectedCoreRoutes,
+      
+      // Wildcard local: Si la ruta no existe dentro del layout, redirige a logistica
+      {
+        path: "**",
+        redirectTo: "logistica"
       }
-    ]
-  },
-  {
-    // Redirección global a la sección de operaciones
-    path: "",
-    redirectTo: "/operaciones",
-    pathMatch: "full",
-  },
-
-  {
-    path: "",
-    redirectTo: "/Incidentes/incidentes",
-    pathMatch: "full"
-  }
     ]
   },
 
   // ==========================================
-  // 4. REDIRECCIÓN GLOBAL (Si la ruta no existe)
+  // 3. REDIRECCIÓN GLOBAL (Si la ruta no existe)
   // ==========================================
   {
     path: "**",
