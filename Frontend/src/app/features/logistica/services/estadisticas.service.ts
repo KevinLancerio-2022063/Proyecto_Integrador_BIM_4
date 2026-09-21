@@ -60,6 +60,12 @@ export interface Estadisticas {
 
   asignacionesPorEstado: DatosGrafica[];
 
+  // *NUEVO: Refugios por estado*
+
+  refugiosPorEstado: DatosGrafica[];
+
+  // *===========================================*
+
   // *Estadísticas de Alertas*
 
   alertasPorNivel: DatosGrafica[];
@@ -120,6 +126,25 @@ export class EstadisticasService {
     ENTREGADO: "#06ffa5",
 
     CANCELADO: "#ff006e"
+
+  };
+
+
+  // *============================================*
+  // *NUEVO: Colores para estados de refugio*
+  // *============================================*
+
+  private coloresPorEstadoRefugio: {
+    [key: string]: string
+  } = {
+
+    DISPONIBLE: "#10b981",
+
+    PARCIAL: "#f59e0b",
+
+    LLENO: "#ef4444",
+
+    INACTIVO: "#6b7280"
 
   };
 
@@ -363,6 +388,18 @@ export class EstadisticasService {
 
 
           // *----------------------------------------*
+          // *NUEVO: Refugios por estado*
+          // *----------------------------------------*
+
+          refugiosPorEstado:
+            this.calcularRefugiosPorEstado(
+              refugios
+            ),
+
+          // *=========================================*
+
+
+          // *----------------------------------------*
           // *Estadísticas nuevas*
           // *----------------------------------------*
 
@@ -405,6 +442,8 @@ export class EstadisticasService {
           ocupacionPromedioRefugios: 0,
 
           asignacionesPorEstado: [],
+
+          refugiosPorEstado: [],  // NUEVO
 
           alertasPorNivel: [],
 
@@ -596,6 +635,64 @@ export class EstadisticasService {
             (cantidad as number) /
             total
           ) * 100
+
+      })
+    );
+
+  }
+
+
+  // *============================================*
+  // *NUEVO: Refugios por estado*
+  // *============================================*
+
+  private calcularRefugiosPorEstado(
+    refugios: any[]
+  ): DatosGrafica[] {
+
+    if (
+      !refugios ||
+      refugios.length === 0
+    ) {
+
+      return [];
+
+    }
+
+
+    const agrupados: {
+      [key: string]: number
+    } = {};
+
+
+    refugios.forEach(refugio => {
+
+      if (refugio.estado) {
+
+        agrupados[refugio.estado] =
+          (agrupados[refugio.estado] || 0) + 1;
+
+      }
+
+    });
+
+
+    const total = refugios.length;
+
+
+    return Object.entries(agrupados).map(
+      ([estado, cantidad]) => ({
+
+        etiqueta: estado,
+
+        valor: cantidad as number,
+
+        color:
+          this.coloresPorEstadoRefugio[estado]
+          || "#6b7280",
+
+        porcentaje:
+          ((cantidad as number) / total) * 100
 
       })
     );
