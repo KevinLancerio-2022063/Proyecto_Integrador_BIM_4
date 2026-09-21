@@ -118,6 +118,15 @@ export function validarActualizarAsignacionRecurso(datos: any): { valido: boolea
         }
     }
 
+    // Validar usuario_asigna_id 
+    if (datos.usuario_asigna_id !== undefined && datos.usuario_asigna_id !== null) {
+        if (typeof datos.usuario_asigna_id !== "number") {
+            errores.push("El usuario_asigna_id debe ser un número");
+        } else if (datos.usuario_asigna_id <= 0) {
+            errores.push("El usuario_asigna_id debe ser mayor a cero");
+        }
+    }
+
     // Validar observaciones
     if (datos.observaciones !== undefined && datos.observaciones !== null) {
         if (typeof datos.observaciones !== "string") {
