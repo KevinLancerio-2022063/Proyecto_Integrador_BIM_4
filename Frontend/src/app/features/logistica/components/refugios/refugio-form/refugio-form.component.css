@@ -1,5 +1,5 @@
 /* ============================================
-   ANIMACIONES
+   Animaciones
    ============================================ */
 
 /* Animación de entrada del modal */
@@ -20,48 +20,56 @@
 }
 
 /* ============================================
-   CONTENEDOR DEL MODAL
+   Contenedor del modal con fondo oscuro
    ============================================ */
 
-/* Contenedor principal del modal con efecto 3D */
+/* Contenedor principal del modal con efecto cyberpunk */
 .modal-container {
-  background: white;
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(11, 31, 92, 0.15), 0 8px 16px rgba(11, 31, 92, 0.1);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.2);
 }
 
 /* ============================================
-   HEADER DEL MODAL
+   Header del modal con gradiente metálico
    ============================================ */
 
-/* Encabezado del modal con gradiente */
+/* Encabezado del modal con gradiente azul metálico */
 .modal-header {
-  background: linear-gradient(135deg, #0b1f5c 0%, #1e3a8a 100%);
+  background: linear-gradient(
+    135deg,
+    #1a3a6e 0%,
+    #0d2847 50%,
+    #1a3a6e 100%
+  );
   padding: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
   overflow: hidden;
+  border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Efecto decorativo del header */
+/* Efecto de brillo metálico en el header */
 .modal-header::before {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: shimmer 3s infinite;
-}
-
-/* Define la animación de brillo */
-@keyframes shimmer {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 /* Contenido del header */
@@ -73,15 +81,29 @@
   z-index: 1;
 }
 
-/* Icono del header */
+/* Logo del header */
 .modal-header-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
-  color: #38bdf8;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.1);
   border-radius: 12px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* Para asegurar que el mat-icon dentro se vea completo */
+.modal-header-icon mat-icon {
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 1;
 }
 
 /* Título del modal */
@@ -90,12 +112,13 @@
   font-weight: 700;
   color: white;
   margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Botón de cerrar */
 .btn-cerrar {
   background: rgba(255, 255, 255, 0.1);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   width: 36px;
   height: 36px;
@@ -113,10 +136,11 @@
 .btn-cerrar:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: rotate(90deg);
+  border-color: rgba(0, 240, 255, 0.5);
 }
 
 /* ============================================
-   CONTENIDO DEL FORMULARIO
+   Contenido del formulario
    ============================================ */
 
 /* Contenedor del formulario */
@@ -124,10 +148,11 @@
   padding: 24px;
   max-height: 60vh;
   overflow-y: auto;
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%);
 }
 
 /* ============================================
-   GRUPOS DE FORMULARIO
+   Grupos de formulario
    ============================================ */
 
 /* Grupo de formulario */
@@ -151,12 +176,14 @@
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: #0b1f5c;
+  color: #a0aec0;
   margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* ============================================
-   INPUTS Y SELECTS
+   Inputs y selects con estilo cyberpunk
    ============================================ */
 
 /* Contenedor del input con icono */
@@ -164,72 +191,81 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
+  background: rgba(10, 14, 39, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.2);
   border-radius: 12px;
   transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 240, 255, 0.05);
 }
 
 /* Efecto focus del input */
 .input-wrapper:focus-within {
-  border-color: #0ea5e9;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-  transform: translateY(-2px);
+  border-color: #00f0ff;
+  background: rgba(10, 14, 39, 1);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(0, 240, 255, 0.1),
+    0 0 20px rgba(0, 240, 255, 0.2);
 }
 
 /* Icono dentro del input */
 .input-icon {
   position: absolute;
   left: 12px;
-  color: #94a3b8;
+  color: #00f0ff;
   font-size: 20px;
   width: 20px;
   height: 20px;
   pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
 }
 
 /* Input del formulario */
 .form-input {
   width: 100%;
-  padding: 12px 12px 12px 44px;
+  padding: 14px 14px 14px 44px;
   border: none;
   border-radius: 12px;
   font-size: 14px;
-  color: #0b1f5c;
+  color: #ffffff;
   background: transparent;
   outline: none;
+  transition: all 0.3s ease;
 }
 
 /* Placeholder del input */
 .form-input::placeholder {
-  color: #94a3b8;
+  color: #64748b;
 }
 
 /* Select del formulario */
 .form-select {
-  width: 100%;
-  padding: 12px 12px 12px 44px;
-  border: none;
-  border-radius: 12px;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
   font-size: 14px;
-  color: #0b1f5c;
+  color: #ffffff;
   background: transparent;
   outline: none;
+  cursor: pointer;
 }
 
 /* Textarea del formulario */
 .form-textarea {
   width: 100%;
-  padding: 12px 12px 12px 44px;
+  padding: 14px 14px 14px 44px;
   border: none;
   border-radius: 12px;
   font-size: 14px;
-  color: #0b1f5c;
+  color: #ffffff;
   background: transparent;
   outline: none;
   resize: vertical;
   min-height: 80px;
+  font-family: inherit;
 }
 
 /* Wrapper del textarea */
@@ -239,23 +275,25 @@
 
 /* Icono del textarea */
 .textarea-icon {
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 /* ============================================
-   MENSAJES DE ERROR
+   Mensajes de error
    ============================================ */
 
 /* Mensaje de error */
 .error-message {
   font-size: 12px;
-  color: #dc2626;
-  margin-top: 4px;
+  color: #ff006e;
+  margin-top: 6px;
   display: block;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
 }
 
 /* ============================================
-   BOTONES DE ACCIÓN
+   Botones de acción
    ============================================ */
 
 /* Contenedor de botones */
@@ -264,79 +302,83 @@
   justify-content: flex-end;
   gap: 12px;
   padding: 20px 24px;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%);
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
 }
 
 /* Botón de cancelar */
 .btn-cancelar {
   padding: 12px 24px;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
+  color: #a0aec0;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 /* Efecto hover del botón cancelar */
 .btn-cancelar:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
-  color: #475569;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 240, 255, 0.5);
+  background: rgba(0, 240, 255, 0.05);
+  color: #00f0ff;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
 }
 
-/* Botón de registrar con gradiente */
+/* Botón de registrar con gradiente cyan */
 .btn-registrar {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 12px 32px;
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 100%);
   border: none;
   border-radius: 12px;
   font-size: 14px;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: #0a0e27;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2), 0 10px 20px rgba(5, 150, 105, 0.15);
+  box-shadow: 
+    0 4px 15px rgba(0, 240, 255, 0.4),
+    0 0 20px rgba(0, 240, 255, 0.2);
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Efecto hover del botón registrar */
 .btn-registrar:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 12px rgba(5, 150, 105, 0.3), 0 15px 30px rgba(5, 150, 105, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 240, 255, 0.6),
+    0 0 30px rgba(0, 240, 255, 0.3);
 }
 
 /* Efecto active del botón registrar */
 .btn-registrar:active:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2);
+  transform: translateY(0);
 }
 
 /* Botón deshabilitado */
 .btn-registrar:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
 /* ============================================
-   SPINNER
+   Spinner
    ============================================ */
 
 /* Estilo personalizado para el spinner */
 ::ng-deep .mat-mdc-progress-spinner {
-  --mdc-circular-progress-active-indicator-color: white;
+  --mdc-circular-progress-active-indicator-color: #0a0e27;
 }
 
 /* ============================================
-   RESPONSIVE
+   Responsive
    ============================================ */
 
 /* Ajustes para móviles */
@@ -360,3 +402,303 @@
     justify-content: center;
   }
 }
+
+/* ============================================
+   Overrides para Angular Material
+   ============================================ */
+
+/* Eliminar bordes blancos del contenedor del modal */
+::ng-deep .mat-mdc-dialog-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* Eliminar bordes de los form fields */
+::ng-deep .mat-mdc-form-field {
+  border: none !important;
+}
+
+/* Eliminar el outline de los inputs */
+::ng-deep .mat-mdc-form-field-infix {
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Ocultar el underline de los form fields */
+::ng-deep .mat-mdc-form-field-underline {
+  display: none !important;
+}
+
+/* Ocultar el ripple effect */
+::ng-deep .mat-mdc-form-field-ripple {
+  display: none !important;
+}
+
+/* Ajustar el padding del form field */
+::ng-deep .mat-mdc-form-field-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   Ajustes para el backdrop del modal
+   ============================================ */
+
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* ============================================
+   Opciones del select con iconos y colores
+   ============================================ */
+
+/* Wrapper del select para alinear correctamente */
+.select-wrapper {
+  align-items: center !important;
+  padding: 0 !important;
+}
+
+/* Contenedor interno de cada opción */
+.opcion-contenido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+  width: 100%;
+}
+
+/* Icono dentro de la opción */
+.opcion-icono {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  filter: drop-shadow(0 0 4px currentColor);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Texto de la opción */
+.opcion-texto {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Efecto hover en las opciones */
+.opcion-contenido:hover .opcion-icono {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* ============================================
+   Ajustes para el panel de opciones de Material
+   ============================================ */
+
+/* Fondo oscuro para el panel desplegable */
+::ng-deep .mat-mdc-select-panel {
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%) !important;
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+              0 0 20px rgba(0, 240, 255, 0.1) !important;
+  padding: 8px 0 !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Opciones individuales */
+::ng-deep .mat-mdc-option {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: none !important;
+  min-height: 48px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Hover en las opciones */
+::ng-deep .mat-mdc-option:hover {
+  background: rgba(0, 240, 255, 0.08) !important;
+}
+
+/* Opción enfocada */
+::ng-deep .mat-mdc-option:focus {
+  background: rgba(0, 240, 255, 0.12) !important;
+}
+
+/* Opción seleccionada */
+::ng-deep .mat-mdc-option.mat-mdc-selected {
+  background: rgba(0, 240, 255, 0.15) !important;
+}
+
+/* Check de la opción seleccionada */
+::ng-deep .mat-mdc-option .mat-pseudo-checkbox-checked {
+  background: #00f0ff !important;
+  border-color: #00f0ff !important;
+}
+
+/* ============================================
+   Valor mostrado en el select cerrado
+   ============================================ */
+
+/* Contenedor del valor seleccionado */
+::ng-deep .mat-mdc-select-value {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+/* Texto del valor seleccionado */
+::ng-deep .mat-mdc-select-value-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Trigger personalizado */
+::ng-deep .mat-mdc-select-trigger {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 14px !important; /* Padding uniforme */
+  margin: 0 !important;
+  gap: 12px;
+}
+
+/* Remove any leftover icon spacing */
+.select-wrapper .input-icon {
+  display: none !important;
+}
+
+/* Eliminar cualquier padding residual del contenedor */
+::ng-deep .mat-mdc-select-trigger-placeholder {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   Placeholder del select
+   ============================================ */
+
+/* Estilo del placeholder cuando no hay valor seleccionado */
+::ng-deep .mat-mdc-select-placeholder {
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  opacity: 1 !important;
+}
+
+/* Placeholder en hover */
+::ng-deep .mat-mdc-select:hover .mat-mdc-select-placeholder {
+  color: #00f0ff !important;
+  opacity: 0.7 !important;
+}
+
+/* Placeholder cuando el select está enfocado */
+::ng-deep .mat-mdc-select:focus .mat-mdc-select-placeholder {
+  color: #00f0ff !important;
+  opacity: 1 !important;
+}
+
+/* ============================================
+   Mensaje de error inline dentro del formulario
+   ============================================ */
+
+.mensaje-error-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.08) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  animation: shakeError 0.4s ease-out;
+  box-shadow: 
+    0 4px 12px rgba(239, 68, 68, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.mensaje-icono {
+  color: #ef4444;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+  flex-shrink: 0;
+}
+
+.mensaje-texto {
+  color: #fca5a5;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Animación de sacudida para el mensaje de error */
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+/* ============================================
+   Estilos para el MatSnackBar con tema cyberpunk
+   ============================================ */
+
+/* Clase base para todos los snackbars */
+::ng-deep .snackbar-cyber {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid !important;
+}
+
+/* Estilo para snackbars de éxito */
+::ng-deep .snackbar-exito {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Estilo para snackbars de error */
+::ng-deep .snackbar-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Botón de acción dentro del snackbar */
+::ng-deep .snackbar-cyber .mat-mdc-snack-bar-action {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Contenedor del snackbar */
+::ng-deep .mat-mdc-snack-bar-container {
+  margin: 16px !important;
+} 
+
