@@ -740,3 +740,21 @@
   font-size:14px;
   color:#00f0ff;
 }
+
+.recurso-fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
+  color: #718096;
+  font-size: 0.75rem;
+}
+
+.recurso-fecha mat-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  color: #00f0ff;
+}
