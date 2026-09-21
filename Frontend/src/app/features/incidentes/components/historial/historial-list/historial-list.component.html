@@ -189,38 +189,17 @@
         {{ getComentario(historial) }}
       </p>
 
-      <div class="historial-info">
-
-        <div class="historial-info-item">
-          <mat-icon>person</mat-icon>
-          <span>Usuario:</span>
-          <strong>{{ historial.usuario_id || 'N/A' }}</strong>
-        </div>
-
-        <div class="historial-info-item">
-          <mat-icon>calendar_today</mat-icon>
-          <span>Fecha:</span>
-          <strong>{{ formatearFecha(historial.fecha) }}</strong>
-        </div>
-
-        <div class="historial-info-item">
-          <mat-icon>schedule</mat-icon>
-          <span>Hora:</span>
-          <strong>{{ formatearHora(historial.fecha) }}</strong>
-        </div>
-
-      </div>
-
       <div class="d-flex flex-wrap gap-2 mb-3">
-        <span
-          class="badge px-2 py-1"
-          [ngClass]="getColorEstado(historial.estado_nuevo)"
-        >
-          Estado: {{ historial.estado_nuevo }}
+        <span class="badge badge-id" title="ID del historial">
+          ID: #{{ historial.id }}
         </span>
 
-        <span class="badge badge-id">
-          ID: #{{ historial.id }}
+        <span class="badge badge-info-item" title="Usuario">
+          <mat-icon>person</mat-icon>{{ historial.usuario_id || 'N/A' }}
+        </span>
+
+        <span class="badge badge-info-item" title="Fecha y hora">
+          <mat-icon>calendar_today</mat-icon>{{ formatearFecha(historial.fecha) }} {{ formatearHora(historial.fecha) }}
         </span>
       </div>
 
@@ -228,13 +207,19 @@
         <button
           type="button"
           class="btn-accion btn-editar"
-          [routerLink]="[
-            '/Incidentes/incidentes/historial',
-            historial.id
-          ]"
-          title="Ver detalle"
+          (click)="abrirFormularioEditar(historial)"
+          title="Editar comentario"
         >
-          <mat-icon>visibility</mat-icon>
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          type="button"
+          class="btn-accion btn-eliminar"
+          (click)="eliminarHistorial(historial)"
+          title="Eliminar"
+        >
+          <mat-icon>delete</mat-icon>
         </button>
       </div>
 
@@ -249,7 +234,7 @@
 
       <div class="modal-header">
         <div>
-          <h2>Agregar Historial</h2>
+          <h2>{{ historialEditandoId !== null ? 'Editar Historial' : 'Agregar Historial' }}</h2>
           <p>Registra un nuevo cambio en el historial</p>
         </div>
 
@@ -273,7 +258,7 @@
             [(ngModel)]="nuevoHistorial.incidente_id"
             placeholder="Ej. 1"
             min="1"
-            [disabled]="guardando"
+            [disabled]="guardando || historialEditandoId !== null"
           />
         </div>
 
@@ -282,7 +267,7 @@
 
           <select
             [(ngModel)]="nuevoHistorial.estado_anterior"
-            [disabled]="guardando"
+            [disabled]="guardando || historialEditandoId !== null"
           >
             <option value="">Sin estado anterior</option>
             <option value="REPORTADO">REPORTADO</option>
@@ -297,7 +282,7 @@
 
           <select
             [(ngModel)]="nuevoHistorial.estado_nuevo"
-            [disabled]="guardando"
+            [disabled]="guardando || historialEditandoId !== null"
           >
             <option value="REPORTADO">REPORTADO</option>
             <option value="EN_ATENCION">EN_ATENCION</option>
@@ -314,7 +299,7 @@
             [(ngModel)]="nuevoHistorial.usuario_id"
             placeholder="Ej. 1"
             min="1"
-            [disabled]="guardando"
+            [disabled]="guardando || historialEditandoId !== null"
           />
         </div>
 
