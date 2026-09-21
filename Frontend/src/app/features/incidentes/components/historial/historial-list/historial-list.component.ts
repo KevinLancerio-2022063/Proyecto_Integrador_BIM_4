@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { HistorialService } from "../../../services/historial.service";
+import { EstadoHistorialPipe } from "../../../pipes/estado-historial.pipe";
+import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
 import {
   HistorialIncidente,
   CrearHistorialIncidenteDTO
@@ -17,10 +18,11 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    EstadoHistorialPipe,
+    FechaFormateadaPipe
   ],
   templateUrl: "./historial-list.component.html",
   styleUrls: ["./historial-list.component.css"]
@@ -231,69 +233,8 @@ export class HistorialListComponent implements OnInit {
     return resultado;
   }
 
-  getEstadoAnterior(historial: HistorialIncidente): string {
-    return historial.estado_anterior || "Sin estado anterior";
-  }
-
   getComentario(historial: HistorialIncidente): string {
     return historial.comentario || "Sin comentario";
-  }
-
-  getColorEstado(estado: string): string {
-    const colores: { [key: string]: string } = {
-      REPORTADO: "bg-warning text-dark",
-      EN_ATENCION: "bg-primary text-white",
-      MITIGADO: "bg-info text-dark",
-      CERRADO: "bg-success text-white"
-    };
-
-    return colores[estado] || "bg-secondary text-white";
-  }
-
-  getIconoEstado(estado: string): string {
-    const iconos: { [key: string]: string } = {
-      REPORTADO: "report_problem",
-      EN_ATENCION: "engineering",
-      MITIGADO: "healing",
-      CERRADO: "check_circle"
-    };
-
-    return iconos[estado] || "history";
-  }
-
-  formatearFecha(fecha: Date | string): string {
-    if (!fecha) {
-      return "Sin fecha";
-    }
-
-    const fechaObj = new Date(fecha);
-
-    if (isNaN(fechaObj.getTime())) {
-      return "Fecha inválida";
-    }
-
-    return fechaObj.toLocaleDateString("es-GT", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    });
-  }
-
-  formatearHora(fecha: Date | string): string {
-    if (!fecha) {
-      return "--:--";
-    }
-
-    const fechaObj = new Date(fecha);
-
-    if (isNaN(fechaObj.getTime())) {
-      return "--:--";
-    }
-
-    return fechaObj.toLocaleTimeString("es-GT", {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
   }
 
   recargar(): void {
