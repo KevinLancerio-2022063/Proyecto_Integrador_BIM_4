@@ -1,36 +1,47 @@
-<!-- Contenedor principal de la página de asignaciones -->
-<div class="container-page py-12 sm:py-16 animate-fade-in">
+<div class="container-page">
   
   <!-- Encabezado de la sección -->
-  <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
-    <div class="max-w-2xl">
-      <h1 class="font-display text-3xl font-extrabold text-navy-900 sm:text-4xl">
-        Gestión de asignaciones
-      </h1>
-      <p class="mt-3 text-navy-700">
-        Consulta, registra y edita asignaciones de recursos
-      </p>
+  <div class="page-header">
+    <h1 class="page-title">Gestión de asignaciones</h1>
+    <p class="page-subtitle">Consulta, registra y edita asignaciones de recursos</p>
+  </div>
+
+  <!-- Barra de búsqueda y botón de acción -->
+  <div class="header-actions">
+    <div class="search-container">
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Buscar por recurso, estado o destino..."
+        class="search-input"
+      />
     </div>
     <button 
-      class="btn-custom-primary"
+      class="btn-primary-cyber"
       (click)="abrirModalCrear()">
       <mat-icon>add</mat-icon>
       Nueva asignación
     </button>
   </div>
 
-  <!-- Barra de búsqueda -->
-  <div class="mb-6">
-    <div class="search-container">
-      <mat-icon class="search-icon">search</mat-icon>
-      <input 
-        type="text" 
-        [(ngModel)]="busqueda" 
-        placeholder="Buscar por recurso o estado..."
-        class="search-input"
-      />
+<!-- Filtros hexagonales con colores específicos -->
+<div class="filtros-container">
+  <button 
+    *ngFor="let filtro of filtros"
+    class="filtro-hex"
+    [class.active]="filtroActivo === filtro.id"
+    (click)="setFiltro(filtro.id)">
+    <div class="hexagon-wrapper">
+      <div class="hexagon" [ngClass]="getClaseHexagono(filtro.id)">
+        <mat-icon>{{ filtro.icono }}</mat-icon>
+      </div>
     </div>
-  </div>
+    <span class="filtro-label">{{ filtro.etiqueta }}</span>
+  </button>
+</div>
 
   <!-- Estado de carga -->
   <div *ngIf="loading" class="estado-carga">
@@ -39,7 +50,7 @@
   </div>
 
   <!-- Grid de asignaciones -->
-  <div *ngIf="!loading && asignacionesFiltradas.length > 0" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <div *ngIf="!loading && asignacionesFiltradas.length > 0" class="asignaciones-grid">
     <!-- Tarjeta de asignación -->
     <div
       *ngFor="let asignacion of asignacionesFiltradas; let i = index"
@@ -48,16 +59,16 @@
       
       <!-- Header con estado -->
       <div class="asignacion-header">
-        <div class="icono-container icono-asignacion">
+        <div class="icono-container" [style.background]="getColorEstado(asignacion.estado)">
           <mat-icon>assignment</mat-icon>
         </div>
-        <span class="estado-badge" [ngClass]="getColorEstado(asignacion.estado)">
+        <span class="tipo-badge" [style.borderColor]="getColorEstado(asignacion.estado)">
           {{ asignacion.estado }}
         </span>
       </div>
 
       <!-- Recurso asignado -->
-      <h3 class="asignacion-titulo">
+      <h3 class="asignacion-nombre">
         {{ asignacion.nombre_recurso || "Recurso #" + asignacion.recurso_id }}
       </h3>
 
@@ -65,14 +76,14 @@
       <div class="asignacion-cantidad">
         <mat-icon class="cantidad-icono">inventory</mat-icon>
         <span class="cantidad-texto">
-          Cantidad: {{ asignacion.cantidad }} unidades
+          {{ asignacion.cantidad }} unidades
         </span>
       </div>
 
       <!-- Destino -->
       <div class="asignacion-destino">
         <mat-icon class="destino-icono">
-          {{ asignacion.incidente_id ? 'warning' : 'home' }}
+          {{ getIconoDestino(asignacion) }}
         </mat-icon>
         <span class="destino-texto">
           {{ getDestino(asignacion) }}
@@ -80,21 +91,11 @@
       </div>
 
       <!-- Fechas -->
-      <div class="asignacion-fechas">
-        <p class="fecha-item">
-          <mat-icon class="fecha-icono">schedule</mat-icon>
+      <div class="asignacion-fecha">
+        <mat-icon class="fecha-icono">schedule</mat-icon>
+        <span class="fecha-texto">
           Solicitado: {{ asignacion.fecha_solicitud | date:'shortDate' }}
-        </p>
-        
-        <p class="fecha-item" *ngIf="asignacion.fecha_asignacion">
-          <mat-icon class="fecha-icono">check_circle</mat-icon>
-          Asignado: {{ asignacion.fecha_asignacion | date:'shortDate' }}
-        </p>
-        
-        <p class="fecha-item" *ngIf="asignacion.fecha_entrega">
-          <mat-icon class="fecha-icono">done_all</mat-icon>
-          Entregado: {{ asignacion.fecha_entrega | date:'shortDate' }}
-        </p>
+        </span>
       </div>
 
       <!-- Observaciones -->
@@ -107,8 +108,13 @@
       <div class="asignacion-acciones">
         <button class="btn-accion btn-editar" (click)="abrirModalEditar(asignacion)" title="Editar">
           <mat-icon>edit</mat-icon>
-        </button>
-        <button class="btn-accion btn-eliminar" (click)="eliminarAsignacion(asignacion.id)" title="Eliminar">
+        </button> <!-- <--- AQUÍ ESTABA EL ERROR: FALTABA CERRAR ESTE BOTÓN -->
+        
+        <!-- Botón de eliminar en la tarjeta -->
+        <button 
+          class="btn-accion btn-eliminar" 
+          (click)="prepararEliminacion(asignacion)" 
+          title="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
@@ -123,4 +129,16 @@
       {{ busqueda ? 'No se encontraron asignaciones con ese criterio de búsqueda' : 'Comienza creando tu primera asignación' }}
     </p>
   </div>
+
+  <!-- Diálogo de confirmación de eliminación -->
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="¿Eliminar asignación?"
+    message="Esta acción eliminará permanentemente la asignación del sistema. ¿Estás seguro de continuar?"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
+
 </div>
