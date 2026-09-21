@@ -34,6 +34,7 @@ export interface ActualizarAsignacionRecursoDTO {
     fecha_asignacion?: string;
     fecha_entrega?: string;
     observaciones?: string;
+    usuario_asigna_id?: number;
 }
 
 // Define la estructura estandar de respuesta de la API
