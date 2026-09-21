@@ -162,12 +162,12 @@
           }"
         >
           <mat-icon>
-            {{ getIconoEstado(historial.estado_nuevo) }}
+            {{ (historial.estado_nuevo | estadoHistorial).icono }}
           </mat-icon>
         </div>
 
         <span class="tipo-badge">
-          {{ historial.estado_nuevo }}
+          {{ (historial.estado_nuevo | estadoHistorial).texto }}
         </span>
       </div>
 
@@ -179,9 +179,9 @@
         <mat-icon class="cantidad-icono">swap_horiz</mat-icon>
 
         <span class="cantidad-texto">
-          {{ getEstadoAnterior(historial) }}
+          {{ historial.estado_anterior ? (historial.estado_anterior | estadoHistorial).texto : 'Sin estado anterior' }}
           <strong>→</strong>
-          {{ historial.estado_nuevo }}
+          {{ (historial.estado_nuevo | estadoHistorial).texto }}
         </span>
       </div>
 
@@ -197,10 +197,11 @@
         <span class="badge badge-info-item" title="Usuario">
           <mat-icon>person</mat-icon>{{ historial.usuario_id || 'N/A' }}
         </span>
+      </div>
 
-        <span class="badge badge-info-item" title="Fecha y hora">
-          <mat-icon>calendar_today</mat-icon>{{ formatearFecha(historial.fecha) }} {{ formatearHora(historial.fecha) }}
-        </span>
+      <div class="recurso-fecha">
+        <mat-icon>calendar_today</mat-icon>
+        <span>Registrado: {{ historial.fecha | fechaFormateada }}</span>
       </div>
 
       <div class="recurso-acciones">
