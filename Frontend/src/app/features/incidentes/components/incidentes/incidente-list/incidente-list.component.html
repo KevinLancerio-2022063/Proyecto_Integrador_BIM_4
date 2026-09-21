@@ -101,9 +101,6 @@
 
       <!-- Acciones de tarjeta -->
       <div class="recurso-acciones">
-        <button type="button" class="btn-accion btn-editar" [routerLink]="['/incidentes', incidente.id || (incidente + '')]" title="Ver detalle">
-          <mat-icon>visibility</mat-icon>
-        </button>
         <button type="button" class="btn-accion btn-editar" (click)="abrirModalEditar(incidente)" title="Editar">
           <mat-icon>edit</mat-icon>
         </button>
