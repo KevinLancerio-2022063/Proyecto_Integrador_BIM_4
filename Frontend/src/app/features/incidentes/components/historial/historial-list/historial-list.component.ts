@@ -34,6 +34,7 @@ export class HistorialListComponent implements OnInit {
   mostrarFormulario = false;
   guardando = false;
   mensajeError = "";
+  historialEditandoId: number | null = null;
   nuevoHistorial: CrearHistorialIncidenteDTO = {
     incidente_id: 0,
     estado_nuevo: "REPORTADO",
@@ -71,6 +72,7 @@ export class HistorialListComponent implements OnInit {
   }
 
   abrirFormularioCrear(): void {
+    this.historialEditandoId = null;
     this.mensajeError = "";
     this.nuevoHistorial = {
       incidente_id: 0,
@@ -94,6 +96,11 @@ export class HistorialListComponent implements OnInit {
 
   guardarHistorial(): void {
     this.mensajeError = "";
+
+    if (this.historialEditandoId !== null) {
+      this.actualizarHistorial();
+      return;
+    }
 
     if (
       !this.nuevoHistorial.incidente_id ||
@@ -140,6 +147,57 @@ export class HistorialListComponent implements OnInit {
 
         this.cdr.detectChanges();
       }
+    });
+  }
+
+  abrirFormularioEditar(historial: HistorialIncidente): void {
+    this.mensajeError = "";
+    this.historialEditandoId = Number(historial.id);
+    this.nuevoHistorial = {
+      incidente_id: Number(historial.incidente_id),
+      estado_nuevo: historial.estado_nuevo,
+      estado_anterior: historial.estado_anterior || "",
+      comentario: historial.comentario || "",
+      usuario_id: historial.usuario_id
+    };
+    this.mostrarFormulario = true;
+  }
+
+  actualizarHistorial(): void {
+    const comentario = this.nuevoHistorial.comentario?.trim();
+
+    if (!comentario) {
+      this.mensajeError = "El comentario no puede estar vacío.";
+      return;
+    }
+
+    const id = this.historialEditandoId!;
+    this.guardando = true;
+
+    this.historialService.update(id, { id, comentario }).subscribe({
+      next: () => {
+        this.guardando = false;
+        this.mostrarFormulario = false;
+        this.historialEditandoId = null;
+        this.cargarHistorial();
+      },
+      error: (error) => {
+        console.error("Error al actualizar historial:", error);
+        this.guardando = false;
+        this.mensajeError = "No fue posible actualizar el historial.";
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  eliminarHistorial(historial: HistorialIncidente): void {
+    if (!confirm(`¿Eliminar el registro #${historial.id} del historial?`)) {
+      return;
+    }
+
+    this.historialService.delete(Number(historial.id)).subscribe({
+      next: () => this.cargarHistorial(),
+      error: (error) => console.error("Error al eliminar historial:", error)
     });
   }
 
