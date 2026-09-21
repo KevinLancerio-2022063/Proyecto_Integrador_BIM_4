@@ -42,6 +42,13 @@ export class DashboardComponent implements OnInit {
 
 
   // ============================================
+  // Gráfica de refugios por estado
+  // ============================================
+
+  refugiosPorEstado: DatosGrafica[] = [];
+
+
+  // ============================================
   // Nuevas gráficas
   // ============================================
 
@@ -87,6 +94,15 @@ export class DashboardComponent implements OnInit {
 
         this.ocupacionPromedio =
           data.ocupacionPromedioRefugios;
+
+
+        // ============================================
+        // Refugios por estado
+        // ============================================
+
+        this.refugiosPorEstado = data.refugiosPorEstado;
+
+        // ============================================
 
 
         // ============================================
