@@ -238,6 +238,23 @@
       </app-grafica-circular>
 
 
+      <!-- *============================================*
+      *     Gráfica de refugios por estado
+      *=============================================* -->
+
+      <app-grafica-circular
+
+        *ngIf="refugiosPorEstado.length > 0"
+
+        [datos]="refugiosPorEstado"
+
+        titulo="Refugios por Estado"
+
+        [tamano]="250">
+
+      </app-grafica-circular>
+
+
     </div>
 
   </div>
