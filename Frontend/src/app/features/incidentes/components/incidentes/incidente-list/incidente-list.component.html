@@ -70,9 +70,9 @@
           'icono-seguimiento': getNivelEmergencia(incidente) === 'MEDIA',
           'icono-recurso': getNivelEmergencia(incidente) === 'BAJA'
         }">
-          <mat-icon>{{ getIconoTipo(incidente.tipo) }}</mat-icon>
+          <mat-icon>{{ (incidente.tipo | tipoIncidente).icono }}</mat-icon>
         </div>
-        <span class="tipo-badge">{{ incidente.tipo }}</span>
+        <span class="tipo-badge">{{ (incidente.tipo | tipoIncidente).texto }}</span>
       </div>
 
       <!-- Título -->
@@ -91,12 +91,18 @@
 
       <!-- Badges de Nivel y Estado -->
       <div class="d-flex flex-wrap gap-2 mb-3">
-        <span class="badge px-2 py-1" [ngClass]="getColorNivel(getNivelEmergencia(incidente))">
-          Nivel: {{ getNivelEmergencia(incidente) }}
+        <span class="badge px-2 py-1" [ngClass]="(getNivelEmergencia(incidente) | nivelEmergencia).clase">
+          Nivel: {{ (getNivelEmergencia(incidente) | nivelEmergencia).texto }}
         </span>
-        <span class="badge px-2 py-1" [ngClass]="getColorEstado(incidente.estado)">
-          Estado: {{ incidente.estado }}
+        <span class="badge px-2 py-1" [ngClass]="(incidente.estado | estadoIncidente).clase">
+          Estado: {{ (incidente.estado | estadoIncidente).texto }}
         </span>
+      </div>
+
+      <!-- Fecha y hora del reporte -->
+      <div class="recurso-fecha">
+        <mat-icon>calendar_today</mat-icon>
+        <span>Reportado: {{ incidente.fecha_reporte | fechaFormateada }}</span>
       </div>
 
       <!-- Acciones de tarjeta -->
