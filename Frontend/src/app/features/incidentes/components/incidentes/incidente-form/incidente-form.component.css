@@ -321,3 +321,11 @@
     justify-content: center;
   }
 }
+
+/* Campos que no se pueden editar */
+.form-input:disabled,
+.form-select:disabled,
+.form-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
