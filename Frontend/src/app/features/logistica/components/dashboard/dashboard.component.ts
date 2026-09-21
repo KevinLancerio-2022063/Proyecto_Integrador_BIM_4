@@ -1,12 +1,17 @@
-// Importa las dependencias necesarias de Angular
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { EstadisticasService, DatosGrafica } from "./../../services/estadisticas.service";
-import { GraficaCircularComponent } from "./../../components/grafica-circular/grafica-circular.component";
 
-// Define el componente como independiente (standalone)
+import {
+  EstadisticasService,
+  DatosGrafica
+} from "./../../services/estadisticas.service";
+
+import {
+  GraficaCircularComponent
+} from "./../../components/grafica-circular/grafica-circular.component";
+
 @Component({
   selector: "app-dashboard",
   standalone: true,
@@ -20,52 +25,109 @@ import { GraficaCircularComponent } from "./../../components/grafica-circular/gr
   styleUrls: ["./dashboard.component.css"]
 })
 export class DashboardComponent implements OnInit {
-  // Datos de estadísticas
+
   estadisticas: any = null;
-  
-  // Indicador de carga
+
   loading: boolean = true;
-  
-  // Datos para las gráficas
+
+  // ============================================
+  // Gráficas existentes
+  // ============================================
+
   recursosPorTipo: DatosGrafica[] = [];
+
   asignacionesPorEstado: DatosGrafica[] = [];
+
   ocupacionPromedio: number = 0;
 
-  // Inyecta el servicio de estadísticas y el detector de cambios
+
+  // ============================================
+  // Nuevas gráficas
+  // ============================================
+
+  alertasPorNivel: DatosGrafica[] = [];
+
+  asignacionesPersonalPorRol: DatosGrafica[] = [];
+
+
   constructor(
     private estadisticasService: EstadisticasService,
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Se ejecuta al inicializar el componente
+
   ngOnInit(): void {
+
     this.cargarEstadisticas();
+
   }
 
-  // Carga las estadísticas desde el servicio
+
   cargarEstadisticas(): void {
+
     this.loading = true;
+
     console.log("Iniciando carga de estadísticas...");
-    
+
     this.estadisticasService.getEstadisticasCompletas().subscribe({
+
       next: (data) => {
+
         console.log("Estadísticas recibidas:", data);
+
+        // ============================================
+        // Datos existentes
+        // ============================================
+
         this.estadisticas = data;
+
         this.recursosPorTipo = data.recursosPorTipo;
+
         this.asignacionesPorEstado = data.asignacionesPorEstado;
-        this.ocupacionPromedio = data.ocupacionPromedioRefugios;
+
+        this.ocupacionPromedio =
+          data.ocupacionPromedioRefugios;
+
+
+        // ============================================
+        // Nuevos datos
+        // ============================================
+
+        this.alertasPorNivel =
+          data.alertasPorNivel;
+
+        this.asignacionesPersonalPorRol =
+          data.asignacionesPersonalPorRol;
+
+
+        // ============================================
+        // Finalizar carga
+        // ============================================
+
         this.loading = false;
-        
-        // Fuerza la detección de cambios en modo zoneless
+
         this.cdr.detectChanges();
-        
+
         console.log("Loading puesto en false");
+
       },
+
+
       error: (error) => {
-        console.error("Error al cargar estadísticas:", error);
+
+        console.error(
+          "Error al cargar estadísticas:",
+          error
+        );
+
         this.loading = false;
+
         this.cdr.detectChanges();
+
       }
+
     });
+
   }
+
 }

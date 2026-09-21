@@ -1,80 +1,245 @@
-<!-- Contenedor principal del dashboard -->
+<!-- *============================================*
+*       Contenedor principal del dashboard       *
+*=============================================* -->
+
 <div class="dashboard-container">
-  
-  <!-- Encabezado -->
+
+  <!-- *============================================*
+  *              Encabezado
+  *=============================================* -->
+
   <div class="dashboard-header">
-    <h1 class="dashboard-titulo">Dashboard de Estadísticas</h1>
-    <p class="dashboard-subtitulo">Visualización de recursos, refugios y asignaciones</p>
+
+    <h1 class="dashboard-titulo">
+      Dashboard de Estadísticas
+    </h1>
+
+    <p class="dashboard-subtitulo">
+      Visualización de recursos, refugios y asignaciones
+    </p>
+
   </div>
 
-  <!-- Estado de carga -->
-  <div *ngIf="loading" class="dashboard-loading">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Cargando estadísticas...</p>
+
+  <!-- *============================================*
+  *              Estado de carga
+  *=============================================* -->
+
+  <div
+    *ngIf="loading"
+    class="dashboard-loading">
+
+    <mat-spinner diameter="50">
+    </mat-spinner>
+
+    <p>
+      Cargando estadísticas...
+    </p>
+
   </div>
 
-  <!-- Contenido del dashboard -->
-  <div *ngIf="!loading && estadisticas" class="dashboard-content">
-    
-    <!-- Tarjetas de resumen -->
+
+  <!-- *============================================*
+  *          Contenido del dashboard
+  *=============================================* -->
+
+  <div
+    *ngIf="!loading && estadisticas"
+    class="dashboard-content">
+
+
+    <!-- *============================================*
+    *             Tarjetas de resumen
+    *=============================================* -->
+
     <div class="resumen-cards">
+
+
+      <!-- *Total recursos* -->
+
       <div class="card-resumen">
+
         <div class="card-icono icono-recursos">
-          <mat-icon>inventory_2</mat-icon>
+
+          <mat-icon>
+            inventory_2
+          </mat-icon>
+
         </div>
+
         <div class="card-info">
-          <span class="card-numero">{{ estadisticas.totalRecursos }}</span>
-          <span class="card-etiqueta">Total Recursos</span>
+
+          <span class="card-numero">
+            {{ estadisticas.totalRecursos }}
+          </span>
+
+          <span class="card-etiqueta">
+            Total Recursos
+          </span>
+
         </div>
+
       </div>
 
+
+      <!-- *Total refugios* -->
+
       <div class="card-resumen">
+
         <div class="card-icono icono-refugios">
-          <mat-icon>home</mat-icon>
+
+          <mat-icon>
+            home
+          </mat-icon>
+
         </div>
+
         <div class="card-info">
-          <span class="card-numero">{{ estadisticas.totalRefugios }}</span>
-          <span class="card-etiqueta">Total Refugios</span>
+
+          <span class="card-numero">
+            {{ estadisticas.totalRefugios }}
+          </span>
+
+          <span class="card-etiqueta">
+            Total Refugios
+          </span>
+
         </div>
+
       </div>
 
+
+      <!-- *Total asignaciones de recursos* -->
+
       <div class="card-resumen">
+
         <div class="card-icono icono-asignaciones">
-          <mat-icon>assignment</mat-icon>
+
+          <mat-icon>
+            assignment
+          </mat-icon>
+
         </div>
+
         <div class="card-info">
-          <span class="card-numero">{{ estadisticas.totalAsignaciones }}</span>
-          <span class="card-etiqueta">Total Asignaciones</span>
+
+          <span class="card-numero">
+            {{ estadisticas.totalAsignaciones }}
+          </span>
+
+          <span class="card-etiqueta">
+            Total Asignaciones
+          </span>
+
         </div>
+
       </div>
+
+
+      <!-- *Ocupación promedio* -->
 
       <div class="card-resumen">
+
         <div class="card-icono icono-ocupacion">
-          <mat-icon>people</mat-icon>
+
+          <mat-icon>
+            people
+          </mat-icon>
+
         </div>
+
         <div class="card-info">
-          <span class="card-numero">{{ ocupacionPromedio }}%</span>
-          <span class="card-etiqueta">Ocupación Promedio</span>
+
+          <span class="card-numero">
+            {{ ocupacionPromedio }}%
+          </span>
+
+          <span class="card-etiqueta">
+            Ocupación Promedio
+          </span>
+
         </div>
+
       </div>
+
     </div>
 
-    <!-- Gráficas circulares -->
+
+    <!-- *============================================*
+    *             Gráficas circulares
+    *=============================================* -->
+
     <div class="graficas-container">
-      <!-- Gráfica de recursos por tipo -->
+
+
+      <!-- *============================================*
+      *       Gráfica de recursos por tipo
+      *=============================================* -->
+
       <app-grafica-circular
+
         [datos]="recursosPorTipo"
+
         titulo="Recursos por Categoría"
+
         [tamano]="250">
+
       </app-grafica-circular>
 
-      <!-- Gráfica de asignaciones por estado -->
+
+      <!-- *============================================*
+      *       Gráfica de asignaciones por estado
+      *=============================================* -->
+
       <app-grafica-circular
+
         *ngIf="asignacionesPorEstado.length > 0"
+
         [datos]="asignacionesPorEstado"
+
         titulo="Asignaciones por Estado"
+
         [tamano]="250">
+
       </app-grafica-circular>
+
+
+      <!-- *============================================*
+      *           Gráfica de alertas por nivel
+      *=============================================* -->
+
+      <app-grafica-circular
+
+        *ngIf="alertasPorNivel.length > 0"
+
+        [datos]="alertasPorNivel"
+
+        titulo="Alertas por Nivel"
+
+        [tamano]="250">
+
+      </app-grafica-circular>
+
+
+      <!-- *============================================*
+      *     Gráfica de personal por rol
+      *=============================================* -->
+
+      <app-grafica-circular
+
+        *ngIf="asignacionesPersonalPorRol.length > 0"
+
+        [datos]="asignacionesPersonalPorRol"
+
+        titulo="Personal por Rol"
+
+        [tamano]="250">
+
+      </app-grafica-circular>
+
+
     </div>
+
   </div>
+
 </div>
