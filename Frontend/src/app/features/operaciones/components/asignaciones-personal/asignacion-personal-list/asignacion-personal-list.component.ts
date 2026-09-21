@@ -1,4 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { RolAsignacionPipe } from '../../../pipes/rol-asignacion.pipe';
+import { EstadoAsignacionPipe } from '../../../pipes/estado-asignacion.pipe';
+import { TipoDestinoAsignacionPipe } from '../../../pipes/tipo-destino-asignacion.pipe';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -28,7 +31,10 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RolAsignacionPipe,
+    EstadoAsignacionPipe,
+    TipoDestinoAsignacionPipe
   ],
   templateUrl: "./asignacion-personal-list.component.html",
   styleUrls: ["./asignacion-personal-list.component.css"]
@@ -64,29 +70,24 @@ export class AsignacionPersonalListComponent implements OnInit {
       icono: "assignment"
     },
     {
-      id: "Asignado",
+      id: "ASIGNADO",
       etiqueta: "Asignadas",
       icono: "person_add"
     },
     {
-      id: "En_camino",
+      id: "EN_CAMINO",
       etiqueta: "En camino",
       icono: "directions_run"
     },
     {
-      id: "Activo",
+      id: "ACTIVO",
       etiqueta: "Activas",
       icono: "person"
     },
     {
-      id: "Finalizado",
+      id: "FINALIZADO",
       etiqueta: "Finalizadas",
       icono: "task_alt"
-    },
-    {
-      id: "Cancelado",
-      etiqueta: "Canceladas",
-      icono: "cancel"
     }
   ];
 
@@ -376,27 +377,22 @@ export class AsignacionPersonalListComponent implements OnInit {
   // ============================================
 
   getColorEstado(estado: string): string {
-
     const colores: {
       [key: string]: string
     } = {
 
-      Asignado:
+      ASIGNADO:
         "bg-blue-100 text-blue-700",
 
-      En_camino:
+      EN_CAMINO:
         "bg-amber-100 text-amber-700",
 
-      Activo:
+      ACTIVO:
         "bg-emerald-100 text-emerald-700",
 
-      Finalizado:
-        "bg-purple-100 text-purple-700",
-
-      Cancelado:
-        "bg-red-100 text-red-700"
+      FINALIZADO:
+        "bg-purple-100 text-purple-700"
     };
-
 
     return (
       colores[estado] ||
@@ -410,27 +406,22 @@ export class AsignacionPersonalListComponent implements OnInit {
   // ============================================
 
   getIconoEstado(estado: string): string {
-
     const iconos: {
       [key: string]: string
     } = {
 
-      Asignado:
+      ASIGNADO:
         "person_add",
 
-      En_camino:
+      EN_CAMINO:
         "directions_run",
 
-      Activo:
+      ACTIVO:
         "person",
 
-      Finalizado:
-        "task_alt",
-
-      Cancelado:
-        "cancel"
+      FINALIZADO:
+        "task_alt"
     };
-
 
     return (
       iconos[estado] ||
@@ -444,28 +435,25 @@ export class AsignacionPersonalListComponent implements OnInit {
   // ============================================
 
   getColorRol(rol: string): string {
-
     const colores: {
       [key: string]: string
     } = {
 
-      // CORREGIDO: Coodinacion -> Coordinacion
-      Coordinacion:
+      COORDINACION:
         "bg-purple-100 text-purple-700",
 
-      Rescate:
+      RESCATE:
         "bg-red-100 text-red-700",
 
-      Apoyo:
+      APOYO:
         "bg-blue-100 text-blue-700",
 
-      Logistica:
+      LOGISTICA:
         "bg-amber-100 text-amber-700",
 
-      Gestion_refugio:
+      GESTION_REFUGIO:
         "bg-emerald-100 text-emerald-700"
     };
-
 
     return (
       colores[rol] ||
@@ -479,28 +467,25 @@ export class AsignacionPersonalListComponent implements OnInit {
   // ============================================
 
   getIconoRol(rol: string): string {
-
     const iconos: {
       [key: string]: string
     } = {
 
-      // CORREGIDO: Coodinacion -> Coordinacion
-      Coordinacion:
+      COORDINACION:
         "supervisor_account",
 
-      Rescate:
+      RESCATE:
         "medical_services",
 
-      Apoyo:
+      APOYO:
         "support_agent",
 
-      Logistica:
+      LOGISTICA:
         "inventory_2",
 
-      Gestion_refugio:
+      GESTION_REFUGIO:
         "home"
     };
-
 
     return (
       iconos[rol] ||

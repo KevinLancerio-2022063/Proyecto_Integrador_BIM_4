@@ -50,6 +50,11 @@ export class IncidenteFormComponent implements OnInit {
         descripcion: inc.descripcion || '',
         observaciones: inc.observaciones || ''
       });
+
+      // Al editar solo se pueden cambiar el estado y las observaciones
+      ['titulo', 'tipo', 'nivelEmergencia', 'personasAfectadas', 'descripcion'].forEach((campo) => {
+        this.form.get(campo)?.disable();
+      });
     }
   }
 
@@ -77,16 +82,9 @@ export class IncidenteFormComponent implements OnInit {
   if (this.modo === 'editar' && this.data?.incidente) {
     const idReal = this.data.incidente.id || (this.data.incidente as any)._id || (this.data.incidente as any).id_incidente;
     
-    // Objeto para actualización
+    // Objeto para actualización (solo estado y observaciones)
     const datosActualizar = {
-      titulo: formVal.titulo,
-      descripcion: formVal.descripcion || '',
-      tipo: formVal.tipo,
-      nivelEmergencia: formVal.nivelEmergencia,
-      nivel_emergencia: formVal.nivelEmergencia,
       estado: formVal.estado,
-      personasAfectadas: Number(formVal.personasAfectadas || 0),
-      cantidad_personas_afectadas: Number(formVal.personasAfectadas || 0),
       observaciones: formVal.observaciones || ''
     };
 

@@ -1,16 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'estadoAlerta',
+  name: 'estadoAsignacion',
   standalone: true
 })
-export class EstadoAlertaPipe implements PipeTransform {
+export class EstadoAsignacionPipe implements PipeTransform {
 
   transform(estado: string): string {
     const estados: { [key: string]: string } = {
-      ACTIVA: 'Activa',
-      LEIDA: 'Leída',
-      RESUELTA: 'Resuelta'
+      ASIGNADO: 'Asignado',
+      EN_CAMINO: 'En camino',
+      ACTIVO: 'Activo',
+      FINALIZADO: 'Finalizado'
     };
 
     return estados[estado] || estado;

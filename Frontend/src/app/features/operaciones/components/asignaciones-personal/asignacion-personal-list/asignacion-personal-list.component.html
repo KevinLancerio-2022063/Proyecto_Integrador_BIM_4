@@ -134,7 +134,7 @@
           class="tipo-badge"
           [ngClass]="getColorRol(asignacion.rol_asignado)">
 
-          {{ asignacion.rol_asignado }}
+          {{ asignacion.rol_asignado | rolAsignacion }}
 
         </span>
 
@@ -155,7 +155,7 @@
           class="nivel-badge"
           [ngClass]="getColorEstado(asignacion.estado)">
 
-          {{ asignacion.estado }}
+          {{ asignacion.estado | estadoAsignacion }}
 
         </span>
 
@@ -190,7 +190,7 @@
         </mat-icon>
 
         Incidente:
-        {{ asignacion.incidente_id }}
+        {{ asignacion | tipoDestinoAsignacion }}
 
       </p>
 
@@ -220,7 +220,7 @@
         </mat-icon>
 
         Rol:
-        {{ asignacion.rol_asignado }}
+        {{ asignacion.rol_asignado | rolAsignacion }}
 
       </p>
 

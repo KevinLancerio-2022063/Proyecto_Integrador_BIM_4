@@ -5,8 +5,8 @@ import { CrearHistorialIncidenteDTO, ActualizarHistorialIncidenteDTO } from "../
 export class HistorialIncidenteRepository {
 
      // Funciona para listar todos los historiales
-    static async listarHistorialIncidente(historialId: number) {
-    const result: QueryResult = await pool.query("SELECT * FROM sp_listar_historial_incidentes($1)", [historialId]);
+    static async listarHistorialIncidente() {
+    const result: QueryResult = await pool.query("SELECT * FROM sp_listar_historial_incidentes()");
     return result.rows;
 }
 

@@ -1,244 +1,435 @@
-<!-- Contenedor del modal con animación de entrada -->
 <div class="modal-container animate-modal-in">
 
-  <!-- Encabezado del modal -->
-  <div class="modal-header">
-    <div class="modal-header-content">
-      <mat-icon class="modal-header-icon">notifications_active</mat-icon>
+  <!-- ============================================
+       HEADER
+       ============================================ -->
 
-      <h2 class="modal-titulo">
-        {{ isEdit ? "Editar alerta" : "Registrar alerta" }}
-      </h2>
+  <div class="modal-header">
+
+<div class="modal-header-content">
+
+  <mat-icon class="modal-header-icon">
+    notifications_active
+  </mat-icon>
+
+  <h2 class="modal-titulo">
+    {{ isEdit ? "Editar alerta" : "Registrar alerta" }}
+  </h2>
+
+</div>
+
+<button
+  type="button"
+  class="btn-cerrar"
+  (click)="onCancel()"
+  [disabled]="loading">
+
+  <mat-icon>
+    close
+  </mat-icon>
+
+</button>
+
+  </div>
+
+  <!-- ============================================
+       FORMULARIO
+       ============================================ -->
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()">
+
+<div class="formulario-contenido">
+
+
+  <!-- ==========================================
+       TIPO Y NIVEL
+       ========================================== -->
+
+  <div class="form-row">
+
+    <!-- TIPO -->
+
+    <div class="form-group form-group-half">
+
+      <label class="form-label">
+        Tipo*
+      </label>
+
+      <div class="input-wrapper">
+
+        <mat-icon class="input-icon">
+          category
+        </mat-icon>
+
+        <mat-select
+          formControlName="tipo"
+          class="form-select">
+
+          <mat-option
+            *ngFor="let tipo of tiposAlerta"
+            [value]="tipo">
+
+            {{ tipo }}
+
+          </mat-option>
+
+        </mat-select>
+
+      </div>
+
+      <mat-error
+        *ngIf="form.get('tipo')?.hasError('required')"
+        class="error-message">
+
+        El tipo es obligatorio
+
+      </mat-error>
+
     </div>
 
-    <button
-      type="button"
-      class="btn-cerrar"
-      (click)="onCancel()"
-      [disabled]="loading">
-      <mat-icon>close</mat-icon>
-    </button>
+
+    <!-- NIVEL -->
+
+    <div class="form-group form-group-half">
+
+      <label class="form-label">
+        Nivel*
+      </label>
+
+      <div class="input-wrapper">
+
+        <mat-icon class="input-icon">
+          priority_high
+        </mat-icon>
+
+        <mat-select
+          formControlName="nivel"
+          class="form-select">
+
+          <mat-option
+            *ngFor="let nivel of nivelesAlerta"
+            [value]="nivel">
+
+            {{ nivel }}
+
+          </mat-option>
+
+        </mat-select>
+
+      </div>
+
+      <mat-error
+        *ngIf="form.get('nivel')?.hasError('required')"
+        class="error-message">
+
+        El nivel es obligatorio
+
+      </mat-error>
+
+    </div>
+
   </div>
 
 
-  <!-- Formulario reactivo -->
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- ==========================================
+       ESTADO
+       Solo aparece al editar
+       ========================================== -->
 
-    <div class="formulario-contenido">
+  <div
+    class="form-group"
+    *ngIf="isEdit">
 
-      <!-- Tipo y nivel -->
-      <div class="form-row">
+    <label class="form-label">
+      Estado*
+    </label>
 
-        <!-- Tipo -->
-        <div class="form-group form-group-half">
-          <label class="form-label">
-            Tipo*
-          </label>
+    <div class="input-wrapper">
 
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">category</mat-icon>
+      <mat-icon class="input-icon">
+        flag
+      </mat-icon>
 
-            <mat-select
-              formControlName="tipo"
-              class="form-select">
+      <mat-select
+        formControlName="estado"
+        class="form-select">
 
-              <mat-option
-                *ngFor="let tipo of tiposAlerta"
-                [value]="tipo">
-                {{ tipo }}
-              </mat-option>
+        <mat-option
+          *ngFor="let estado of estadosAlerta"
+          [value]="estado">
 
-            </mat-select>
-          </div>
+          {{ estado }}
 
-          <mat-error
-            *ngIf="form.get('tipo')?.hasError('required')"
-            class="error-message">
-            El tipo es obligatorio
-          </mat-error>
-        </div>
+        </mat-option>
 
-
-        <!-- Nivel -->
-        <div class="form-group form-group-half">
-          <label class="form-label">
-            Nivel*
-          </label>
-
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">priority_high</mat-icon>
-
-            <mat-select
-              formControlName="nivel"
-              class="form-select">
-
-              <mat-option
-                *ngFor="let nivel of nivelesAlerta"
-                [value]="nivel">
-                {{ nivel }}
-              </mat-option>
-
-            </mat-select>
-          </div>
-
-          <mat-error
-            *ngIf="form.get('nivel')?.hasError('required')"
-            class="error-message">
-            El nivel es obligatorio
-          </mat-error>
-        </div>
-
-      </div>
-
-
-      <!-- Mensaje -->
-      <div class="form-group">
-
-        <label class="form-label">
-          Mensaje*
-        </label>
-
-        <div class="input-wrapper textarea-wrapper">
-          <mat-icon class="input-icon textarea-icon">
-            message
-          </mat-icon>
-
-          <textarea
-            matInput
-            formControlName="mensaje"
-            rows="4"
-            placeholder="Escriba el mensaje de la alerta"
-            class="form-textarea">
-          </textarea>
-        </div>
-
-        <mat-error
-          *ngIf="form.get('mensaje')?.hasError('required')"
-          class="error-message">
-          El mensaje es obligatorio
-        </mat-error>
-
-        <mat-error
-          *ngIf="form.get('mensaje')?.hasError('maxlength')"
-          class="error-message">
-          El mensaje no puede superar los 500 caracteres
-        </mat-error>
-
-      </div>
-
-
-      <!-- IDs relacionados -->
-      <div class="form-row">
-
-        <!-- Incidente -->
-        <div class="form-group form-group-half">
-
-          <label class="form-label">
-            ID del incidente
-          </label>
-
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">
-              report_problem
-            </mat-icon>
-
-            <input
-              matInput
-              type="number"
-              min="1"
-              formControlName="incidente_id"
-              placeholder="Opcional"
-              class="form-input"
-            />
-          </div>
-
-        </div>
-
-
-        <!-- Zona -->
-        <div class="form-group form-group-half">
-
-          <label class="form-label">
-            ID de la zona
-          </label>
-
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">
-              location_on
-            </mat-icon>
-
-            <input
-              matInput
-              type="number"
-              min="1"
-              formControlName="zona_id"
-              placeholder="Opcional"
-              class="form-input"
-            />
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- Refugio -->
-      <div class="form-group">
-
-        <label class="form-label">
-          ID del refugio
-        </label>
-
-        <div class="input-wrapper">
-          <mat-icon class="input-icon">
-            home
-          </mat-icon>
-
-          <input
-            matInput
-            type="number"
-            min="1"
-            formControlName="refugio_id"
-            placeholder="Opcional"
-            class="form-input"
-          />
-        </div>
-
-      </div>
+      </mat-select>
 
     </div>
 
+    <mat-error
+      *ngIf="form.get('estado')?.hasError('required')"
+      class="error-message">
 
-    <!-- Botones de acción -->
-    <div class="botones-accion">
+      El estado es obligatorio
 
-      <button
-        type="button"
-        (click)="onCancel()"
-        class="btn-cancelar"
-        [disabled]="loading">
-        Cancelar
-      </button>
+    </mat-error>
 
-      <button
-        type="submit"
-        class="btn-registrar"
-        [disabled]="loading || form.invalid">
+  </div>
 
-        <mat-icon *ngIf="!loading">
-          check
+
+  <!-- ==========================================
+       MENSAJE
+       ========================================== -->
+
+  <div class="form-group">
+
+    <label class="form-label">
+      Mensaje*
+    </label>
+
+    <div class="input-wrapper textarea-wrapper">
+
+      <mat-icon class="input-icon textarea-icon">
+        message
+      </mat-icon>
+
+      <textarea
+        matInput
+        formControlName="mensaje"
+        rows="4"
+        placeholder="Escriba el mensaje de la alerta"
+        class="form-textarea">
+      </textarea>
+
+    </div>
+
+    <mat-error
+      *ngIf="form.get('mensaje')?.hasError('required')"
+      class="error-message">
+
+      El mensaje es obligatorio
+
+    </mat-error>
+
+    <mat-error
+      *ngIf="form.get('mensaje')?.hasError('maxlength')"
+      class="error-message">
+
+      El mensaje no puede superar los 500 caracteres
+
+    </mat-error>
+
+  </div>
+
+
+  <!-- ==========================================
+       ID INCIDENTE Y ID ZONA
+       ========================================== -->
+
+  <div class="form-row">
+
+    <!-- ID INCIDENTE -->
+
+    <div class="form-group form-group-half">
+
+      <label class="form-label">
+        ID del incidente
+      </label>
+
+      <div class="input-wrapper">
+
+        <mat-icon class="input-icon">
+          report_problem
         </mat-icon>
 
-        <mat-spinner
-          diameter="20"
-          *ngIf="loading">
-        </mat-spinner>
+        <input
+          matInput
+          type="number"
+          min="1"
+          formControlName="incidente_id"
+          placeholder="Opcional"
+          class="form-input"
+        />
 
-        {{ isEdit ? "Guardar cambios" : "Registrar" }}
+      </div>
 
-      </button>
+      <mat-error
+        *ngIf="form.get('incidente_id')?.hasError('min')"
+        class="error-message">
+
+        El ID del incidente debe ser mayor que 0
+
+      </mat-error>
+
+      <div
+        *ngIf="errorIncidente"
+        class="error-message">
+
+        {{ errorIncidente }}
+
+      </div>
 
     </div>
+
+
+    <!-- ID ZONA -->
+
+    <div class="form-group form-group-half">
+
+      <label class="form-label">
+        ID de la zona
+      </label>
+
+      <div class="input-wrapper">
+
+        <mat-icon class="input-icon">
+          location_on
+        </mat-icon>
+
+        <input
+          matInput
+          type="number"
+          min="1"
+          formControlName="zona_id"
+          placeholder="Opcional"
+          class="form-input"
+        />
+
+      </div>
+
+      <mat-error
+        *ngIf="form.get('zona_id')?.hasError('min')"
+        class="error-message">
+
+        El ID de la zona debe ser mayor que 0
+
+      </mat-error>
+
+      <div
+        *ngIf="errorZona"
+        class="error-message">
+
+        {{ errorZona }}
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       ID REFUGIO
+       ========================================== -->
+
+  <div class="form-group">
+
+    <label class="form-label">
+      ID del refugio
+    </label>
+
+    <div class="input-wrapper">
+
+      <mat-icon class="input-icon">
+        home
+      </mat-icon>
+
+      <input
+        matInput
+        type="number"
+        min="1"
+        formControlName="refugio_id"
+        placeholder="Opcional"
+        class="form-input"
+      />
+
+    </div>
+
+    <mat-error
+      *ngIf="form.get('refugio_id')?.hasError('min')"
+      class="error-message">
+
+      El ID del refugio debe ser mayor que 0
+
+    </mat-error>
+
+    <div
+      *ngIf="errorRefugio"
+      class="error-message">
+
+      {{ errorRefugio }}
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       VALIDACIÓN DE DESTINO
+       ========================================== -->
+
+  <div
+    class="error-message"
+    *ngIf="!isEdit && mostrarErrorDestino">
+
+    Debe ingresar al menos un ID:
+    incidente, zona o refugio.
+
+  </div>
+
+
+  <!-- ==========================================
+       ERROR GENERAL DEL BACKEND
+       ========================================== -->
+
+  <div
+    class="error-message"
+    *ngIf="errorGeneral">
+
+    {{ errorGeneral }}
+
+  </div>
+
+</div>
+
+
+<!-- ============================================
+     BOTONES
+     ============================================ -->
+
+<div class="botones-accion">
+
+  <button
+    type="button"
+    (click)="onCancel()"
+    class="btn-cancelar"
+    [disabled]="loading">
+
+    Cancelar
+
+  </button>
+
+  <button
+    type="submit"
+    class="btn-registrar"
+    [disabled]="loading || form.invalid">
+
+    <mat-icon *ngIf="!loading">
+      check
+    </mat-icon>
+
+    <mat-spinner
+      diameter="20"
+      *ngIf="loading">
+    </mat-spinner>
+
+    {{ isEdit ? "Guardar cambios" : "Registrar" }}
+
+  </button>
+
+</div>
 
   </form>
 
