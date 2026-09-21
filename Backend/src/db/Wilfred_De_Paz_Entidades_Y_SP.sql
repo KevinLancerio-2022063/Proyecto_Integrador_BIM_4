@@ -137,8 +137,8 @@ begin
 end;
 $$ language plpgsql;
 
--- listar historial de un incidente especifico
-create or replace function sp_listar_historial_incidente(p_incidente_id bigint)
+-- listar todo el historial
+create or replace function sp_listar_historial_incidentes()
 returns table (
     id bigint,
     incidente_id bigint,
@@ -155,7 +155,6 @@ begin
            h.comentario, h.usuario_id, u.nombre as nombre_usuario, h.fecha
     from historial_incidente h
     left join usuario u on u.id = h.usuario_id
-    where h.incidente_id = p_incidente_id
     order by h.id asc;
 end;
 $$ language plpgsql;

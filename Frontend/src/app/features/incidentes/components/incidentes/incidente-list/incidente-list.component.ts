@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { RouterLink } from '@angular/router';
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -12,6 +11,10 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { IncidenteService } from "../../../services/incidente.service";
 import { Incidente } from "../../../models/incidente.model";
 import { IncidenteFormComponent } from "../incidente-form/incidente-form.component";
+import { EstadoIncidentePipe } from "../../../pipes/estado-incidente.pipe";
+import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
+import { NivelEmergenciaPipe } from "../../../pipes/nivel-emergencia.pipe";
+import { TipoIncidentePipe } from "../../../pipes/tipo-incidente.pipe";
 
 @Component({
   selector: "app-incidente-list",
@@ -19,14 +22,17 @@ import { IncidenteFormComponent } from "../incidente-form/incidente-form.compone
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    EstadoIncidentePipe,
+    FechaFormateadaPipe,
+    NivelEmergenciaPipe,
+    TipoIncidentePipe
   ],
   templateUrl: "./incidente-list.component.html",
   styleUrls: ["./incidente-list.component.css"]
@@ -150,37 +156,5 @@ export class IncidenteListComponent implements OnInit {
 
   getPersonasAfectadas(incidente: any): number {
     return incidente.personasAfectadas ?? incidente.cantidad_personas_afectadas ?? 0;
-  }
-
-  getColorNivel(nivel: string): string {
-    const colores: { [key: string]: string } = {
-      BAJA: "bg-info text-dark",
-      MEDIA: "bg-warning text-dark",
-      ALTA: "bg-danger text-white",
-      CRITICA: "bg-dark text-white"
-    };
-    return colores[nivel] || "bg-secondary text-white";
-  }
-
-  getColorEstado(estado: string): string {
-    const colores: { [key: string]: string } = {
-      REPORTADO: "bg-warning text-dark",
-      EN_ATENCION: "bg-primary text-white",
-      MITIGADO: "bg-info text-dark",
-      CERRADO: "bg-success text-white"
-    };
-    return colores[estado] || "bg-secondary text-white";
-  }
-
-  getIconoTipo(tipo: string): string {
-    const iconos: { [key: string]: string } = {
-      INUNDACION: "flood",
-      TERREMOTO: "landslide",
-      INCENDIO: "local_fire_department",
-      DESLIZAMIENTO: "landscape",
-      ACTIVIDAD_VOLCANICA: "volcano",
-      OTRO: "warning"
-    };
-    return iconos[tipo] || "report_problem";
   }
 }

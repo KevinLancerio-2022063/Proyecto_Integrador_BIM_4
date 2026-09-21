@@ -3,19 +3,19 @@ import { RespuestaAPI, CrearHistorialIncidenteDTO, ActualizarHistorialIncidenteD
 
 export class HistorialIncidenteService {
 
-    // Funciona para obtener todos los historiales pasándole el ID que requiere tu repositorio
-    static async obtenerTodos(historialId: number = 0) {
-        try {
-            const historial = await HistorialIncidenteRepository.listarHistorialIncidente(historialId);
-            return {
-                success: true,
-                message: "Historiales obtenidos correctamente",
-                data: historial,
-            };
-        } catch (error: any) {
-            return { success: false, message: "Error al obtener historiales", error: error.message };
-        }
+   // Funcion para obtener todos los historiales
+static async obtenerTodos() {
+    try {
+        const historial = await HistorialIncidenteRepository.listarHistorialIncidente();
+        return {
+            success: true,
+            message: "Historiales obtenidos correctamente",
+            data: historial,
+        };
+    } catch (error: any) {
+        return { success: false, message: "Error al obtener historiales", error: error.message };
     }
+}
 
     // Funciona para obtener un historial específico por su ID
     static async obtenerPorId(id: number) {
