@@ -1,456 +1,957 @@
 /* ============================================
-   ANIMACIONES
+   Variables y fondo animado
    ============================================ */
 
-/* Animación de entrada suave */
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+:host {
+  display: block;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #1a1f4e 0%, #0a0e27 50%, #050714 100%);
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Define la animación de fade in */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Efecto de fondo con partículas sutiles */
+:host::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 110, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(131, 56, 236, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: backgroundPulse 8s ease-in-out infinite;
 }
 
-/* Animación de entrada para tarjetas */
-.asignacion-card {
-  animation: slideUp 0.5s ease-out forwards;
-  opacity: 0;
-}
-
-/* Define la animación de slide up */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Animación de pulso del fondo */
+@keyframes backgroundPulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
 }
 
 /* ============================================
-   CONTENEDOR PRINCIPAL
+   Animaciones keyframes
    ============================================ */
 
-/* Contenedor de la página */
+/* Entrada suave desde abajo */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Entrada con escala */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Brillo que recorre el borde */
+@keyframes borderShine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Pulso de glow */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.6);
+  }
+}
+
+/* Flotación suave */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ============================================
+   Contenedor principal
+   ============================================ */
+
 .container-page {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 2rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 /* ============================================
-   BARRA DE BÚSQUEDA
+   Encabezado con título gradiente
    ============================================ */
 
-/* Contenedor de búsqueda con efecto 3D */
+.page-header {
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 50%, #8338ec 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-family: var(--font-body);
+  color: #a0aec0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* ============================================
+   Barra de búsqueda con efecto glass
+   ============================================ */
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  animation: fadeInUp 0.7s ease-out;
+}
+
 .search-container {
+  flex: 1;
   position: relative;
   display: flex;
   align-items: center;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(11, 31, 92, 0.07), 0 10px 20px rgba(11, 31, 92, 0.05);
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
 }
 
-/* Efecto hover en la búsqueda */
-.search-container:hover {
-  box-shadow: 0 8px 12px rgba(11, 31, 92, 0.1), 0 15px 30px rgba(11, 31, 92, 0.08);
+/* Contenedor del icono con glow */
+.search-icon-wrapper {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.6));
+}
+
+/* Icono nítido sin filtros */
+.search-icon {
+  color: #00f0ff;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1.25rem 1rem 3.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #00f0ff;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 0 4px rgba(0, 240, 255, 0.1),
+    0 8px 24px rgba(0, 240, 255, 0.2);
   transform: translateY(-2px);
 }
 
-/* Efecto focus en la búsqueda */
-.search-container:focus-within {
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-}
-
-/* Icono de búsqueda */
-.search-icon {
-  position: absolute;
-  left: 16px;
-  color: #94a3b8;
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-}
-
-/* Input de búsqueda */
-.search-input {
-  width: 100%;
-  padding: 14px 16px 14px 48px;
-  border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  color: #0b1f5c;
-  background: transparent;
-  outline: none;
-}
-
-/* Placeholder del input */
 .search-input::placeholder {
-  color: #94a3b8;
+  color: #64748b;
 }
 
 /* ============================================
-   BOTÓN PRINCIPAL
+   Botón principal con efectos avanzados
    ============================================ */
 
-/* Botón de nueva asignación con gradiente y efecto 3D */
-.btn-custom-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+.btn-primary-cyber {
+  position: relative;
+  background: linear-gradient(135deg, #ff006e 0%, #ff6b35 50%, #ffbe0b 100%);
+  background-size: 200% 200%;
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 14px;
+  padding: 1rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2), 0 10px 20px rgba(5, 150, 105, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: 
+    0 4px 15px rgba(255, 0, 110, 0.4),
+    0 8px 30px rgba(255, 107, 53, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: fadeInUp 0.7s ease-out, gradientShift 3s ease infinite;
 }
 
-/* Efecto hover del botón principal */
-.btn-custom-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 12px rgba(5, 150, 105, 0.3), 0 15px 30px rgba(5, 150, 105, 0.25);
+/* Animación del degradado */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Brillo que recorre el botón */
+.btn-primary-cyber::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.btn-primary-cyber:hover::before {
+  left: 100%;
+}
+
+.btn-primary-cyber:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 25px rgba(255, 0, 110, 0.6),
+    0 12px 40px rgba(255, 107, 53, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary-cyber:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 /* ============================================
-   TARJETAS DE ASIGNACIÓN
+   Filtros hexagonales con degradado y destello
    ============================================ */
 
-/* Tarjeta de asignación con efecto 3D */
-.asignacion-card {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(11, 31, 92, 0.07), 0 10px 20px rgba(11, 31, 92, 0.05);
-  transition: all 0.3s ease;
-  border: 1px solid #f1f5f9;
+.filtros-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  animation: fadeInUp 0.8s ease-out;
+  padding: 1rem 0;
+}
+
+.filtro-hex {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
-/* Efecto hover de la tarjeta */
-.asignacion-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(11, 31, 92, 0.12), 0 20px 40px rgba(11, 31, 92, 0.08);
-  border-color: #e0f2fe;
+.filtro-hex:hover {
+  transform: translateY(-8px) scale(1.05);
+}
+
+/* Contenedor del hexágono - completamente transparente */
+.hexagon-wrapper {
+  width: 85px;
+  height: 85px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* El hexágono con clip-path y degradado */
+.hexagon {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  position: relative;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+/* Efecto de relieve en el hexágono */
+.hexagon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Destello blanco que cruza el hexágono */
+.hexagon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Activa el destello al hacer hover */
+.filtro-hex:hover .hexagon::after {
+  left: 150%;
+  transition: left 0.6s ease-in-out;
+}
+
+.hexagon mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.filtro-hex:hover .hexagon mat-icon {
+  transform: scale(1.15) rotate(10deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+/* Hexágono activo con glow */
+.filtro-hex.active .hexagon-wrapper {
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
+}
+
+.filtro-hex.active .hexagon {
+  transform: scale(1.1);
+}
+
+.filtro-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a0aec0;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.filtro-hex.active .filtro-label {
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
 }
 
 /* ============================================
-   HEADER DE TARJETA
+   Colores específicos para cada hexágono de filtro
    ============================================ */
 
-/* Header de la tarjeta con icono y badge */
+/* Hexágono de Todos (azul) */
+.hex-todos {
+  background: linear-gradient(135deg, #3b6dd9 0%, #2955a6 40%, #1c3b75 100%);
+}
+
+/* Hexágono de Solicitados (cyan brillante) */
+.hex-solicitado {
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 40%, #0284c7 100%);
+}
+
+/* Hexágono de Asignados (morado/púrpura) */
+.hex-asignado {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 40%, #6d28d9 100%);
+}
+
+/* Hexágono de Enviados (naranja/ámbar) */
+.hex-enviado {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 40%, #b45309 100%);
+}
+
+/* Hexágono de Entregados (verde esmeralda) */
+.hex-entregado {
+  background: linear-gradient(135deg, #10b981 0%, #059669 40%, #047857 100%);
+}
+
+/* Hexágono de Cancelados (rojo) */
+.hex-cancelado {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 40%, #b91c1c 100%);
+}
+
+
+
+/* ============================================
+   Grid de tarjetas
+   ============================================ */
+
+.asignaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.75rem;
+  perspective: 1000px;
+}
+
+/* ============================================
+   Tarjeta de asignación con efecto 3D
+   ============================================ */
+
+.asignacion-card {
+  background: linear-gradient(
+    145deg,
+    rgba(26, 31, 78, 0.6) 0%,
+    rgba(10, 14, 39, 0.8) 100%
+  );
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 18px;
+  padding: 1.75rem;
+  backdrop-filter: blur(12px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  animation: fadeInUp 0.6s ease-out backwards;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Línea de brillo superior animada */
+.asignacion-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #00f0ff 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: borderShine 3s linear infinite;
+  opacity: 0.7;
+}
+
+/* Efecto de brillo en hover */
+.asignacion-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 240, 255, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.asignacion-card:hover::after {
+  opacity: 1;
+}
+
+.asignacion-card:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+  transform: translateY(-12px) rotateX(2deg);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 240, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   Header de tarjeta
+   ============================================ */
+
 .asignacion-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
-}
-
-/* Contenedor del icono con efecto 3D */
-.icono-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-/* Efecto hover del icono */
-.asignacion-card:hover .icono-container {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Icono dentro del contenedor */
-.icono-container mat-icon {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
-  color: white;
-}
-
-/* Colores específicos por tipo */
-.icono-asignacion {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-}
-
-/* Badge de estado */
-.estado-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* ============================================
-   CONTENIDO DE TARJETA
+   Icono del estado con color dinámico
    ============================================ */
 
-/* Título de la asignación */
-.asignacion-titulo {
-  font-size: 18px;
-  font-weight: 700;
-  color: #0b1f5c;
-  margin: 0 0 12px 0;
-  line-height: 1.3;
+.icono-container {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Contenedor de cantidad */
+/* Brillo interno del icono */
+.icono-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.icono-container mat-icon {
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  transition: all 0.4s ease;
+  z-index: 1;
+}
+
+.asignacion-card:hover .icono-container {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.5),
+    0 0 20px currentColor;
+}
+
+.asignacion-card:hover .icono-container mat-icon {
+  transform: scale(1.15);
+}
+
+/* ============================================
+   Badge de estado
+   ============================================ */
+
+.tipo-badge {
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(0, 240, 255, 0.08);
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  backdrop-filter: blur(8px);
+  box-shadow: 
+    0 2px 8px rgba(0, 240, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.asignacion-card:hover .tipo-badge {
+  background: rgba(0, 240, 255, 0.15);
+  box-shadow: 
+    0 4px 12px rgba(0, 240, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   Contenido de tarjeta
+   ============================================ */
+
+.asignacion-nombre {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 .asignacion-cantidad {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 8px 12px;
-  background: #f8fafc;
-  border-radius: 8px;
-  border-left: 3px solid #8b5cf6;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.08) 0%,
+    rgba(14, 165, 233, 0.05) 100%
+  );
+  border-radius: 10px;
+  border-left: 3px solid #00f0ff;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 240, 255, 0.05);
+  transition: all 0.3s ease;
 }
 
-/* Icono de cantidad */
+.asignacion-card:hover .asignacion-cantidad {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.12) 0%,
+    rgba(14, 165, 233, 0.08) 100%
+  );
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 240, 255, 0.1);
+}
+
 .cantidad-icono {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: #8b5cf6;
+  font-size: 1.1rem !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  color: #00f0ff;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.5));
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-/* Texto de cantidad */
+.asignacion-card:hover .cantidad-icono {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.7));
+}
+
 .cantidad-texto {
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #0b1f5c;
+  color: #ffffff;
+  letter-spacing: 0.3px;
 }
 
-/* Contenedor de destino */
 .asignacion-destino {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 8px 12px;
-  background: #f8fafc;
-  border-radius: 8px;
-  border-left: 3px solid #0ea5e9;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.05) 0%,
+    rgba(14, 165, 233, 0.03) 100%
+  );
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
-/* Icono de destino */
 .destino-icono {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: #0ea5e9;
+  font-size: 1.1rem !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  color: #f59e0b;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
 }
 
-/* Texto de destino */
 .destino-texto {
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #0b1f5c;
+  color: #ffffff;
+  letter-spacing: 0.3px;
 }
 
-/* Contenedor de fechas */
-.asignacion-fechas {
-  margin-bottom: 12px;
-}
-
-/* Item de fecha */
-.fecha-item {
+.asignacion-fecha {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #64748b;
-  margin: 0 0 6px 0;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
-/* Icono de fecha */
 .fecha-icono {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-  color: #94a3b8;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  color: #00f0ff;
+  opacity: 0.7;
 }
 
-/* Observaciones */
+.fecha-texto {
+  font-size: 0.85rem;
+  color: #a0aec0;
+}
+
 .asignacion-observaciones {
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.5;
-  margin: 0 0 16px 0;
+  font-size: 0.9rem;
+  color: #a0aec0;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  padding: 8px 12px;
-  background: #f8fafc;
-  border-radius: 8px;
+  gap: 0.6rem;
 }
 
-/* Icono de observaciones */
 .observaciones-icono {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-  color: #94a3b8;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  color: #00f0ff;
+  opacity: 0.7;
   flex-shrink: 0;
 }
 
 /* ============================================
-   ACCIONES DE TARJETA
+   Acciones de tarjeta
    ============================================ */
 
-/* Contenedor de acciones */
 .asignacion-acciones {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 240, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
-/* Botón de acción base */
 .btn-accion {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Icono dentro del botón de acción */
 .btn-accion mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: all 0.3s ease;
+  z-index: 1;
 }
 
-/* Botón de editar */
+/* Brillo en hover de botones */
+.btn-accion::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-accion:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
 .btn-editar {
-  background: #e0f2fe;
-  color: #0284c7;
+  background: rgba(0, 240, 255, 0.1);
+  color: #00f0ff;
+  box-shadow: 
+    0 2px 8px rgba(0, 240, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Efecto hover del botón editar */
 .btn-editar:hover {
-  background: #0284c7;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(2, 132, 199, 0.3);
+  background: #00f0ff;
+  color: #0a0e27;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 
+    0 6px 16px rgba(0, 240, 255, 0.4),
+    0 0 20px rgba(0, 240, 255, 0.3);
 }
 
-/* Botón de eliminar */
 .btn-eliminar {
-  background: #fee2e2;
-  color: #dc2626;
+  background: rgba(255, 0, 110, 0.1);
+  color: #ff006e;
+  box-shadow: 
+    0 2px 8px rgba(255, 0, 110, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Efecto hover del botón eliminar */
 .btn-eliminar:hover {
-  background: #dc2626;
+  background: #ff006e;
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 
+    0 6px 16px rgba(255, 0, 110, 0.4),
+    0 0 20px rgba(255, 0, 110, 0.3);
 }
 
 /* ============================================
-   ESTADOS DE CARGA Y VACÍO
+   Estados de carga y vacío
    ============================================ */
 
-/* Contenedor de estado de carga */
-.estado-carga {
-  text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(11, 31, 92, 0.07);
-}
-
-/* Contenedor de estado vacío */
+.estado-carga,
 .estado-vacio {
   text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(11, 31, 92, 0.07);
+  padding: 4rem 2rem;
+  background: linear-gradient(
+    145deg,
+    rgba(26, 31, 78, 0.4) 0%,
+    rgba(10, 14, 39, 0.6) 100%
+  );
+  border-radius: 18px;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  backdrop-filter: blur(12px);
+  animation: scaleIn 0.5s ease-out;
 }
 
-/* Icono de estado vacío */
 .estado-vacio-icono {
-  font-size: 64px;
-  width: 64px;
-  height: 64px;
-  color: #cbd5e1;
-  margin-bottom: 16px;
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  color: #00f0ff;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+  animation: float 3s ease-in-out infinite;
 }
 
-/* Título de estado vacío */
 .estado-vacio-titulo {
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #0b1f5c;
-  margin: 0 0 8px 0;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
 }
 
-/* Texto de estado vacío */
 .estado-vacio-texto {
-  font-size: 14px;
-  color: #64748b;
-  margin: 0;
+  font-size: 0.95rem;
+  color: #a0aec0;
 }
 
 /* ============================================
-   SPINNER DE MATERIAL
+   Spinner personalizado
    ============================================ */
 
-/* Estilo personalizado para el spinner */
 ::ng-deep .mat-mdc-progress-spinner {
-  --mdc-circular-progress-active-indicator-color: #0ea5e9;
+  --mdc-circular-progress-active-indicator-color: #00f0ff;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
 }
 
 /* ============================================
-   RESPONSIVE
+   Responsive
    ============================================ */
 
-/* Ajustes para tablets */
 @media (max-width: 768px) {
   .container-page {
     padding: 1.5rem 1rem;
   }
 
-  .asignacion-card {
-    padding: 20px;
+  .page-title {
+    font-size: 1.8rem;
   }
 
-  .btn-custom-primary {
+  .header-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary-cyber {
     width: 100%;
     justify-content: center;
+  }
+
+  .asignaciones-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-container {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hexagon-wrapper {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .asignacion-card {
+    padding: 1.25rem;
   }
 }
