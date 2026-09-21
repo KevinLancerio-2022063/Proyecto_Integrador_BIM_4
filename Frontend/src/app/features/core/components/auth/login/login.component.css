@@ -1,129 +1,1983 @@
-/* src/app/features/core/components/auth/login/login.component.css */
-.auth-container {
+/* =========================================================
+   LOGIN SIGED
+   ========================================================= */
+
+:host {
+    display: block;
+
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    padding: 1rem;
+
+    font-family:
+        'Segoe UI',
+        Roboto,
+        sans-serif;
 }
 
-.auth-card {
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    padding: 2.5rem;
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.auth-container {
+
+    min-height: 100vh;
+
     width: 100%;
-    max-width: 420px;
-}
 
-.auth-title {
-    margin: 0;
-    font-size: 2rem;
-    color: #1e3a8a;
-    text-align: center;
-    letter-spacing: 2px;
-}
-
-.auth-subtitle {
-    margin: 0.5rem 0 1.5rem;
-    color: #64748b;
-    text-align: center;
-    font-size: 0.95rem;
-}
-
-.form-group {
-    margin-bottom: 1.25rem;
     display: flex;
+
+    overflow: hidden;
+
+    background:
+        #070b1d;
+
+    color: #e2e8f0;
+}
+
+
+/* =========================================================
+   PANEL VISUAL
+   ========================================================= */
+
+.visual-panel {
+
+    width: 55%;
+
+    min-height: 100vh;
+
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+
     flex-direction: column;
+
+    justify-content: space-between;
+
+    padding:
+        2.5rem
+        4rem;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 50% 38%,
+            rgba(0, 198, 255, 0.10),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(0, 114, 255, 0.12),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            #0e1736 0%,
+            #091128 45%,
+            #070b1d 100%
+        );
+
+    border-right:
+        1px solid
+        rgba(0, 198, 255, 0.16);
 }
 
-.form-group label {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #334155;
+
+/* =========================================================
+   EFECTOS DEL FONDO
+   ========================================================= */
+
+.visual-panel::before {
+
+    content: '';
+
+    position: absolute;
+
+    width: 600px;
+
+    height: 600px;
+
+    border-radius: 50%;
+
+    top: -300px;
+
+    left: -250px;
+
+    background:
+        rgba(0, 198, 255, 0.07);
+
+    filter:
+        blur(30px);
+
+    pointer-events: none;
 }
 
-.form-group input {
-    padding: 0.75rem 1rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+
+.visual-panel::after {
+
+    content: '';
+
+    position: absolute;
+
+    width: 450px;
+
+    height: 450px;
+
+    border-radius: 50%;
+
+    right: -250px;
+
+    bottom: -250px;
+
+    background:
+        rgba(57, 255, 136, 0.045);
+
+    filter:
+        blur(35px);
+
+    pointer-events: none;
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+
+/* =========================================================
+   GLOW DECORATIVO
+   ========================================================= */
+
+.visual-glow {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    filter: blur(2px);
 }
 
-.form-group input.invalid {
-    border-color: #ef4444;
+
+.visual-glow-one {
+
+    width: 8px;
+
+    height: 8px;
+
+    top: 24%;
+
+    left: 16%;
+
+    background:
+        #00f0ff;
+
+    box-shadow:
+        0 0 12px
+        #00f0ff;
 }
 
-.error-text {
-    color: #ef4444;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
+
+.visual-glow-two {
+
+    width: 5px;
+
+    height: 5px;
+
+    top: 18%;
+
+    right: 20%;
+
+    background:
+        #39ff88;
+
+    box-shadow:
+        0 0 10px
+        #39ff88;
 }
 
-.btn-primary {
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.visual-brand {
+
+    position: relative;
+
+    z-index: 5;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.visual-logo {
+
+    width: 135px;
+
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 0 10px
+            rgba(34, 197, 148, 0.28)
+        );
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+.visual-logo:hover {
+
+    transform:
+        scale(1.03);
+}
+
+
+/* =========================================================
+   ILUSTRACIÓN
+   ========================================================= */
+
+.disaster-illustration {
+
     width: 100%;
-    padding: 0.85rem;
-    background: #1e3a8a;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 0.5rem;
+
+    max-width: 650px;
+
+    height: 300px;
+
+    position: relative;
+
+    margin:
+        0 auto;
+
+    flex-shrink: 0;
 }
 
-.btn-primary:hover:not(:disabled) {
-    background: #1e40af;
+
+/* =========================================================
+   LUNA
+   ========================================================= */
+
+.moon {
+
+    position: absolute;
+
+    width: 76px;
+
+    height: 76px;
+
+    border-radius: 50%;
+
+    top: 45px;
+
+    left: 46%;
+
+    background:
+        #dffaff;
+
+    box-shadow:
+        0 0 20px
+        rgba(0, 240, 255, 0.35);
+
+    opacity: 0.9;
 }
 
-.btn-primary:disabled {
-    background: #94a3b8;
-    cursor: not-allowed;
+
+.moon::after {
+
+    content: '';
+
+    position: absolute;
+
+    width: 76px;
+
+    height: 76px;
+
+    border-radius: 50%;
+
+    top: -8px;
+
+    left: 18px;
+
+    background:
+        #101936;
 }
+
+
+/* =========================================================
+   NUBES
+   ========================================================= */
+
+.cloud {
+
+    position: absolute;
+
+    height: 22px;
+
+    border-radius: 30px;
+
+    background:
+        #18285a;
+
+    opacity: 0.95;
+
+    box-shadow:
+        0 5px 12px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+.cloud::before,
+.cloud::after {
+
+    content: '';
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    background:
+        #18285a;
+}
+
+
+.cloud::before {
+
+    width: 38px;
+
+    height: 38px;
+
+    left: 20px;
+
+    bottom: 0;
+}
+
+
+.cloud::after {
+
+    width: 28px;
+
+    height: 28px;
+
+    left: 52px;
+
+    bottom: 0;
+}
+
+
+.cloud-one {
+
+    width: 125px;
+
+    left: 9%;
+
+    top: 105px;
+}
+
+
+.cloud-two {
+
+    width: 150px;
+
+    right: 8%;
+
+    top: 88px;
+}
+
+
+.cloud-three {
+
+    width: 100px;
+
+    right: 25%;
+
+    top: 145px;
+
+    opacity: 0.65;
+}
+
+
+/* =========================================================
+   RELÁMPAGOS
+   ========================================================= */
+
+.lightning {
+
+    position: absolute;
+
+    width: 3px;
+
+    height: 40px;
+
+    background:
+        #00f0ff;
+
+    box-shadow:
+        0 0 10px
+        #00f0ff;
+
+    transform:
+        rotate(25deg);
+
+    opacity: 0.75;
+}
+
+
+.lightning::after {
+
+    content: '';
+
+    position: absolute;
+
+    width: 3px;
+
+    height: 28px;
+
+    left: 8px;
+
+    top: 28px;
+
+    background:
+        #00f0ff;
+
+    transform:
+        rotate(-48deg);
+
+    box-shadow:
+        0 0 8px
+        #00f0ff;
+}
+
+
+.lightning-one {
+
+    top: 123px;
+
+    left: 25%;
+}
+
+
+.lightning-two {
+
+    top: 118px;
+
+    right: 27%;
+
+    transform:
+        rotate(15deg);
+
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   LLUVIA
+   ========================================================= */
+
+.rain {
+
+    position: absolute;
+
+    width: 2px;
+
+    height: 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent,
+            #00c6ff
+        );
+
+    transform:
+        rotate(18deg);
+
+    opacity: 0.55;
+}
+
+
+.rain-one {
+    top: 160px;
+    left: 14%;
+}
+
+.rain-two {
+    top: 190px;
+    left: 20%;
+}
+
+.rain-three {
+    top: 172px;
+    left: 30%;
+}
+
+.rain-four {
+    top: 202px;
+    left: 39%;
+}
+
+.rain-five {
+    top: 165px;
+    right: 38%;
+}
+
+.rain-six {
+    top: 195px;
+    right: 29%;
+}
+
+.rain-seven {
+    top: 160px;
+    right: 18%;
+}
+
+.rain-eight {
+    top: 205px;
+    right: 10%;
+}
+
+
+/* =========================================================
+   MONTAÑAS
+   ========================================================= */
+
+.mountain {
+
+    position: absolute;
+
+    bottom: 36px;
+
+    width: 0;
+
+    height: 0;
+
+    border-left:
+        150px solid transparent;
+
+    border-right:
+        150px solid transparent;
+
+    border-bottom:
+        150px solid #111d45;
+}
+
+
+.mountain-back {
+
+    left: 4%;
+
+    opacity: 0.75;
+
+    border-left-width: 190px;
+
+    border-right-width: 190px;
+
+    border-bottom-width: 125px;
+
+    border-bottom-color:
+        #14224e;
+}
+
+
+.mountain-front {
+
+    right: 2%;
+
+    border-left-width: 175px;
+
+    border-right-width: 175px;
+
+    border-bottom-width: 175px;
+
+    border-bottom-color:
+        #0e1839;
+}
+
+
+/* =========================================================
+   CASA / REFUGIO
+   ========================================================= */
+
+.emergency-house {
+
+    position: absolute;
+
+    z-index: 5;
+
+    bottom: 39px;
+
+    left: 45%;
+
+    width: 90px;
+
+    height: 78px;
+}
+
+
+.house-roof {
+
+    position: absolute;
+
+    left: -8px;
+
+    top: 0;
+
+    width: 0;
+
+    height: 0;
+
+    border-left:
+        53px solid transparent;
+
+    border-right:
+        53px solid transparent;
+
+    border-bottom:
+        48px solid #00a9d6;
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(0, 198, 255, 0.2)
+        );
+}
+
+
+.house-body {
+
+    position: absolute;
+
+    left: 8px;
+
+    bottom: 0;
+
+    width: 74px;
+
+    height: 52px;
+
+    background:
+        #172654;
+
+    border:
+        1px solid
+        rgba(0, 198, 255, 0.35);
+}
+
+
+.house-door {
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 29px;
+
+    width: 18px;
+
+    height: 34px;
+
+    background:
+        #071127;
+
+    border:
+        1px solid
+        rgba(0, 240, 255, 0.25);
+}
+
+
+.house-window {
+
+    position: absolute;
+
+    right: 8px;
+
+    top: 13px;
+
+    width: 22px;
+
+    height: 18px;
+
+    background:
+        #00c6ff;
+
+    box-shadow:
+        0 0 10px
+        rgba(0, 240, 255, 0.3);
+}
+
+
+.house-window span {
+
+    position: absolute;
+
+    background:
+        #12325a;
+}
+
+
+.house-window span:first-child {
+
+    width: 1px;
+
+    height: 100%;
+
+    left: 50%;
+}
+
+
+.house-window span:last-child {
+
+    width: 100%;
+
+    height: 1px;
+
+    top: 50%;
+}
+
+
+/* =========================================================
+   TERRENO
+   ========================================================= */
+
+.ground-line {
+
+    position: absolute;
+
+    height: 5px;
+
+    border-radius: 10px;
+
+    background:
+        #00c6ff;
+
+    opacity: 0.55;
+
+    box-shadow:
+        0 0 7px
+        rgba(0, 198, 255, 0.2);
+}
+
+
+.ground-one {
+
+    width: 190px;
+
+    bottom: 26px;
+
+    left: 5%;
+}
+
+
+.ground-two {
+
+    width: 110px;
+
+    bottom: 17px;
+
+    left: 37%;
+}
+
+
+.ground-three {
+
+    width: 160px;
+
+    bottom: 30px;
+
+    right: 4%;
+}
+
+
+/* =========================================================
+   CONTENIDO VISUAL
+   ========================================================= */
+
+.visual-content {
+
+    position: relative;
+
+    z-index: 5;
+
+    max-width: 650px;
+
+    margin:
+        0 auto;
+
+    width: 100%;
+}
+
+
+.visual-tag {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.45rem;
+
+    padding:
+        0.4rem
+        0.75rem;
+
+    border-radius: 999px;
+
+    background:
+        rgba(0, 198, 255, 0.07);
+
+    border:
+        1px solid
+        rgba(0, 198, 255, 0.2);
+
+    color:
+        #00dfff;
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.8px;
+}
+
+
+.visual-content h2 {
+
+    margin:
+        0.8rem
+        0
+        0.7rem;
+
+    color:
+        #ffffff;
+
+    font-size:
+        clamp(1.8rem, 3vw, 2.7rem);
+
+    line-height:
+        1.1;
+
+    font-weight:
+        700;
+}
+
+
+.visual-content h2 span {
+
+    display: block;
+
+    color:
+        #00d9ff;
+
+    text-shadow:
+        0 0 14px
+        rgba(0, 198, 255, 0.25);
+}
+
+
+.visual-content p {
+
+    margin: 0;
+
+    max-width: 610px;
+
+    color:
+        #7184a8;
+
+    font-size:
+        0.88rem;
+
+    line-height:
+        1.7;
+}
+
+
+/* =========================================================
+   CARACTERÍSTICAS
+   ========================================================= */
+
+.visual-features {
+
+    position: relative;
+
+    z-index: 5;
+
+    display: flex;
+
+    gap: 0.7rem;
+
+    margin-top: 1.5rem;
+
+    max-width: 650px;
+
+    width: 100%;
+
+    margin-left: auto;
+
+    margin-right: auto;
+}
+
+
+.visual-feature {
+
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.6rem;
+
+    padding:
+        0.65rem
+        0.8rem;
+
+    background:
+        rgba(18, 24, 56, 0.65);
+
+    border:
+        1px solid
+        rgba(0, 198, 255, 0.12);
+
+    border-radius:
+        8px;
+
+    color:
+        #8fa6ca;
+
+    font-size:
+        0.76rem;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.visual-feature:hover {
+
+    background:
+        rgba(0, 198, 255, 0.06);
+
+    border-color:
+        rgba(0, 198, 255, 0.3);
+}
+
+
+.visual-feature i {
+
+    color:
+        #00dfff;
+
+    font-size:
+        1rem;
+}
+
+
+/* =========================================================
+   PANEL DE LOGIN
+   ========================================================= */
+
+.login-panel {
+
+    width: 45%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    padding:
+        2rem;
+
+    background:
+        #0a0f24;
+}
+
+
+.login-content {
+
+    width: 100%;
+
+    max-width: 410px;
+
+    animation:
+        login-entry
+        0.55s
+        ease-out;
+}
+
+
+/* =========================================================
+   HEADER LOGIN
+   ========================================================= */
+
+.login-header {
+
+    margin-bottom:
+        2rem;
+}
+
+
+.mobile-logo {
+
+    display: none;
+}
+
+
+.welcome-label {
+
+    display: block;
+
+    margin-bottom:
+        0.45rem;
+
+    color:
+        #00c6ff;
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.8px;
+
+    text-transform:
+        uppercase;
+}
+
+
+.login-header h1 {
+
+    margin:
+        0;
+
+    color:
+        #ffffff;
+
+    font-size:
+        2rem;
+
+    line-height:
+        1.2;
+
+    font-weight:
+        700;
+}
+
+
+.login-header p {
+
+    margin:
+        0.55rem
+        0
+        0;
+
+    color:
+        #64748b;
+
+    font-size:
+        0.9rem;
+}
+
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
 
 .alert {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.65rem;
+
+    padding:
+        0.8rem
+        1rem;
+
+    margin-bottom:
+        1.2rem;
+
+    border-radius:
+        8px;
+
+    font-size:
+        0.82rem;
+
+    line-height:
+        1.4;
 }
+
 
 .alert-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #86efac;
+
+    color:
+        #39ff88;
+
+    background:
+        rgba(57, 255, 20, 0.07);
+
+    border:
+        1px solid
+        rgba(57, 255, 20, 0.25);
 }
+
 
 .alert-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
+
+    color:
+        #ff6b81;
+
+    background:
+        rgba(255, 45, 85, 0.07);
+
+    border:
+        1px solid
+        rgba(255, 45, 85, 0.28);
 }
+
+
+.alert i {
+
+    flex-shrink:
+        0;
+
+    font-size:
+        1rem;
+}
+
+
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+
+.form-group {
+
+    margin-bottom:
+        1.25rem;
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom:
+        0.55rem;
+
+    color:
+        #cbd5e1;
+
+    font-size:
+        0.8rem;
+
+    font-weight:
+        600;
+}
+
+
+/* =========================================================
+   INPUT WRAPPER
+   ========================================================= */
+
+.input-wrapper {
+
+    position: relative;
+
+    width: 100%;
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 1rem;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        #52698d;
+
+    font-size:
+        0.95rem;
+
+    pointer-events:
+        none;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.input-wrapper:focus-within
+.input-icon {
+
+    color:
+        #00dfff;
+}
+
+
+.input-wrapper input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding:
+        0.85rem
+        1rem
+        0.85rem
+        2.75rem;
+
+    background:
+        rgba(18, 24, 56, 0.8);
+
+    color:
+        #ffffff;
+
+    border:
+        1px solid
+        rgba(0, 198, 255, 0.18);
+
+    border-radius:
+        8px;
+
+    outline:
+        none;
+
+    font-family:
+        inherit;
+
+    font-size:
+        0.9rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.input-wrapper input::placeholder {
+
+    color:
+        #475569;
+}
+
+
+.input-wrapper input:hover {
+
+    border-color:
+        rgba(0, 198, 255, 0.3);
+}
+
+
+.input-wrapper input:focus {
+
+    background:
+        rgba(18, 24, 56, 0.95);
+
+    border-color:
+        #00c6ff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 198, 255, 0.07),
+
+        0 0 15px
+        rgba(0, 198, 255, 0.06);
+}
+
+
+.input-wrapper input.invalid {
+
+    border-color:
+        #ff476f;
+}
+
+
+.input-wrapper input.invalid:focus {
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 45, 85, 0.07);
+}
+
+
+/* =========================================================
+   ERRORES
+   ========================================================= */
+
+.error-text {
+
+    display: block;
+
+    margin-top:
+        0.4rem;
+
+    color:
+        #ff6b81;
+
+    font-size:
+        0.75rem;
+}
+
+
+/* =========================================================
+   OPCIONES
+   ========================================================= */
+
+.form-options {
+
+    display: flex;
+
+    justify-content:
+        flex-end;
+
+    margin-top:
+        -0.3rem;
+
+    margin-bottom:
+        1.2rem;
+}
+
+
+.form-options span {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.35rem;
+
+    color:
+        #64748b;
+
+    font-size:
+        0.72rem;
+}
+
+
+.form-options i {
+
+    color:
+        #39ff88;
+}
+
+
+/* =========================================================
+   BOTÓN
+   ========================================================= */
+
+.btn-primary {
+
+    width: 100%;
+
+    min-height:
+        48px;
+
+    padding:
+        0.8rem
+        1.2rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.65rem;
+
+    border:
+        none;
+
+    border-radius:
+        8px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0072ff 0%,
+            #00c6ff 100%
+        );
+
+    color:
+        #ffffff;
+
+    font-family:
+        inherit;
+
+    font-size:
+        0.92rem;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 8px 22px
+        rgba(0, 114, 255, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+
+.btn-primary:hover:not(:disabled) {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.08);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 198, 255, 0.25);
+}
+
+
+.btn-primary:active:not(:disabled) {
+
+    transform:
+        translateY(0);
+}
+
+
+.btn-primary:disabled {
+
+    background:
+        #334155;
+
+    color:
+        #94a3b8;
+
+    cursor:
+        not-allowed;
+
+    box-shadow:
+        none;
+
+    opacity:
+        0.7;
+}
+
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+.button-loader {
+
+    width:
+        15px;
+
+    height:
+        15px;
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.35);
+
+    border-top-color:
+        #ffffff;
+
+    border-radius:
+        50%;
+
+    animation:
+        spin
+        0.7s
+        linear
+        infinite;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 .auth-footer {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.875rem;
-    color: #64748b;
+
+    display: flex;
+
+    justify-content:
+        center;
+
+    align-items: center;
+
+    gap:
+        0.35rem;
+
+    flex-wrap:
+        wrap;
+
+    margin-top:
+        1.6rem;
+
+    padding-top:
+        1.3rem;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    color:
+        #64748b;
+
+    font-size:
+        0.8rem;
 }
+
 
 .auth-footer a {
-    color: #1e3a8a;
-    font-weight: 600;
-    text-decoration: none;
+
+    color:
+        #00c6ff;
+
+    font-weight:
+        600;
+
+    text-decoration:
+        none;
+
+    transition:
+        color 0.2s ease,
+        text-shadow 0.2s ease;
 }
 
+
 .auth-footer a:hover {
-    text-decoration: underline;
+
+    color:
+        #39eaff;
+
+    text-shadow:
+        0 0 8px
+        rgba(0, 198, 255, 0.4);
+}
+
+
+/* =========================================================
+   NOTA DE SEGURIDAD
+   ========================================================= */
+
+.security-note {
+
+    display: flex;
+
+    justify-content:
+        center;
+
+    align-items: center;
+
+    gap:
+        0.4rem;
+
+    margin-top:
+        1.3rem;
+
+    color:
+        #3f5275;
+
+    font-size:
+        0.68rem;
+
+    text-align:
+        center;
+}
+
+
+.security-note i {
+
+    color:
+        #39ff88;
+}
+
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+@keyframes login-entry {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateX(18px);
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateX(0);
+    }
+}
+
+
+@keyframes spin {
+
+    to {
+
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .visual-panel {
+
+        width:
+            50%;
+
+        padding:
+            2rem;
+    }
+
+
+    .login-panel {
+
+        width:
+            50%;
+
+        padding:
+            2rem;
+    }
+
+
+    .visual-content h2 {
+
+        font-size:
+            2rem;
+    }
+
+
+    .visual-features {
+
+        gap:
+            0.4rem;
+    }
+
+}
+
+
+@media (max-width: 780px) {
+
+    .auth-container {
+
+        min-height:
+            100vh;
+
+        display:
+            block;
+
+        overflow:
+            auto;
+    }
+
+
+    .visual-panel {
+
+        width:
+            100%;
+
+        min-height:
+            390px;
+
+        height:
+            auto;
+
+        padding:
+            1.5rem
+            1.5rem
+            2rem;
+    }
+
+
+    .visual-brand {
+
+        justify-content:
+            center;
+    }
+
+
+    .visual-logo {
+
+        width:
+            110px;
+    }
+
+
+    .disaster-illustration {
+
+        height:
+            190px;
+
+        margin-top:
+            0.5rem;
+    }
+
+
+    .moon {
+
+        width:
+            52px;
+
+        height:
+            52px;
+
+        top:
+            35px;
+    }
+
+
+    .moon::after {
+
+        width:
+            52px;
+
+        height:
+            52px;
+    }
+
+
+    .mountain {
+
+        border-left-width:
+            100px;
+
+        border-right-width:
+            100px;
+
+        border-bottom-width:
+            95px;
+    }
+
+
+    .mountain-back {
+
+        border-left-width:
+            125px;
+
+        border-right-width:
+            125px;
+
+        border-bottom-width:
+            80px;
+    }
+
+
+    .mountain-front {
+
+        border-left-width:
+            120px;
+
+        border-right-width:
+            120px;
+
+        border-bottom-width:
+            105px;
+    }
+
+
+    .emergency-house {
+
+        transform:
+            scale(0.75);
+
+        transform-origin:
+            bottom center;
+
+        bottom:
+            22px;
+    }
+
+
+    .visual-content {
+
+        text-align:
+            center;
+    }
+
+
+    .visual-tag {
+
+        font-size:
+            0.62rem;
+    }
+
+
+    .visual-content h2 {
+
+        font-size:
+            1.55rem;
+    }
+
+
+    .visual-content p {
+
+        display:
+            none;
+    }
+
+
+    .visual-features {
+
+        margin-top:
+            0.8rem;
+    }
+
+
+    .visual-feature {
+
+        justify-content:
+            center;
+
+        padding:
+            0.55rem;
+
+        font-size:
+            0.68rem;
+    }
+
+
+    .visual-feature i {
+
+        font-size:
+            0.85rem;
+    }
+
+
+    .login-panel {
+
+        width:
+            100%;
+
+        min-height:
+            auto;
+
+        padding:
+            2.5rem
+            1.5rem;
+    }
+
+
+    .login-content {
+
+        max-width:
+            430px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .visual-panel {
+
+        min-height:
+            350px;
+
+        padding:
+            1.25rem
+            1rem
+            1.5rem;
+    }
+
+
+    .visual-logo {
+
+        width:
+            95px;
+    }
+
+
+    .disaster-illustration {
+
+        height:
+            155px;
+    }
+
+
+    .visual-content h2 {
+
+        font-size:
+            1.35rem;
+    }
+
+
+    .visual-tag {
+
+        padding:
+            0.35rem
+            0.6rem;
+    }
+
+
+    .visual-features {
+
+        display:
+            none;
+    }
+
+
+    .login-panel {
+
+        padding:
+            2rem
+            1rem;
+    }
+
+
+    .login-header {
+
+        margin-bottom:
+            1.5rem;
+    }
+
+
+    .login-header h1 {
+
+        font-size:
+            1.7rem;
+    }
+
 }

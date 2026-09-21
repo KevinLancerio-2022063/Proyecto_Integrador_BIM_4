@@ -1,139 +1,1078 @@
-/* src/app/features/core/components/auth/register/register.component.css */
+/* =========================================================
+   SIGED - REGISTRO DE USUARIO
+   Sistema Integral de Gestión para Desastres
+   ========================================================= */
+
+
+/* =========================================================
+   HOST DEL COMPONENTE
+   ========================================================= */
+
+:host {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
 .auth-container {
-    min-height: 100vh;
+    --cyan: #00f0ff;
+    --cyan-light: #18dfff;
+    --blue: #0072ff;
+    --blue-soft: #315bb5;
+    --purple: #57358f;
+    --purple-light: #7047b8;
+    --dark: #080d26;
+
+    position: relative;
+
+    width: 100%;
+    height: 100dvh;
+
+    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    padding: 2rem 1rem;
+
+    /*
+     * SOLO ESTE ELEMENTO MANEJA EL SCROLL.
+     */
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding:
+        2rem
+        1rem;
+
+    /*
+     * Base azul/cyan.
+     * Las figuras decorativas se agregan mediante
+     * los pseudo-elementos.
+     */
+    background:
+        linear-gradient(
+            135deg,
+            #080d26 0%,
+            #11183d 35%,
+            #17245b 68%,
+            #203b79 100%
+        );
+
+    font-family:
+        'Segoe UI',
+        Roboto,
+        Arial,
+        sans-serif;
+
+    /*
+     * Evita que el scroll se propague al body.
+     */
+    overscroll-behavior: contain;
+
+    /*
+     * Crea un contexto independiente para las
+     * decoraciones.
+     */
+    isolation: isolate;
 }
 
-.auth-card {
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 420px;
+
+/* =========================================================
+   FONDO ANIMADO
+   ========================================================= */
+
+.auth-container::before {
+    content: '';
+
+    /*
+     * FIXED:
+     * el fondo ocupa SIEMPRE todo el viewport.
+     *
+     * Esto evita que desaparezca cuando el formulario
+     * se desplaza verticalmente.
+     */
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: -2;
+
+    pointer-events: none;
+
+    background:
+
+        /* =================================================
+           CÍRCULO CYAN - SUPERIOR IZQUIERDO
+           ================================================= */
+
+        radial-gradient(
+            circle at 2% 8%,
+            #00e5e8 0 48px,
+            transparent 50px
+        ),
+
+        /* =================================================
+           CÍRCULO VIOLETA - IZQUIERDA
+           ================================================= */
+
+        radial-gradient(
+            circle at 8% 35%,
+            rgba(100, 47, 145, 0.95) 0 27px,
+            transparent 29px
+        ),
+
+        /* =================================================
+           PUNTO CYAN - SUPERIOR
+           ================================================= */
+
+        radial-gradient(
+            circle at 23% 10%,
+            #00f0ff 0 8px,
+            transparent 10px
+        ),
+
+        /* =================================================
+           PUNTO CYAN - IZQUIERDA
+           ================================================= */
+
+        radial-gradient(
+            circle at 10% 69%,
+            #00e5e8 0 6px,
+            transparent 8px
+        ),
+
+        /* =================================================
+           CÍRCULO CYAN - INFERIOR DERECHO
+           ================================================= */
+
+        radial-gradient(
+            circle at 91% 94%,
+            #00e5e8 0 55px,
+            transparent 57px
+        ),
+
+        /* =================================================
+           CÍRCULO VIOLETA - DERECHA
+           ================================================= */
+
+        radial-gradient(
+            circle at 100% 55%,
+            rgba(91, 43, 132, 0.95) 0 27px,
+            transparent 29px
+        ),
+
+        /* =================================================
+           PUNTO CYAN - DERECHA
+           ================================================= */
+
+        radial-gradient(
+            circle at 86% 55%,
+            #00f0ff 0 9px,
+            transparent 11px
+        ),
+
+        /* =================================================
+           PUNTO VIOLETA - INFERIOR
+           ================================================= */
+
+        radial-gradient(
+            circle at 69% 94%,
+            rgba(128, 48, 151, 0.9) 0 5px,
+            transparent 7px
+        );
+
+    /*
+     * Movimiento continuo.
+     */
+    animation:
+        backgroundFlow 3.2s linear infinite;
+
+    /*
+     * Ayuda al navegador a mantener la animación fluida.
+     */
+    will-change: transform;
+
+    /*
+     * Evita que la capa pueda afectar el layout.
+     */
+    contain: strict;
 }
+
+
+/* =========================================================
+   LÍNEAS DECORATIVAS
+   ========================================================= */
+
+.auth-container::after {
+    content: '';
+
+    /*
+     * También son FIXED para que permanezcan cubriendo
+     * toda la pantalla mientras hacemos scroll.
+     */
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    background:
+
+        /* =================================================
+           LÍNEAS SUPERIOR IZQUIERDA
+           ================================================= */
+
+        linear-gradient(
+            145deg,
+            transparent 0 7%,
+
+            rgba(255, 255, 255, 0.95)
+                7.1% 7.8%,
+
+            transparent
+                7.9% 10%,
+
+            rgba(255, 255, 255, 0.95)
+                10.1% 10.8%,
+
+            transparent
+                10.9% 100%
+        ),
+
+        /* =================================================
+           LÍNEAS SUPERIOR DERECHA
+           ================================================= */
+
+        linear-gradient(
+            215deg,
+            transparent 0 7%,
+
+            rgba(255, 255, 255, 0.95)
+                7.1% 7.8%,
+
+            transparent
+                7.9% 10%,
+
+            rgba(255, 255, 255, 0.95)
+                10.1% 10.8%,
+
+            transparent
+                10.9% 100%
+        ),
+
+        /* =================================================
+           LÍNEAS INFERIOR IZQUIERDA
+           ================================================= */
+
+        linear-gradient(
+            35deg,
+            transparent 0 7%,
+
+            rgba(255, 255, 255, 0.95)
+                7.1% 7.8%,
+
+            transparent
+                7.9% 10%,
+
+            rgba(255, 255, 255, 0.95)
+                10.1% 10.8%,
+
+            transparent
+                10.9% 100%
+        ),
+
+        /* =================================================
+           LÍNEAS INFERIOR DERECHA
+           ================================================= */
+
+        linear-gradient(
+            325deg,
+            transparent 0 7%,
+
+            rgba(255, 255, 255, 0.95)
+                7.1% 7.8%,
+
+            transparent
+                7.9% 10%,
+
+            rgba(255, 255, 255, 0.95)
+                10.1% 10.8%,
+
+            transparent
+                10.9% 100%
+        );
+
+    opacity: 0;
+
+    animation:
+        decorativeAppear 0.7s ease-out forwards;
+}
+
+
+/* =========================================================
+   TARJETA
+   ========================================================= */
+
+.auth-card {
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+
+    max-width: 420px;
+
+    box-sizing: border-box;
+
+    padding: 2.5rem;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 24, 56, 0.97),
+            rgba(10, 15, 36, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(0, 198, 255, 0.28);
+
+    border-radius: 18px;
+
+    box-shadow:
+
+        0 30px 80px
+        rgba(0, 0, 0, 0.45),
+
+        0 0 40px
+        rgba(0, 198, 255, 0.08),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.05);
+
+    overflow: hidden;
+
+    backdrop-filter: blur(12px);
+
+    animation:
+        cardAppear 0.55s ease-out;
+}
+
+
+/* =========================================================
+   TARJETA ANCHA
+   ========================================================= */
 
 .auth-card-wide {
     max-width: 520px;
 }
 
-.auth-title {
-    margin: 0;
-    font-size: 2rem;
-    color: #1e3a8a;
-    text-align: center;
-    letter-spacing: 2px;
+
+/* =========================================================
+   CONTENIDO DE LA TARJETA
+   ========================================================= */
+
+.auth-card > * {
+    position: relative;
+
+    z-index: 2;
 }
 
-.auth-subtitle {
-    margin: 0.5rem 0 1.5rem;
-    color: #64748b;
-    text-align: center;
-    font-size: 0.95rem;
+
+/* =========================================================
+   DECORACIÓN INFERIOR DE LA TARJETA
+   ========================================================= */
+
+.auth-card::before {
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: -1px;
+
+    height: 90px;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(0, 198, 255, 0.035)
+        );
+
+    pointer-events: none;
 }
+
+
+/* =========================================================
+   LÍNEA LUMINOSA SUPERIOR
+   ========================================================= */
+
+.auth-card::after {
+    content: '';
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00c6ff,
+            #0072ff,
+            #00f0ff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px
+        rgba(0, 240, 255, 0.6);
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.auth-title {
+    margin: 0;
+
+    font-size: 2.2rem;
+
+    font-weight: 800;
+
+    color: #ffffff;
+
+    text-align: center;
+
+    letter-spacing: 4px;
+
+    text-shadow:
+
+        0 0 10px
+        rgba(0, 198, 255, 0.35),
+
+        0 0 25px
+        rgba(0, 198, 255, 0.12);
+}
+
+
+/* =========================================================
+   SUBTÍTULO
+   ========================================================= */
+
+.auth-subtitle {
+    margin:
+        0.45rem
+        0
+        1.8rem;
+
+    color: #7da2c7;
+
+    text-align: center;
+
+    font-size: 0.9rem;
+
+    letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   INDICADOR TEMÁTICO
+   ========================================================= */
+
+.auth-title::after {
+    content:
+        'SISTEMA INTEGRAL DE GESTIÓN PARA DESASTRES';
+
+    display: block;
+
+    margin-top: 0.55rem;
+
+    color: #00c6ff;
+
+    font-size: 0.55rem;
+
+    font-weight: 600;
+
+    letter-spacing: 1.4px;
+
+    opacity: 0.75;
+}
+
+
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
 
 .form-group {
     margin-bottom: 1.1rem;
+
     display: flex;
+
     flex-direction: column;
 }
 
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
 .form-group label {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.45rem;
+
     font-weight: 600;
-    font-size: 0.85rem;
-    color: #334155;
+
+    font-size: 0.82rem;
+
+    color: #b8c9df;
+
+    letter-spacing: 0.2px;
 }
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: 0.7rem 1rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 0.95rem;
+    padding:
+        0.78rem
+        1rem;
+
+    border:
+        1px solid
+        rgba(125, 162, 199, 0.25);
+
+    border-radius: 9px;
+
+    font-size: 0.93rem;
+
     font-family: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background: #fff;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        transform 0.2s ease;
+
+    background:
+        rgba(10, 15, 36, 0.8);
+
+    color: #ffffff;
+
+    box-sizing: border-box;
 }
+
+
+/* =========================================================
+   PLACEHOLDERS
+   ========================================================= */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #536985;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.form-group select {
+    color: #e2e8f0;
+
+    cursor: pointer;
+}
+
+
+.form-group select option {
+    background: #0e132b;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.form-group textarea {
+    resize: vertical;
+
+    min-height: 70px;
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+
+    border-color: #00c6ff;
+
+    background:
+        rgba(10, 20, 48, 0.95);
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(0, 198, 255, 0.08),
+
+        0 0 15px
+        rgba(0, 198, 255, 0.08);
+
+    transform:
+        translateY(-1px);
 }
+
+
+/* =========================================================
+   CAMPOS INVÁLIDOS
+   ========================================================= */
 
 .form-group input.invalid,
 .form-group textarea.invalid {
-    border-color: #ef4444;
+    border-color: #ff476f;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 71, 111, 0.07);
 }
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 60px;
-}
+
+/* =========================================================
+   TEXTO DE ERROR
+   ========================================================= */
 
 .error-text {
-    color: #ef4444;
-    font-size: 0.78rem;
-    margin-top: 0.25rem;
+    color: #ff6b88;
+
+    font-size: 0.76rem;
+
+    margin-top: 0.3rem;
+
+    line-height: 1.35;
 }
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
 
 .btn-primary {
     width: 100%;
-    padding: 0.85rem;
-    background: #1e3a8a;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+
+    padding:
+        0.9rem
+        1rem;
+
     margin-top: 0.5rem;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0072ff 0%,
+            #00a8ff 50%,
+            #00c6ff 100%
+        );
+
+    color: #ffffff;
+
+    border: none;
+
+    border-radius: 9px;
+
+    font-size: 0.95rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
 }
+
+
+/* =========================================================
+   BOTÓN - HOVER
+   ========================================================= */
 
 .btn-primary:hover:not(:disabled) {
-    background: #1e40af;
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.08);
+
+    box-shadow:
+
+        0 10px 25px
+        rgba(0, 114, 255, 0.28),
+
+        0 0 20px
+        rgba(0, 198, 255, 0.12);
 }
+
+
+/* =========================================================
+   BOTÓN - ACTIVE
+   ========================================================= */
+
+.btn-primary:active:not(:disabled) {
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   BOTÓN - DISABLED
+   ========================================================= */
 
 .btn-primary:disabled {
-    background: #94a3b8;
+    background:
+        linear-gradient(
+            90deg,
+            #334155,
+            #475569
+        );
+
+    color: #94a3b8;
+
     cursor: not-allowed;
+
+    box-shadow: none;
 }
+
+
+/* =========================================================
+   ALERTA
+   ========================================================= */
 
 .alert {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+    padding:
+        0.8rem
+        1rem;
+
+    border-radius: 9px;
+
+    margin-bottom: 1.2rem;
+
+    font-size: 0.82rem;
+
+    line-height: 1.4;
 }
 
+
+/* =========================================================
+   ALERTA DE ERROR
+   ========================================================= */
+
 .alert-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
+    background:
+        rgba(255, 45, 85, 0.08);
+
+    color: #ff6b88;
+
+    border:
+        1px solid
+        rgba(255, 45, 111, 0.28);
+
+    box-shadow:
+        0 0 15px
+        rgba(255, 45, 85, 0.05);
 }
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 .auth-footer {
     text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.875rem;
+
+    margin:
+        1.5rem
+        0
+        0;
+
+    padding-top: 1.25rem;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    font-size: 0.82rem;
+
     color: #64748b;
 }
 
+
+/* =========================================================
+   LINK DEL FOOTER
+   ========================================================= */
+
 .auth-footer a {
-    color: #1e3a8a;
-    font-weight: 600;
+    color: #00c6ff;
+
+    font-weight: 700;
+
     text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        text-shadow 0.2s ease;
 }
 
+
+/* =========================================================
+   LINK - HOVER
+   ========================================================= */
+
 .auth-footer a:hover {
-    text-decoration: underline;
+    color: #00f0ff;
+
+    text-decoration: none;
+
+    text-shadow:
+        0 0 8px
+        rgba(0, 240, 255, 0.4);
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA DE LA TARJETA
+   ========================================================= */
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   ANIMACIÓN DEL FONDO
+   ========================================================= */
+
+/*
+ * Movimiento continuo.
+ *
+ * Las figuras recorren el fondo y vuelven a comenzar.
+ *
+ * 3.2 segundos = velocidad perceptible,
+ * pero sin resultar demasiado rápida.
+ */
+
+@keyframes backgroundFlow {
+
+    0% {
+        transform:
+            translate3d(0, -5%, 0)
+            scale(1);
+    }
+
+    20% {
+        transform:
+            translate3d(1%, 0%, 0)
+            scale(1.02);
+    }
+
+    40% {
+        transform:
+            translate3d(-1%, 5%, 0)
+            scale(1.04);
+    }
+
+    60% {
+        transform:
+            translate3d(1%, 10%, 0)
+            scale(1.06);
+    }
+
+    80% {
+        transform:
+            translate3d(-1%, 15%, 0)
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            translate3d(0, -5%, 0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   ENTRADA DE LAS LÍNEAS
+   ========================================================= */
+
+@keyframes decorativeAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scale(1.08);
+    }
+
+    to {
+        opacity: 0.95;
+
+        transform:
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .auth-container {
+        width: 100%;
+
+        height: 100dvh;
+
+        min-height: 0;
+
+        align-items: flex-start;
+
+        padding:
+            1.25rem
+            0.75rem;
+
+        overflow-x: hidden;
+
+        overflow-y: auto;
+    }
+
+
+    .auth-card {
+        width: 100%;
+
+        padding:
+            2rem
+            1.5rem;
+
+        margin-top: 0;
+
+        margin-bottom: 1rem;
+
+        border-radius: 14px;
+    }
+
+
+    .auth-title {
+        font-size: 1.9rem;
+    }
+
+
+    .auth-title::after {
+        font-size: 0.48rem;
+
+        letter-spacing: 1px;
+    }
+
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+}
+
+
+/* =========================================================
+   PANTALLAS CON POCA ALTURA
+   ========================================================= */
+
+@media (max-height: 750px) {
+
+    .auth-container {
+        height: 100dvh;
+
+        min-height: 0;
+
+        align-items: flex-start;
+
+        padding-top: 1.5rem;
+
+        padding-bottom: 1.5rem;
+
+        overflow-x: hidden;
+
+        overflow-y: auto;
+    }
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES SI EL USUARIO LO SOLICITA
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-container::before,
+    .auth-container::after,
+    .auth-card {
+        animation: none;
+    }
+
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .btn-primary {
+        transition: none;
+    }
 }

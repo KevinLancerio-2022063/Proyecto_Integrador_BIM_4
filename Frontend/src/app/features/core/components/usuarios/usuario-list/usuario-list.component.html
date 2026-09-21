@@ -1,138 +1,462 @@
 <div class="app-layout">
-  <!-- Barra Lateral Izquierda -->
+
+  <!-- =====================================================
+       BARRA LATERAL
+       ===================================================== -->
+
   <aside class="sidebar">
+
     <div class="sidebar-brand">
-      <!-- Logo SIGED Vectorizado (Casa + Cruz + Infinito) -->
-      <svg class="siged-logo-svg" xmlns="http://w3.org" viewBox="0 0 100 80" fill="none">
-        <!-- Techo de la casa -->
-        <path d="M50 5L15 35H25V65H40V50H60V65H75V35H85L50 5Z" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- Cruz Médica pequeña -->
-        <path d="M50 18V28M45 23H55" stroke="#22c55e" stroke-width="3" stroke-linecap="round"/>
-        <!-- Símbolo Infinito basal -->
-        <path d="M35 55C27 55 25 43 35 43C45 43 45 55 55 55C65 55 65 43 57 43C49 43 45 55 35 55Z" stroke="#0072ff" stroke-width="4" stroke-linecap="round"/>
-      </svg>
-      <div class="siged-text">SIGED</div>
+
+      <!-- Logo SIGED -->
+      <img
+        src="/logo_SIGED.png"
+        alt="SIGED"
+        class="siged-logo" />
+
     </div>
-   
+
+
+    <!-- MENÚ -->
     <nav class="sidebar-menu">
+
       <ul>
+
         <li>
-          <a routerLink="/recursos" class="menu-item">
-            <i class="bi bi-box-seam menu-icon"></i> Recursos
+          <a
+            routerLink="/recursos"
+            class="menu-item">
+
+            <i class="bi bi-box-seam menu-icon"></i>
+
+            Recursos
+
           </a>
         </li>
+
+
         <li>
-          <a routerLink="/refugios" class="menu-item">
-            <i class="bi bi-house-door menu-icon"></i> Refugios
+          <a
+            routerLink="/refugios"
+            class="menu-item">
+
+            <i class="bi bi-house-door menu-icon"></i>
+
+            Refugios
+
           </a>
         </li>
+
+
         <li>
-          <a routerLink="/usuarios" class="menu-item active">
-            <i class="bi bi-people menu-icon"></i> Usuarios
+          <a
+            routerLink="/usuarios"
+            class="menu-item active">
+
+            <i class="bi bi-people menu-icon"></i>
+
+            Usuarios
+
           </a>
         </li>
+
+
         <li>
-          <a routerLink="/asignaciones" class="menu-item">
-            <i class="bi bi-file-earmark-text menu-icon"></i> Asignaciones
+          <a
+            routerLink="/asignaciones"
+            class="menu-item">
+
+            <i class="bi bi-file-earmark-text menu-icon"></i>
+
+            Asignaciones
+
           </a>
         </li>
+
       </ul>
+
     </nav>
+
   </aside>
- 
-  <!-- Contenido principal de la vista de usuarios -->
+
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
+
   <main class="main-content">
+
+    <!-- HEADER -->
     <header class="page-header">
+
       <div>
-        <h1>Gestión de Usuarios</h1>
-        <p class="page-subtitle">Bienvenido, {{ (authService.currentUser$ | async)?.nombre }}</p>
+
+        <h1>
+          Gestión de Usuarios
+        </h1>
+
+        <p class="page-subtitle">
+          Bienvenido,
+          {{ (authService.currentUser$ | async)?.nombre }}
+        </p>
+
       </div>
+
+
       <div class="header-actions">
-        <a routerLink="/perfil" class="btn-secondary">Mi perfil</a>
+
+        <a
+          routerLink="/perfil"
+          class="btn-secondary">
+
+          <i class="bi bi-person-circle"></i>
+
+          Mi perfil
+
+        </a>
+
+
         @if (isAdmin()) {
-          <a routerLink="/usuarios/nuevo" class="btn-primary">+ Nuevo Usuario</a>
+
+          <a
+            routerLink="/usuarios/nuevo"
+            class="btn-primary">
+
+            <i class="bi bi-person-plus-fill"></i>
+
+            Nuevo Usuario
+
+          </a>
+
         }
-        <button class="btn-danger" (click)="logout()">Cerrar sesión</button>
+
+
+        <button
+          class="btn-danger"
+          (click)="logout()">
+
+          <i class="bi bi-box-arrow-right"></i>
+
+          Cerrar sesión
+
+        </button>
+
       </div>
+
     </header>
 
+
+    <!-- MENSAJE DE ÉXITO -->
     @if (successMessage()) {
-      <div class="alert alert-success">{{ successMessage() }}</div>
+
+      <div class="alert alert-success">
+        {{ successMessage() }}
+      </div>
+
     }
+
+
+    <!-- MENSAJE DE ERROR -->
     @if (errorMessage()) {
-      <div class="alert alert-error">{{ errorMessage() }}</div>
+
+      <div class="alert alert-error">
+        {{ errorMessage() }}
+      </div>
+
     }
+
+
+    <!-- =====================================================
+         BUSCADOR
+         ===================================================== -->
 
     <div class="toolbar">
-      <input
-        type="text"
-        placeholder="Buscar por nombre, email o rol..."
-        [ngModel]="searchTerm()"
-        (ngModelChange)="onSearchChange($event)"
-        class="search-input" />
-      <span class="result-count">{{ filteredUsuarios().length }} usuarios</span>
+
+      <div class="search-wrapper">
+
+        <i class="bi bi-search search-icon"></i>
+
+        <input
+          type="text"
+          placeholder="Buscar por nombre, email o rol..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchChange($event)"
+          class="search-input" />
+
+      </div>
+
+
+      <span class="result-count">
+
+        <i class="bi bi-people-fill"></i>
+
+        {{ filteredUsuarios().length }} usuarios
+
+      </span>
+
     </div>
 
+
+    <!-- =====================================================
+         CARGANDO
+         ===================================================== -->
+
     @if (loading()) {
-      <div class="loading">Cargando usuarios...</div>
-    } @else if (filteredUsuarios().length === 0) {
-      <div class="empty-state">
-        @if (searchTerm()) {
-          No se encontraron resultados para "{{ searchTerm() }}"
-        } @else {
-          No hay usuarios registrados
-        }
+
+      <div class="loading">
+        Cargando usuarios...
       </div>
-    } @else {
+
+    }
+
+
+    <!-- =====================================================
+         SIN RESULTADOS
+         ===================================================== -->
+
+    @else if (filteredUsuarios().length === 0) {
+
+      <div class="empty-state">
+
+        @if (searchTerm()) {
+
+          No se encontraron resultados para
+          "{{ searchTerm() }}"
+
+        }
+
+        @else {
+
+          No hay usuarios registrados
+
+        }
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+
+    @else {
+
       <div class="table-wrapper">
+
         <table class="data-table">
+
           <thead>
+
             <tr>
+
               <th>ID</th>
+
               <th>Nombre</th>
+
               <th>Email</th>
+
               <th>Teléfono</th>
+
               <th>Rol</th>
-              <th>Disponible</th>
+
+              <th>Disponibilidad</th>
+
               <th>Creado</th>
+
               <th>Acciones</th>
+
             </tr>
+
           </thead>
+
+
           <tbody>
+
             @for (u of filteredUsuarios(); track u.id) {
+
               <tr>
-                <td>{{ u.id }}</td>
-                <td class="strong">{{ u.nombre }}</td>
-                <td>{{ u.email }}</td>
-                <td>{{ u.telefono | telefono }}</td>
+
+                <!-- ID -->
                 <td>
-                  <span class="badge" [class]="'badge-' + u.rol.toLowerCase()">
-                    {{ u.rol | rolLabel }}
+                  {{ u.id }}
+                </td>
+
+
+                <!-- NOMBRE -->
+                <td class="strong">
+
+                  <span class="user-avatar">
+                    {{ u.nombre.charAt(0).toUpperCase() }}
                   </span>
+
+                  <span class="user-name">
+                    {{ u.nombre }}
+                  </span>
+
                 </td>
+
+
+                <!-- EMAIL -->
                 <td>
-                  <span class="dot" [class.active]="u.disponible"></span>
-                  {{ u.disponible | disponible }}
+
+                  <span class="table-icon">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+
+                  {{ u.email }}
+
                 </td>
-                <td>{{ u.created_at | fecha }}</td>
+
+
+                <!-- TELÉFONO -->
+                <td>
+
+                  <span class="table-icon">
+                    <i class="bi bi-telephone"></i>
+                  </span>
+
+                  {{ u.telefono | telefono }}
+
+                </td>
+
+
+                <!-- =================================================
+                     ROL
+                     ================================================= -->
+
+                <td>
+
+                  <span
+                    class="badge"
+                    [ngClass]="'badge-' + rolClass(u.rol)">
+
+                    {{ u.rol | rolLabel }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- =================================================
+                     DISPONIBILIDAD
+                     ================================================= -->
+
+                <td>
+
+                  @if (u.disponible) {
+
+                    <span class="availability-badge available">
+
+                      <span class="availability-dot"></span>
+
+                      Disponible
+
+                    </span>
+
+                  }
+
+                  @else {
+
+                    <span class="availability-badge unavailable">
+
+                      <span class="availability-dot"></span>
+
+                      No disponible
+
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- FECHA -->
+                <td>
+
+                  <span class="table-icon">
+                    <i class="bi bi-calendar3"></i>
+                  </span>
+
+                  {{ u.created_at | fecha }}
+
+                </td>
+
+
+                <!-- =================================================
+                     ACCIONES
+                     ================================================= -->
+
                 <td class="actions">
-                  <a [routerLink]="['/usuarios', u.id]" class="btn-icon" title="Ver"><i class="bi bi-eye"></i></a>
+
+                  <!-- VER -->
+                  <a
+                    [routerLink]="['/usuarios', u.id]"
+                    class="btn-icon"
+                    title="Ver detalles"
+                    aria-label="Ver detalles">
+
+                    <i class="bi bi-eye"></i>
+
+                  </a>
+
+
+                  <!-- EDITAR -->
                   @if (isAdmin()) {
-                    <a [routerLink]="['/usuarios', u.id, 'editar']" class="btn-icon" title="Editar"><i class="bi bi-pencil"></i></a>
+
+                    <a
+                      [routerLink]="[
+                        '/usuarios',
+                        u.id,
+                        'editar'
+                      ]"
+                      class="btn-icon btn-icon-edit"
+                      title="Editar usuario"
+                      aria-label="Editar usuario">
+
+                      <i class="bi bi-pencil"></i>
+
+                    </a>
+
+
+                    <!-- ELIMINAR -->
                     <button
                       class="btn-icon btn-icon-danger"
-                      title="Eliminar"
+                      title="Eliminar usuario"
+                      aria-label="Eliminar usuario"
                       [disabled]="deletingId() === u.id"
                       (click)="confirmDelete(u)">
-                      <i class="bi bi-trash"></i>
+
+                      @if (deletingId() === u.id) {
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                      }
+
+                      @else {
+
+                        <i class="bi bi-trash"></i>
+
+                      }
+
                     </button>
+
                   }
+
                 </td>
+
               </tr>
+
             }
+
           </tbody>
+
         </table>
+
       </div>
+
     }
+
   </main>
+
 </div>

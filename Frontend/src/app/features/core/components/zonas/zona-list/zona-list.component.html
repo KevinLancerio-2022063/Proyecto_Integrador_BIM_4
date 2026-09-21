@@ -1,109 +1,522 @@
-<!-- src/app/features/core/components/zonas/zona-list/zona-list.component.html -->
-<div class="page-container">
-    <header class="page-header">
-        <div>
-            <h1>Zonas</h1>
-            <p class="page-subtitle">Monitoreo de zonas de riesgo</p>
-        </div>
-        <div class="header-actions">
-            <a routerLink="/usuarios" class="btn-secondary">Usuarios</a>
-            <a routerLink="/perfil" class="btn-secondary">Mi perfil</a>
-            @if (isAdmin()) {
-                <a routerLink="/zonas/nuevo" class="btn-primary">+ Nueva Zona</a>
-            }
-        </div>
-    </header>
+<div class="app-layout">
 
-    @if (successMessage()) {
-        <div class="alert alert-success">{{ successMessage() }}</div>
-    }
-    @if (errorMessage()) {
-        <div class="alert alert-error">{{ errorMessage() }}</div>
-    }
+  <!-- =====================================================
+       BARRA LATERAL
+       ===================================================== -->
 
-    <div class="toolbar">
-        <input
-            type="text"
-            placeholder="Buscar por nombre, municipio o departamento..."
-            [ngModel]="searchTerm()"
-            (ngModelChange)="onSearchChange($event)"
-            class="search-input" />
+  <aside class="sidebar">
 
-        <select
-            class="filter-select"
-            [ngModel]="filterNivel()"
-            (ngModelChange)="onNivelChange($event)">
-            <option value="">Todos los niveles</option>
-            <option value="BAJO">Bajo</option>
-            <option value="MEDIO">Medio</option>
-            <option value="ALTO">Alto</option>
-            <option value="CRITICO">Crítico</option>
-        </select>
+    <div class="sidebar-brand">
 
-        <span class="result-count">{{ filteredZonas().length }} zonas</span>
+      <img
+        src="/logo_SIGED.png"
+        alt="SIGED"
+        class="siged-logo" />
+
     </div>
 
-    @if (loading()) {
-        <div class="loading">Cargando zonas...</div>
-    } @else if (filteredZonas().length === 0) {
-        <div class="empty-state">
-            @if (searchTerm() || filterNivel()) {
-                No se encontraron zonas con esos filtros
-            } @else {
-                No hay zonas registradas
-            }
-        </div>
-    } @else {
-        <div class="table-wrapper">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Municipio</th>
-                        <th>Departamento</th>
-                        <th>País</th>
-                        <th>Coordenadas</th>
-                        <th>Riesgo</th>
-                        <th>Creada</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (z of filteredZonas(); track z.id) {
-                        <tr>
-                            <td>{{ z.id }}</td>
-                            <td class="strong">{{ z.nombre }}</td>
-                            <td>{{ z.municipio || '—' }}</td>
-                            <td>{{ z.departamento || '—' }}</td>
-                            <td>{{ z.pais }}</td>
-                            <td class="coords">
-                                {{ z.latitud | coordenadas: 'lat' }},
-                                {{ z.longitud | coordenadas: 'long' }}
-                            </td>
-                            <td>
-                                <span class="badge" [class]="'badge-' + z.nivel_riesgo.toLowerCase()">
-                                    {{ z.nivel_riesgo | nivelRiesgo }}
-                                </span>
-                            </td>
-                            <td>{{ z.created_at | fecha }}</td>
-                            <td class="actions">
-                                <a [routerLink]="['/zonas', z.id]" class="btn-icon" title="Ver">👁</a>
-                                @if (isAdmin()) {
-                                    <a [routerLink]="['/zonas', z.id, 'editar']" class="btn-icon" title="Editar">✏️</a>
-                                    <button
-                                        class="btn-icon btn-icon-danger"
-                                        title="Eliminar"
-                                        [disabled]="deletingId() === z.id"
-                                        (click)="confirmDelete(z)">
-                                        🗑
-                                    </button>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    <nav class="sidebar-menu">
+
+      <ul>
+
+        <li>
+          <a
+            routerLink="/recursos"
+            class="menu-item">
+
+            <i class="bi bi-box-seam menu-icon"></i>
+
+            Recursos
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/refugios"
+            class="menu-item">
+
+            <i class="bi bi-house-door menu-icon"></i>
+
+            Refugios
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/zonas"
+            class="menu-item active">
+
+            <i class="bi bi-geo-alt menu-icon"></i>
+
+            Zonas
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/usuarios"
+            class="menu-item">
+
+            <i class="bi bi-people menu-icon"></i>
+
+            Usuarios
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/asignaciones"
+            class="menu-item">
+
+            <i class="bi bi-file-earmark-text menu-icon"></i>
+
+            Asignaciones
+
+          </a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
+
+  <main class="main-content">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <h1>
+          Gestión de Zonas
+        </h1>
+
+        <p class="page-subtitle">
+          Monitoreo de zonas de riesgo
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          routerLink="/perfil"
+          class="btn-secondary">
+
+          <i class="bi bi-person-circle"></i>
+
+          Mi perfil
+
+        </a>
+
+
+        @if (isAdmin()) {
+
+          <a
+            routerLink="/zonas/nuevo"
+            class="btn-primary">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Nueva Zona
+
+          </a>
+
+        }
+
+
+        <!-- =================================================
+             CERRAR SESIÓN
+             ================================================= -->
+
+        <button
+          type="button"
+          class="btn-logout"
+          (click)="logout()">
+
+          <i class="bi bi-box-arrow-right"></i>
+
+          Cerrar sesión
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJES
+         ===================================================== -->
+
+    @if (successMessage()) {
+
+      <div class="alert alert-success">
+
+        {{ successMessage() }}
+
+      </div>
+
     }
+
+
+    @if (errorMessage()) {
+
+      <div class="alert alert-error">
+
+        {{ errorMessage() }}
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         TOOLBAR
+         ===================================================== -->
+
+    <div class="toolbar">
+
+      <div class="search-wrapper">
+
+        <i class="bi bi-search search-icon"></i>
+
+        <input
+          type="text"
+          placeholder="Buscar por nombre, municipio o departamento..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchChange($event)"
+          class="search-input" />
+
+      </div>
+
+
+      <div class="filter-wrapper">
+
+        <i class="bi bi-funnel filter-icon"></i>
+
+        <select
+          class="filter-select"
+          [ngModel]="filterNivel()"
+          (ngModelChange)="onNivelChange($event)">
+
+          <option value="">
+            Todos los niveles
+          </option>
+
+          <option value="BAJO">
+            Bajo
+          </option>
+
+          <option value="MEDIO">
+            Medio
+          </option>
+
+          <option value="ALTO">
+            Alto
+          </option>
+
+          <option value="CRITICO">
+            Crítico
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <span class="result-count">
+
+        <i class="bi bi-geo-alt-fill"></i>
+
+        {{ filteredZonas().length }} zonas
+
+      </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         CARGANDO
+         ===================================================== -->
+
+    @if (loading()) {
+
+      <div class="loading">
+
+        <i class="bi bi-arrow-repeat loading-icon"></i>
+
+        Cargando zonas...
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         SIN RESULTADOS
+         ===================================================== -->
+
+    @else if (filteredZonas().length === 0) {
+
+      <div class="empty-state">
+
+        <i class="bi bi-geo-alt empty-icon"></i>
+
+        @if (searchTerm() || filterNivel()) {
+
+          <span>
+            No se encontraron zonas con esos filtros
+          </span>
+
+        }
+
+        @else {
+
+          <span>
+            No hay zonas registradas
+          </span>
+
+        }
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+
+    @else {
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+
+              <th>Nombre</th>
+
+              <th>Municipio</th>
+
+              <th>Departamento</th>
+
+              <th>País</th>
+
+              <th>Coordenadas</th>
+
+              <th>Riesgo</th>
+
+              <th>Creada</th>
+
+              <th>Acciones</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (z of filteredZonas(); track z.id) {
+
+              <tr>
+
+                <!-- ID -->
+                <td>
+                  {{ z.id }}
+                </td>
+
+
+                <!-- NOMBRE -->
+                <td class="strong">
+
+                  <span class="zone-icon">
+
+                    <i class="bi bi-geo-alt-fill"></i>
+
+                  </span>
+
+                  <span class="zone-name">
+                    {{ z.nombre }}
+                  </span>
+
+                </td>
+
+
+                <!-- MUNICIPIO -->
+                <td>
+
+                  <span class="table-icon">
+                    <i class="bi bi-building"></i>
+                  </span>
+
+                  {{ z.municipio || '—' }}
+
+                </td>
+
+
+                <!-- DEPARTAMENTO -->
+                <td>
+
+                  <span class="table-icon">
+                    <i class="bi bi-map"></i>
+                  </span>
+
+                  {{ z.departamento || '—' }}
+
+                </td>
+
+
+                <!-- PAÍS -->
+                <td>
+
+                  <span class="table-icon">
+                    <i class="bi bi-globe-americas"></i>
+                  </span>
+
+                  {{ z.pais }}
+
+                </td>
+
+
+                <!-- COORDENADAS -->
+                <td class="coords">
+
+                  <span class="table-icon">
+                    <i class="bi bi-crosshair"></i>
+                  </span>
+
+                  {{ z.latitud | coordenadas: 'lat' }},
+                  {{ z.longitud | coordenadas: 'long' }}
+
+                </td>
+
+
+                <!-- =================================================
+                     NIVEL DE RIESGO
+                     ================================================= -->
+
+                <td>
+
+                  <span
+                    class="badge"
+                    [ngClass]="'badge-' + z.nivel_riesgo.toLowerCase()">
+
+                    <span class="risk-dot"></span>
+
+                    {{ z.nivel_riesgo | nivelRiesgo }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- FECHA -->
+                <td>
+
+                  <span class="table-icon">
+                    <i class="bi bi-calendar3"></i>
+                  </span>
+
+                  {{ z.created_at | fecha }}
+
+                </td>
+
+
+                <!-- =================================================
+                     ACCIONES
+                     ================================================= -->
+
+                <td class="actions">
+
+                  <!-- VER -->
+                  <a
+                    [routerLink]="['/zonas', z.id]"
+                    class="btn-icon"
+                    title="Ver zona"
+                    aria-label="Ver zona">
+
+                    <i class="bi bi-eye"></i>
+
+                  </a>
+
+
+                  <!-- EDITAR -->
+                  @if (isAdmin()) {
+
+                    <a
+                      [routerLink]="[
+                        '/zonas',
+                        z.id,
+                        'editar'
+                      ]"
+                      class="btn-icon btn-icon-edit"
+                      title="Editar zona"
+                      aria-label="Editar zona">
+
+                      <i class="bi bi-pencil"></i>
+
+                    </a>
+
+
+                    <!-- ELIMINAR -->
+                    <button
+                      class="btn-icon btn-icon-danger"
+                      title="Eliminar zona"
+                      aria-label="Eliminar zona"
+                      [disabled]="deletingId() === z.id"
+                      (click)="confirmDelete(z)">
+
+                      @if (deletingId() === z.id) {
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                      }
+
+                      @else {
+
+                        <i class="bi bi-trash"></i>
+
+                      }
+
+                    </button>
+
+                  }
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  </main>
+
 </div>

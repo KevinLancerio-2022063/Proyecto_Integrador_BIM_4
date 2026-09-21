@@ -1,85 +1,676 @@
-<!-- src/app/features/core/components/zonas/zona-form/zona-form.component.html -->
-<div class="page-container">
+<div class="app-layout">
+
+  <!-- =====================================================
+       BARRA LATERAL
+       ===================================================== -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <img
+        src="/logo_SIGED.png"
+        alt="SIGED"
+        class="siged-logo" />
+
+    </div>
+
+    <nav class="sidebar-menu">
+
+      <ul>
+
+        <li>
+          <a
+            routerLink="/recursos"
+            class="menu-item">
+
+            <i class="bi bi-box-seam menu-icon"></i>
+
+            Recursos
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/refugios"
+            class="menu-item">
+
+            <i class="bi bi-house-door menu-icon"></i>
+
+            Refugios
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/zonas"
+            class="menu-item active">
+
+            <i class="bi bi-geo-alt menu-icon"></i>
+
+            Zonas
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/usuarios"
+            class="menu-item">
+
+            <i class="bi bi-people menu-icon"></i>
+
+            Usuarios
+
+          </a>
+        </li>
+
+        <li>
+          <a
+            routerLink="/asignaciones"
+            class="menu-item">
+
+            <i class="bi bi-file-earmark-text menu-icon"></i>
+
+            Asignaciones
+
+          </a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
+
+  <main class="main-content">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="page-header">
-        <h1>{{ isEditMode() ? 'Editar Zona' : 'Nueva Zona' }}</h1>
-        <a routerLink="/zonas" class="btn-secondary">← Volver</a>
+
+      <div class="header-title">
+
+        <div class="header-icon">
+
+          <i
+            class="bi"
+            [ngClass]="isEditMode()
+              ? 'bi-pencil-square'
+              : 'bi-geo-alt-fill'">
+          </i>
+
+        </div>
+
+        <div>
+
+          <h1>
+            {{ isEditMode() ? 'Editar Zona' : 'Nueva Zona' }}
+          </h1>
+
+          <p class="page-subtitle">
+
+            @if (isEditMode()) {
+
+              Actualiza la información y nivel de riesgo de la zona
+
+            }
+
+            @else {
+
+              Registra una nueva zona para el monitoreo de riesgos
+
+            }
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          routerLink="/zonas"
+          class="btn-secondary">
+
+          <i class="bi bi-arrow-left"></i>
+
+          Volver a zonas
+
+        </a>
+
+      </div>
+
     </header>
 
+
+    <!-- =====================================================
+         ERROR
+         ===================================================== -->
+
     @if (errorMessage()) {
-        <div class="alert alert-error">{{ errorMessage() }}</div>
+
+      <div class="alert alert-error">
+
+        <i class="bi bi-exclamation-triangle-fill"></i>
+
+        <span>
+          {{ errorMessage() }}
+        </span>
+
+      </div>
+
     }
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
 
     @if (loading()) {
-        <div class="loading">Cargando...</div>
-    } @else {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-card">
-            <div class="form-group">
-                <label for="nombre">Nombre de la zona *</label>
-                <input id="nombre" type="text" formControlName="nombre"
-                       placeholder="Ej: Zona 1 Guatemala"
-                       [class.invalid]="nombre.invalid && nombre.touched" />
-                @if (nombre.invalid && nombre.touched) {
-                    <small class="error-text">Requerido (máx 120)</small>
-                }
-            </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="municipio">Municipio</label>
-                    <input id="municipio" type="text" formControlName="municipio" />
-                </div>
-                <div class="form-group">
-                    <label for="departamento">Departamento</label>
-                    <input id="departamento" type="text" formControlName="departamento" />
-                </div>
-            </div>
+      <div class="loading-card">
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="pais">País *</label>
-                    <input id="pais" type="text" formControlName="pais"
-                           [class.invalid]="pais.invalid && pais.touched" />
-                    @if (pais.invalid && pais.touched) {
-                        <small class="error-text">Requerido</small>
-                    }
-                </div>
-                <div class="form-group">
-                    <label for="nivel_riesgo">Nivel de riesgo *</label>
-                    <select id="nivel_riesgo" formControlName="nivel_riesgo">
-                        @for (n of niveles; track n) {
-                            <option [value]="n">{{ n }}</option>
-                        }
-                    </select>
-                </div>
-            </div>
+        <div class="loading-spinner">
+          <i class="bi bi-arrow-repeat"></i>
+        </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="latitud">Latitud (-90 a 90)</label>
-                    <input id="latitud" type="number" step="0.000001" formControlName="latitud"
-                           placeholder="14.634900"
-                           [class.invalid]="latitud.invalid && latitud.touched" />
-                    @if (latitud.invalid && latitud.touched) {
-                        <small class="error-text">Debe estar entre -90 y 90</small>
-                    }
-                </div>
-                <div class="form-group">
-                    <label for="longitud">Longitud (-180 a 180)</label>
-                    <input id="longitud" type="number" step="0.000001" formControlName="longitud"
-                           placeholder="-90.506900"
-                           [class.invalid]="longitud.invalid && longitud.touched" />
-                    @if (longitud.invalid && longitud.touched) {
-                        <small class="error-text">Debe estar entre -180 y 180</small>
-                    }
-                </div>
-            </div>
+        <div>
 
-            <div class="form-actions">
-                <a routerLink="/zonas" class="btn-secondary">Cancelar</a>
-                <button type="submit" class="btn-primary" [disabled]="saving()">
-                    {{ saving() ? 'Guardando...' : (isEditMode() ? 'Actualizar' : 'Crear Zona') }}
-                </button>
-            </div>
-        </form>
+          <strong>
+            Cargando información
+          </strong>
+
+          <span>
+            Espera un momento...
+          </span>
+
+        </div>
+
+      </div>
+
     }
+
+
+    <!-- =====================================================
+         FORMULARIO
+         ===================================================== -->
+
+    @else {
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        novalidate
+        class="form-card">
+
+
+        <!-- =================================================
+             IDENTIFICACIÓN
+             ================================================= -->
+
+        <section class="form-section">
+
+          <div class="section-header">
+
+            <div class="section-icon blue">
+
+              <i class="bi bi-card-text"></i>
+
+            </div>
+
+            <div>
+
+              <h2>
+                Información de la zona
+              </h2>
+
+              <p>
+                Identifica la zona y su ubicación administrativa.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="nombre">
+
+              <i class="bi bi-tag"></i>
+
+              Nombre de la zona
+
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="nombre"
+              type="text"
+              formControlName="nombre"
+              placeholder="Ej: Zona 1 Guatemala"
+              [class.invalid]="nombre.invalid && nombre.touched" />
+
+            @if (nombre.invalid && nombre.touched) {
+
+              <small class="error-text">
+
+                <i class="bi bi-exclamation-circle"></i>
+
+                El nombre es requerido y debe tener máximo 120 caracteres.
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="municipio">
+
+                <i class="bi bi-building"></i>
+
+                Municipio
+
+              </label>
+
+              <input
+                id="municipio"
+                type="text"
+                formControlName="municipio"
+                placeholder="Ej: Guatemala" />
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="departamento">
+
+                <i class="bi bi-map"></i>
+
+                Departamento
+
+              </label>
+
+              <input
+                id="departamento"
+                type="text"
+                formControlName="departamento"
+                placeholder="Ej: Guatemala" />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="pais">
+
+              <i class="bi bi-globe-americas"></i>
+
+              País
+
+              <span class="required">*</span>
+
+            </label>
+
+            <input
+              id="pais"
+              type="text"
+              formControlName="pais"
+              placeholder="Ej: Guatemala"
+              [class.invalid]="pais.invalid && pais.touched" />
+
+            @if (pais.invalid && pais.touched) {
+
+              <small class="error-text">
+
+                <i class="bi bi-exclamation-circle"></i>
+
+                El país es requerido.
+
+              </small>
+
+            }
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             UBICACIÓN
+             ================================================= -->
+
+        <section class="form-section">
+
+          <div class="section-header">
+
+            <div class="section-icon cyan">
+
+              <i class="bi bi-crosshair"></i>
+
+            </div>
+
+            <div>
+
+              <h2>
+                Ubicación geográfica
+              </h2>
+
+              <p>
+                Define las coordenadas de la zona para su localización.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="coordinates-info">
+
+            <div class="coordinates-info-icon">
+
+              <i class="bi bi-info-circle"></i>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Coordenadas geográficas
+              </strong>
+
+              <span>
+                Utiliza valores decimales. La latitud va de -90 a 90
+                y la longitud de -180 a 180.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="latitud">
+
+                <i class="bi bi-arrow-up-down"></i>
+
+                Latitud
+
+              </label>
+
+              <div class="input-with-unit">
+
+                <input
+                  id="latitud"
+                  type="number"
+                  step="0.000001"
+                  formControlName="latitud"
+                  placeholder="14.634900"
+                  [class.invalid]="latitud.invalid && latitud.touched" />
+
+                <span>
+                  ° N/S
+                </span>
+
+              </div>
+
+              @if (latitud.invalid && latitud.touched) {
+
+                <small class="error-text">
+
+                  <i class="bi bi-exclamation-circle"></i>
+
+                  Debe estar entre -90 y 90.
+
+                </small>
+
+              }
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="longitud">
+
+                <i class="bi bi-arrow-left-right"></i>
+
+                Longitud
+
+              </label>
+
+              <div class="input-with-unit">
+
+                <input
+                  id="longitud"
+                  type="number"
+                  step="0.000001"
+                  formControlName="longitud"
+                  placeholder="-90.506900"
+                  [class.invalid]="longitud.invalid && longitud.touched" />
+
+                <span>
+                  ° E/O
+                </span>
+
+              </div>
+
+              @if (longitud.invalid && longitud.touched) {
+
+                <small class="error-text">
+
+                  <i class="bi bi-exclamation-circle"></i>
+
+                  Debe estar entre -180 y 180.
+
+                </small>
+
+              }
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RIESGO
+             ================================================= -->
+
+        <section class="form-section">
+
+          <div class="section-header">
+
+            <div class="section-icon risk">
+
+              <i class="bi bi-shield-exclamation"></i>
+
+            </div>
+
+            <div>
+
+              <h2>
+                Nivel de riesgo
+              </h2>
+
+              <p>
+                Clasifica el nivel de riesgo asociado a esta zona.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="risk-selector">
+
+            @for (n of niveles; track n) {
+
+              <label
+                class="risk-option"
+                [class.selected]="form.get('nivel_riesgo')?.value === n"
+                [class.risk-low]="n === 'BAJO'"
+                [class.risk-medium]="n === 'MEDIO'"
+                [class.risk-high]="n === 'ALTO'"
+                [class.risk-critical]="n === 'CRITICO'">
+
+                <input
+                  type="radio"
+                  formControlName="nivel_riesgo"
+                  [value]="n" />
+
+                <span class="risk-option-icon">
+
+                  @if (n === 'BAJO') {
+                    <i class="bi bi-shield-check"></i>
+                  }
+
+                  @else if (n === 'MEDIO') {
+                    <i class="bi bi-shield-exclamation"></i>
+                  }
+
+                  @else if (n === 'ALTO') {
+                    <i class="bi bi-exclamation-triangle"></i>
+                  }
+
+                  @else {
+                    <i class="bi bi-shield-fill-exclamation"></i>
+                  }
+
+                </span>
+
+                <span class="risk-option-content">
+
+                  <strong>
+                    {{ n }}
+                  </strong>
+
+                  <small>
+
+                    @if (n === 'BAJO') {
+                      Riesgo controlado
+                    }
+
+                    @else if (n === 'MEDIO') {
+                      Requiere atención
+                    }
+
+                    @else if (n === 'ALTO') {
+                      Atención prioritaria
+                    }
+
+                    @else {
+                      Riesgo crítico
+                    }
+
+                  </small>
+
+                </span>
+
+                <span class="risk-check">
+
+                  <i class="bi bi-check2"></i>
+
+                </span>
+
+              </label>
+
+            }
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ACCIONES
+             ================================================= -->
+
+        <footer class="form-footer">
+
+          <div class="required-info">
+
+            <span class="required">*</span>
+
+            Campos obligatorios
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <a
+              routerLink="/zonas"
+              class="btn-secondary">
+
+              <i class="bi bi-x-lg"></i>
+
+              Cancelar
+
+            </a>
+
+
+            <button
+              type="submit"
+              class="btn-primary"
+              [disabled]="saving()">
+
+              @if (saving()) {
+
+                <i class="bi bi-arrow-repeat spinning"></i>
+
+                Guardando...
+
+              }
+
+              @else {
+
+                <i
+                  class="bi"
+                  [ngClass]="isEditMode()
+                    ? 'bi-check2-circle'
+                    : 'bi-plus-circle'">
+                </i>
+
+                {{ isEditMode() ? 'Actualizar zona' : 'Crear zona' }}
+
+              }
+
+            </button>
+
+          </div>
+
+        </footer>
+
+      </form>
+
+    }
+
+  </main>
+
 </div>
