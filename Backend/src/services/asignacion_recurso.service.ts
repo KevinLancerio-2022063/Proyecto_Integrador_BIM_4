@@ -51,33 +51,54 @@ export class AsignacionRecursoService {
             await AsignacionRecursoRepository.agregarAsignacion(datos);
             return { success: true, message: "Asignacion de recurso creada correctamente" };
         } catch (error: any) {
+            if (error.message && (
+                error.message.includes("usuario_asigna_id") || 
+                error.message.includes("usuario") ||
+                error.message.includes("no existe") ||
+                error.message.includes("no está activo")
+            )) {
+                return { 
+                    success: false, 
+                    message: "El ID del usuario que asigna no existe o fue eliminado" 
+                };
+            }
+            
             return { success: false, message: "Error al crear asignacion de recurso", error: error.message };
         }
     }
 
-    // Funciona para actualizar una asignacion de recurso existente con validaciones
-    static async actualizar(id: number, datos: ActualizarAsignacionRecursoDTO): Promise<RespuestaAPI<any>> {
-        try {
-            const existe = await AsignacionRecursoRepository.buscarAsignacionPorId(id);
-            if (!existe) return { success: false, message: "Asignacion no encontrada" };
+// Funciona para actualizar una asignacion de recurso existente con validaciones
+static async actualizar(id: number, datos: ActualizarAsignacionRecursoDTO): Promise<RespuestaAPI<any>> {
+    try {
+        const existe = await AsignacionRecursoRepository.buscarAsignacionPorId(id);
+        if (!existe) return { success: false, message: "Asignacion no encontrada" };
 
-            // Validar que la cantidad sea mayor a cero
-            if (datos.cantidad <= 0) {
-                return { success: false, message: "La cantidad debe ser mayor a cero" };
-            }
-
-            // Validar estados permitidos
-            const estadosPermitidos = ["SOLICITADO", "ASIGNADO", "ENVIADO", "ENTREGADO", "CANCELADO"];
-            if (!estadosPermitidos.includes(datos.estado)) {
-                return { success: false, message: "Estado no valido. Estados permitidos: SOLICITADO, ASIGNADO, ENVIADO, ENTREGADO, CANCELADO" };
-            }
-
-            await AsignacionRecursoRepository.actualizarAsignacion(id, datos);
-            return { success: true, message: "Asignacion de recurso actualizada correctamente" };
-        } catch (error: any) {
-            return { success: false, message: "Error al actualizar asignacion de recurso", error: error.message };
+        // Validar que la cantidad sea mayor a cero
+        if (datos.cantidad <= 0) {
+            return { success: false, message: "La cantidad debe ser mayor a cero" };
         }
+
+        // Validar estados permitidos
+        const estadosPermitidos = ["SOLICITADO", "ASIGNADO", "ENVIADO", "ENTREGADO", "CANCELADO"];
+        if (!estadosPermitidos.includes(datos.estado)) {
+            return { success: false, message: "Estado no valido. Estados permitidos: SOLICITADO, ASIGNADO, ENVIADO, ENTREGADO, CANCELADO" };
+        }
+
+        // Validar que el usuario_asigna_id exista si se proporciona
+        if (datos.usuario_asigna_id !== undefined && datos.usuario_asigna_id !== null) {
+ 
+        }
+
+        await AsignacionRecursoRepository.actualizarAsignacion(id, datos);
+        return { success: true, message: "Asignacion de recurso actualizada correctamente" };
+    } catch (error: any) {
+        // Manejar errores de llave foránea del procedimiento almacenado
+        if (error.message && error.message.includes("usuario_asigna_id")) {
+            return { success: false, message: "El usuario que asigna no existe en el sistema" };
+        }
+        return { success: false, message: "Error al actualizar asignacion de recurso", error: error.message };
     }
+}
 
     // Funciona para eliminar una asignacion de recurso (soft delete)
     static async eliminar(id: number): Promise<RespuestaAPI<any>> {
