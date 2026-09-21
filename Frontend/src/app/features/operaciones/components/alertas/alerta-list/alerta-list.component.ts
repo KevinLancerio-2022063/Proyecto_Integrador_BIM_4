@@ -1,4 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { EstadoAlertaPipe } from '../../../pipes/estado-alerta.pipe';
+import { NivelAlertaPipe } from '../../../pipes/nivel-alerta.pipe';
+import { TipoAlertaPipe } from '../../../pipes/tipo-alerta.pipe';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -25,7 +28,11 @@ import { AlertaFormComponent } from "../alerta-form/alerta-form.component";
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+
+    EstadoAlertaPipe,
+    NivelAlertaPipe,
+    TipoAlertaPipe
   ],
   templateUrl: "./alerta-list.component.html",
   styleUrls: ["./alerta-list.component.css"]

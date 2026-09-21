@@ -111,7 +111,7 @@
         </div>
 
         <span class="tipo-badge">
-          {{ alerta.tipo }}
+          {{ alerta.tipo | tipoAlerta }}
         </span>
 
       </div>
@@ -127,7 +127,7 @@
           class="nivel-badge"
           [class]="'nivel-' + alerta.nivel.toLowerCase()">
 
-          {{ alerta.nivel }}
+          {{ alerta.nivel | nivelAlerta }}
 
         </span>
       </div>
@@ -147,7 +147,7 @@
         </mat-icon>
 
         <span class="cantidad-texto">
-          {{ alerta.estado }}
+          {{ alerta.estado | estadoAlerta }}
         </span>
 
       </div>

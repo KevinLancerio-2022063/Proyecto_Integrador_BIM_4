@@ -1,4 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { RolAsignacionPipe } from '../../../pipes/rol-asignacion.pipe';
+import { EstadoAsignacionPipe } from '../../../pipes/estado-asignacion.pipe';
+import { TipoDestinoAsignacionPipe } from '../../../pipes/tipo-destino-asignacion.pipe';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
@@ -28,7 +31,10 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RolAsignacionPipe,
+    EstadoAsignacionPipe,
+    TipoDestinoAsignacionPipe
   ],
   templateUrl: "./asignacion-personal-list.component.html",
   styleUrls: ["./asignacion-personal-list.component.css"]
