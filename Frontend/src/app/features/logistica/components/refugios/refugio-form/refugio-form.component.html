@@ -1,7 +1,5 @@
-<!-- Contenedor del modal con animación de entrada -->
 <div class="modal-container animate-modal-in">
   
-  <!-- Encabezado del modal con gradiente -->
   <div class="modal-header">
     <div class="modal-header-content">
       <mat-icon class="modal-header-icon">home</mat-icon>
@@ -12,10 +10,15 @@
     </button>
   </div>
 
-  <!-- Formulario reactivo -->
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="formulario-contenido">
       
+      <!-- Mensaje de error inline -->
+      <div *ngIf="mensajeErrorInline" class="mensaje-error-inline">
+        <mat-icon class="mensaje-icono">error_outline</mat-icon>
+        <span class="mensaje-texto">{{ mensajeErrorInline }}</span>
+      </div>
+
       <!-- Campo nombre -->
       <div class="form-group">
         <label class="form-label">Nombre del refugio*</label>
@@ -81,11 +84,24 @@
       <!-- Campo estado -->
       <div class="form-group">
         <label class="form-label">Estado*</label>
-        <div class="input-wrapper">
-          <mat-icon class="input-icon">info</mat-icon>
-          <mat-select formControlName="estado" class="form-select">
-            <mat-option *ngFor="let estado of estadosRefugio" [value]="estado">
-              {{ estado }}
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="estado" class="form-select" placeholder="Seleccionar...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('estado')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getEstadoColor(form.get('estado')?.value)">
+                  {{ getEstadoIcono(form.get('estado')?.value) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ form.get('estado')?.value }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let estado of estadosRefugio" [value]="estado.valor">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="estado.color">
+                  {{ estado.icono }}
+                </mat-icon>
+                <span class="opcion-texto">{{ estado.texto }}</span>
+              </div>
             </mat-option>
           </mat-select>
         </div>
@@ -96,7 +112,7 @@
 
       <!-- Campo dirección -->
       <div class="form-group">
-        <label class="form-label">Dirección</label>
+        <label class="form-label">Dirección*</label>
         <div class="input-wrapper">
           <mat-icon class="input-icon">location_on</mat-icon>
           <input 
@@ -106,12 +122,15 @@
             class="form-input"
           />
         </div>
+        <mat-error *ngIf="form.get('direccion')?.hasError('required')" class="error-message">
+          La dirección es obligatoria
+        </mat-error>
       </div>
 
       <!-- Campos latitud y longitud -->
       <div class="form-row">
         <div class="form-group form-group-half">
-          <label class="form-label">Latitud</label>
+          <label class="form-label">Latitud*</label>
           <div class="input-wrapper">
             <mat-icon class="input-icon">my_location</mat-icon>
             <input 
@@ -122,12 +141,18 @@
               class="form-input"
             />
           </div>
+          <mat-error *ngIf="form.get('latitud')?.hasError('required')" class="error-message">
+            La latitud es obligatoria
+          </mat-error>
           <mat-error *ngIf="form.get('latitud')?.hasError('min')" class="error-message">
+            La latitud debe estar entre -90 y 90
+          </mat-error>
+          <mat-error *ngIf="form.get('latitud')?.hasError('max')" class="error-message">
             La latitud debe estar entre -90 y 90
           </mat-error>
         </div>
         <div class="form-group form-group-half">
-          <label class="form-label">Longitud</label>
+          <label class="form-label">Longitud*</label>
           <div class="input-wrapper">
             <mat-icon class="input-icon">place</mat-icon>
             <input 
@@ -138,15 +163,65 @@
               class="form-input"
             />
           </div>
+          <mat-error *ngIf="form.get('longitud')?.hasError('required')" class="error-message">
+            La longitud es obligatoria
+          </mat-error>
           <mat-error *ngIf="form.get('longitud')?.hasError('min')" class="error-message">
+            La longitud debe estar entre -180 y 180
+          </mat-error>
+          <mat-error *ngIf="form.get('longitud')?.hasError('max')" class="error-message">
             La longitud debe estar entre -180 y 180
           </mat-error>
         </div>
       </div>
 
+      <!-- Campo zona_id -->
+      <div class="form-group">
+        <label class="form-label">Zona ID*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">map</mat-icon>
+          <input 
+            matInput 
+            type="number" 
+            min="1"
+            formControlName="zona_id"
+            class="form-input"
+            placeholder="Ej. 1"
+          />
+        </div>
+        <mat-error *ngIf="form.get('zona_id')?.hasError('required')" class="error-message">
+          El zona ID es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.get('zona_id')?.hasError('min')" class="error-message">
+          El zona ID debe ser mayor a cero
+        </mat-error>
+      </div>
+
+      <!-- Campo responsable_id -->
+      <div class="form-group">
+        <label class="form-label">Responsable ID*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">person</mat-icon>
+          <input 
+            matInput 
+            type="number" 
+            min="1"
+            formControlName="responsable_id"
+            class="form-input"
+            placeholder="Ej. 4"
+          />
+        </div>
+        <mat-error *ngIf="form.get('responsable_id')?.hasError('required')" class="error-message">
+          El responsable ID es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.get('responsable_id')?.hasError('min')" class="error-message">
+          El responsable ID debe ser mayor a cero
+        </mat-error>
+      </div>
+
       <!-- Campo teléfono -->
       <div class="form-group">
-        <label class="form-label">Teléfono de contacto</label>
+        <label class="form-label">Teléfono de contacto*</label>
         <div class="input-wrapper">
           <mat-icon class="input-icon">phone</mat-icon>
           <input 
@@ -156,14 +231,17 @@
             class="form-input"
           />
         </div>
+        <mat-error *ngIf="form.get('telefono_contacto')?.hasError('required')" class="error-message">
+          El teléfono es obligatorio
+        </mat-error>
         <mat-error *ngIf="form.get('telefono_contacto')?.hasError('maxlength')" class="error-message">
           Máximo 30 caracteres
         </mat-error>
       </div>
 
-      <!-- Campo observaciones -->
+      <!-- Campo observaciones (opcional) -->
       <div class="form-group">
-        <label class="form-label">Observaciones</label>
+        <label class="form-label">Observaciones <span class="opcional-label">(opcional)</span></label>
         <div class="input-wrapper textarea-wrapper">
           <mat-icon class="input-icon textarea-icon">note</mat-icon>
           <textarea 
