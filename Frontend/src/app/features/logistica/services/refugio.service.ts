@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, map } from "rxjs";
-import { Refugio, CrearRefugioDTO, RespuestaAPI } from "../models/refugio.model";
+import { Refugio, CrearRefugioDTO, ActualizarRefugioDTO } from "../models/refugio.model";
 
-// Marca la clase como inyectable en toda la aplicación
+// Marca la clase como inyectable en toda la aplicacion
 @Injectable({
   providedIn: "root"
 })
@@ -18,23 +18,18 @@ export class RefugioService {
   getAll(): Observable<Refugio[]> {
     return this.http.get<any>(this.apiUrl).pipe(
       map((response: any) => {
-        // Si la respuesta es un array directo, lo devolvemos
         if (Array.isArray(response)) {
           return response;
         }
-        
-        // Si la respuesta es un objeto, intentamos extraer la propiedad 'data'
         if (response && response.data) {
           return response.data;
         }
-
-        // En cualquier otro caso, devolvemos un array vacío
         return [];
       })
     );
   }
 
-  // Obtiene un refugio específico por su ID
+  // Obtiene un refugio especifico por su ID
   getById(id: number): Observable<Refugio> {
     return this.http.get<Refugio>(`${this.apiUrl}/${id}`);
   }
@@ -45,7 +40,7 @@ export class RefugioService {
   }
 
   // Actualiza un refugio existente por su ID
-  update(id: number, data: any): Observable<any> {
+  update(id: number, data: ActualizarRefugioDTO): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
