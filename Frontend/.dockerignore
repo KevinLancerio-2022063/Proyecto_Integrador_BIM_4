@@ -5,7 +5,7 @@ dist
 *.md
 Dockerfile
 .dockerignore
-nginx.conf
 coverage
 .env
 .env.local
+*.log

@@ -16,7 +16,7 @@ COPY package.json pnpm-lock.yaml ./
 # Instalar dependencias
 RUN pnpm install --frozen-lockfile
 
-# Copiar el código fuente
+# Copiar TODO el código (incluyendo nginx.conf)
 COPY . .
 
 # Construir la aplicación para producción
@@ -28,8 +28,8 @@ FROM nginx:alpine
 # Copiar build desde el stage anterior
 COPY --from=build /app/dist/browser /usr/share/nginx/html
 
-# Copiar configuración de nginx (desde el mismo contexto)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copiar configuración de nginx (desde el contexto de build)
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
