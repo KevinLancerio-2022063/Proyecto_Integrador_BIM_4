@@ -11,11 +11,12 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { IncidenteService } from "../../../services/incidente.service";
 import { Incidente } from "../../../models/incidente.model";
 import { IncidenteFormComponent } from "../incidente-form/incidente-form.component";
-import { EstadoIncidentePipe } from "../../../pipes/estado-incidente.pipe";
+import { ConfirmDialogComponent } from "../../../../logistica/components/confirm-dialog/confirm-dialog.component";
 import { FechaFormateadaPipe } from "../../../pipes/fecha-formateada.pipe";
 import { NivelEmergenciaPipe } from "../../../pipes/nivel-emergencia.pipe";
-import { TipoIncidentePipe } from "../../../pipes/tipo-incidente.pipe";
+import { EstadoIncidentePipe } from "../../../pipes/estado-incidente.pipe";
 
+// Define el componente como independiente (standalone)
 @Component({
   selector: "app-incidente-list",
   standalone: true,
@@ -29,20 +30,24 @@ import { TipoIncidentePipe } from "../../../pipes/tipo-incidente.pipe";
     MatInputModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    EstadoIncidentePipe,
+    ConfirmDialogComponent,
     FechaFormateadaPipe,
     NivelEmergenciaPipe,
-    TipoIncidentePipe
+    EstadoIncidentePipe
   ],
   templateUrl: "./incidente-list.component.html",
   styleUrls: ["./incidente-list.component.css"]
 })
 export class IncidenteListComponent implements OnInit {
-  incidentes: Incidente[] = [];
-  filtroActivo: string = "todos";
-  busqueda: string = "";
-  loading: boolean = true;
+  incidentes: Incidente[] = []; // Lista de incidentes cargados desde el backend
+  filtroActivo: string = "todos"; // Filtro activo seleccionado por el usuario
+  busqueda: string = ""; // Término de búsqueda ingresado en el input
+  loading: boolean = true; // Indicador de estado de carga de datos
+  
+  mostrarDialogoEliminacion: boolean = false; // Controla la visibilidad del diálogo de confirmación
+  incidenteSeleccionadoParaEliminar: Incidente | null = null; // Almacena el incidente seleccionado para eliminar
 
+  // Configuración de filtros hexagonales disponibles con sus iconos
   filtros = [
     { id: "todos", etiqueta: "Todos", icono: "dashboard" },
     { id: "INUNDACION", etiqueta: "Inundaciones", icono: "flood" },
@@ -53,83 +58,127 @@ export class IncidenteListComponent implements OnInit {
     { id: "OTRO", etiqueta: "Otros", icono: "warning" }
   ];
 
+  // Mapa de iconos según el nivel de emergencia
+  private iconosPorNivel: { [key: string]: string } = {
+    CRITICA: "dangerous",
+    ALTA: "warning",
+    MEDIA: "info",
+    BAJA: "check_circle"
+  };
+
+  // Mapa de colores según el nivel de emergencia
+  private coloresPorNivel: { [key: string]: string } = {
+    CRITICA: "#1a1a2e",
+    ALTA: "#dc2626",
+    MEDIA: "#f59e0b",
+    BAJA: "#10b981"
+  };
+
+  // Inyección de dependencias del componente
   constructor(
     private incidenteService: IncidenteService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {}
 
+  // Método del ciclo de vida que se ejecuta al inicializar el componente
   ngOnInit(): void {
     this.cargarIncidentes();
   }
 
+  // Obtiene todos los incidentes desde el backend
   cargarIncidentes(): void {
-  this.loading = true;
-  
-  this.incidenteService.getAll().subscribe({
-    next: (data: Incidente[]) => {
-      this.incidentes = data || [];
-      this.loading = false; 
-      this.cdr.detectChanges();
-    },
-    error: (error) => {
-      console.error("Error al cargar incidentes:", error);
-      this.loading = false; 
-      this.cdr.detectChanges(); 
-    }
-  });
-}
+    this.loading = true;
+    this.cdr.markForCheck();
+    
+    this.incidenteService.getAll().subscribe({
+      next: (data: Incidente[]) => {
+        this.incidentes = [...(data || [])];
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error("Error al cargar incidentes:", error);
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
+  }
 
+  // Abre el modal para crear un nuevo incidente
   abrirModalCrear(): void {
     const dialogRef = this.dialog.open(IncidenteFormComponent, {
-      width: '600px',
-      disableClose: true,
-      panelClass: 'modal-transparente-panel' 
+      width: "700px",
+      data: { modo: "crear" },
+      panelClass: "modal-cyberpunk",
+      backdropClass: "backdrop-cyberpunk"
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
-        this.cargarIncidentes();
+        this.loading = true;
+        this.cdr.markForCheck();
+        setTimeout(() => this.cargarIncidentes(), 600);
       }
     });
   }
 
+  // Abre el modal para editar un incidente existente
   abrirModalEditar(incidente: Incidente): void {
     const dialogRef = this.dialog.open(IncidenteFormComponent, {
-      width: "600px",
+      width: "700px",
       data: { modo: "editar", incidente },
-      panelClass: 'modal-transparente-panel'
+      panelClass: "modal-cyberpunk",
+      backdropClass: "backdrop-cyberpunk"
     });
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
-        this.cargarIncidentes();
+        this.loading = true;
+        this.cdr.markForCheck();
+        setTimeout(() => this.cargarIncidentes(), 600);
       }
     });
   }
 
-  eliminarIncidente(incidenteObj: any): void {
-    const idReal = incidenteObj.id || incidenteObj._id;
-
-    if (!idReal) {
-      console.error("No se encontró un ID válido para eliminar");
-      return;
-    }
-
-    if (confirm("¿Estás seguro de eliminar este incidente?")) {
-      this.incidenteService.delete(idReal).subscribe({
-        next: () => {
-          this.incidentes = this.incidentes.filter(i => (i.id || (i as any)._id) !== idReal);
-          this.cdr.detectChanges();
-        },
-        error: (error) => console.error("Error al eliminar incidente:", error)
-      });
-    }
+  // Prepara la eliminación mostrando el diálogo de confirmación personalizado
+  prepararEliminacion(incidente: Incidente): void {
+    this.incidenteSeleccionadoParaEliminar = incidente;
+    this.mostrarDialogoEliminacion = true;
   }
 
+  // Cierra el diálogo de eliminación sin realizar cambios
+  cerrarDialogoEliminacion(): void {
+    this.mostrarDialogoEliminacion = false;
+    this.incidenteSeleccionadoParaEliminar = null;
+  }
+
+  // Confirma y ejecuta la eliminación del incidente en el backend
+  confirmarEliminacion(): void {
+    if (!this.incidenteSeleccionadoParaEliminar?.id) return;
+
+    this.loading = true;
+    this.cdr.markForCheck();
+
+    this.incidenteService.delete(this.incidenteSeleccionadoParaEliminar.id).subscribe({
+      next: () => {
+        this.cerrarDialogoEliminacion();
+        setTimeout(() => this.cargarIncidentes(), 600);
+      },
+      error: (error) => {
+        console.error("Error al eliminar incidente:", error);
+        this.loading = false;
+        this.cerrarDialogoEliminacion();
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  // Establece el filtro activo seleccionado por el usuario
   setFiltro(filtroId: string): void {
     this.filtroActivo = filtroId;
   }
 
+  // Obtiene los incidentes filtrados según el filtro activo y la búsqueda
   get incidentesFiltrados(): Incidente[] {
     let resultado = this.incidentes;
 
@@ -150,11 +199,37 @@ export class IncidenteListComponent implements OnInit {
     return resultado;
   }
 
+  // Obtiene el nivel de emergencia del incidente (maneja variaciones de nombre)
   getNivelEmergencia(incidente: any): string {
-    return incidente.nivelEmergencia || incidente.nivel_emergencia || 'BAJA';
+    return incidente.nivelEmergencia || incidente.nivel_emergencia || "BAJA";
   }
 
+  // Obtiene la cantidad de personas afectadas (maneja variaciones de nombre)
   getPersonasAfectadas(incidente: any): number {
     return incidente.personasAfectadas ?? incidente.cantidad_personas_afectadas ?? 0;
+  }
+
+  // Obtiene el icono correspondiente al nivel de emergencia
+  getIconoNivel(nivel: string): string {
+    return this.iconosPorNivel[nivel] || "help";
+  }
+
+  // Obtiene el color correspondiente al nivel de emergencia
+  getColorNivel(nivel: string): string {
+    return this.coloresPorNivel[nivel] || "#6b7280";
+  }
+
+  // Obtiene la clase CSS para el hexágono según el tipo
+  getHexagonClass(tipoId: string): string {
+    const clases: { [key: string]: string } = {
+      "todos": "hex-todos",
+      "INUNDACION": "hex-inundacion",
+      "TERREMOTO": "hex-terremoto",
+      "INCENDIO": "hex-incendio",
+      "DESLIZAMIENTO": "hex-deslizamiento",
+      "ACTIVIDAD_VOLCANICA": "hex-volcan",
+      "OTRO": "hex-otro"
+    };
+    return clases[tipoId] || "hex-otro";
   }
 }
