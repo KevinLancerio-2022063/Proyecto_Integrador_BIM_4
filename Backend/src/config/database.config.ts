@@ -14,6 +14,10 @@ const poolConfig: PoolConfig = {
     max: parseInt(process.env.DB_POOL_MAX || '10', 10),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,
+    // SSL para producción (Render)
+    ssl: process.env.NODE_ENV === 'production' 
+        ? { rejectUnauthorized: false } 
+        : false,
 };
 
 export const pool = new Pool(poolConfig);
@@ -26,6 +30,7 @@ pool.on('error', (err) => {
     console.error('Error inesperado en el pool de PostgreSQL:', err);
     process.exit(-1);
 });
+
 export const testConnection = async (): Promise<void> => {
     try {
         const client = await pool.connect();
@@ -38,6 +43,7 @@ export const testConnection = async (): Promise<void> => {
         throw error;
     }
 };
+
 export const closePool = async (): Promise<void> => {
     await pool.end();
     console.log('Pool de conexiones cerrado');
