@@ -19,14 +19,19 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Construir la aplicación para producción
-# Usar 'build' en lugar de 'build:prod' si no existe
-RUN npm run build || npm run build:prod
+RUN npm run build
+
+# Debug: Ver dónde se generaron los archivos
+RUN echo "=== Contenido de dist/ ===" && ls -la dist/
+RUN echo "=== Buscando browser/ ===" && find dist -type d -name "browser" || echo "No browser folder found"
 
 # Stage 2: Serve con Nginx
 FROM nginx:alpine
 
-# Copiar build desde el stage anterior
-COPY --from=build /app/dist/browser /usr/share/nginx/html
+# Intentar diferentes rutas comunes del build de Angular
+COPY --from=build /app/dist/Frontend/browser /usr/share/nginx/html
+# Si no existe, intentar con:
+# COPY --from=build /app/dist/browser /usr/share/nginx/html
 
 # Copiar configuración de nginx
 COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
