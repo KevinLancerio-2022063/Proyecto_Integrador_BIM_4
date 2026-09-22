@@ -10,9 +10,7 @@ WORKDIR /app
 # Copiar package.json
 COPY package.json ./
 
-# Eliminar node_modules si existe y forzar instalación limpia
-RUN rm -rf node_modules package-lock.json
-RUN npm cache clean --force
+# Instalar dependencias
 RUN npm install --legacy-peer-deps
 
 # Copiar el código fuente
@@ -23,18 +21,19 @@ RUN npm run build
 
 # Debug: Ver dónde se generaron los archivos
 RUN echo "=== Contenido de dist/ ===" && ls -la dist/
-RUN echo "=== Buscando browser/ ===" && find dist -type d -name "browser" || echo "No browser folder found"
+RUN echo "=== Buscando index.html ===" && find dist -name "index.html" || echo "No index.html found"
 
 # Stage 2: Serve con Nginx
 FROM nginx:alpine
 
-# Intentar diferentes rutas comunes del build de Angular
-COPY --from=build /app/dist/Frontend/browser /usr/share/nginx/html
-# Si no existe, intentar con:
-# COPY --from=build /app/dist/browser /usr/share/nginx/html
+# Copiar configuración de nginx PRIMERO
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copiar configuración de nginx
-COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
+# Copiar build de Angular (probar diferentes rutas)
+COPY --from=build /app/dist/Frontend/browser /usr/share/nginx/html
+
+# Crear archivo de configuración por si no existe index.html
+RUN echo "Server configuration complete"
 
 EXPOSE 80
 

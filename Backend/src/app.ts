@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { testConnection } from "./config/database.config";
@@ -17,17 +17,18 @@ import alertaRoutes from "./routes/alerta.routes";
 
 dotenv.config();
 
-const app = express();
-
+const app: Application = express();
 
 // Middlewares
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:4200"
+    origin: process.env.CORS_ORIGIN || "*",
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas de API
+// Rutas de API - ORDEN IMPORTANTE
 app.use("/api/auth", authRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/zonas", zonaRoutes);
@@ -36,29 +37,51 @@ app.use("/api/refugios", refugioRoutes);
 app.use("/api/asignaciones-recurso", asignacionRoutes);
 app.use("/api/incidentes", incidenteRoutes);
 app.use("/api/historial-incidentes", historialIncidenteRoutes);
+app.use("/api/asignacion-personal", asignacionPersonalRoutes);
 app.use("/api/alertas", alertaRoutes);
-app.use("/api/asignacion_personal", asignacionPersonalRoutes);
 
-// Ruta de salud
-app.get("/api/health", (req, res) => {
+// Health check - DEBE IR DESPUÉS de las rutas
+app.get("/api/health", (req: Request, res: Response) => {
     res.json({ 
         status: "OK", 
-        timestamp: new Date(),
-        message: "SIGED API is running"
+        timestamp: new Date().toISOString(),
+        message: "SIGED API is running",
+        environment: process.env.NODE_ENV
     });
 });
 
-// Exportar app para que la use server.ts
-export default app;
+// Ruta raíz
+app.get("/", (req: Request, res: Response) => {
+    res.json({
+        message: "SIGED API - Backend",
+        version: "1.0.0",
+        endpoints: {
+            health: "/api/health",
+            recursos: "/api/recursos",
+            refugios: "/api/refugios",
+            incidentes: "/api/incidentes"
+        }
+    });
+});
+
+// Manejo de errores 404
+app.use((req: Request, res: Response) => {
+    res.status(404).json({
+        success: false,
+        message: `Ruta ${req.method} ${req.path} no encontrada`
+    });
+});
 
 // Función para inicializar la app
 export async function initializeApp() {
     try {
         await testConnection();
-        console.log("Conexion a PostgreSQL establecida");
+        console.log("✅ Conexion a PostgreSQL establecida");
         return app;
     } catch (error) {
-        console.error("Error al conectar a la base de datos:", error);
+        console.error("❌ Error al conectar a la base de datos:", error);
         throw error;
     }
 }
+
+export default app;
