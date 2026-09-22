@@ -1,92 +1,15 @@
 <div class="app-layout">
 
   <!-- =====================================================
-       BARRA LATERAL
-       ===================================================== -->
-
-  <aside class="sidebar">
-
-    <div class="sidebar-brand">
-
-      <!-- Logo SIGED -->
-      <img
-        src="/logo_SIGED.png"
-        alt="SIGED"
-        class="siged-logo" />
-
-    </div>
-
-
-    <!-- MENÚ -->
-    <nav class="sidebar-menu">
-
-      <ul>
-
-        <li>
-          <a
-            routerLink="/recursos"
-            class="menu-item">
-
-            <i class="bi bi-box-seam menu-icon"></i>
-
-            Recursos
-
-          </a>
-        </li>
-
-
-        <li>
-          <a
-            routerLink="/refugios"
-            class="menu-item">
-
-            <i class="bi bi-house-door menu-icon"></i>
-
-            Refugios
-
-          </a>
-        </li>
-
-
-        <li>
-          <a
-            routerLink="/usuarios"
-            class="menu-item active">
-
-            <i class="bi bi-people menu-icon"></i>
-
-            Usuarios
-
-          </a>
-        </li>
-
-
-        <li>
-          <a
-            routerLink="/asignaciones"
-            class="menu-item">
-
-            <i class="bi bi-file-earmark-text menu-icon"></i>
-
-            Asignaciones
-
-          </a>
-        </li>
-
-      </ul>
-
-    </nav>
-
-  </aside>
-
-
-  <!-- =====================================================
        CONTENIDO PRINCIPAL
        ===================================================== -->
 
   <main class="main-content">
 
-    <!-- HEADER -->
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="page-header">
 
       <div>
@@ -146,21 +69,31 @@
     </header>
 
 
-    <!-- MENSAJE DE ÉXITO -->
+    <!-- =====================================================
+         MENSAJE DE ÉXITO
+         ===================================================== -->
+
     @if (successMessage()) {
 
       <div class="alert alert-success">
+
         {{ successMessage() }}
+
       </div>
 
     }
 
 
-    <!-- MENSAJE DE ERROR -->
+    <!-- =====================================================
+         MENSAJE DE ERROR
+         ===================================================== -->
+
     @if (errorMessage()) {
 
       <div class="alert alert-error">
+
         {{ errorMessage() }}
+
       </div>
 
     }
@@ -204,7 +137,9 @@
     @if (loading()) {
 
       <div class="loading">
+
         Cargando usuarios...
+
       </div>
 
     }
@@ -277,31 +212,48 @@
 
               <tr>
 
-                <!-- ID -->
+                <!-- =================================================
+                     ID
+                     ================================================= -->
+
                 <td>
+
                   {{ u.id }}
+
                 </td>
 
 
-                <!-- NOMBRE -->
+                <!-- =================================================
+                     NOMBRE
+                     ================================================= -->
+
                 <td class="strong">
 
                   <span class="user-avatar">
+
                     {{ u.nombre.charAt(0).toUpperCase() }}
+
                   </span>
 
                   <span class="user-name">
+
                     {{ u.nombre }}
+
                   </span>
 
                 </td>
 
 
-                <!-- EMAIL -->
+                <!-- =================================================
+                     EMAIL
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-envelope"></i>
+
                   </span>
 
                   {{ u.email }}
@@ -309,11 +261,16 @@
                 </td>
 
 
-                <!-- TELÉFONO -->
+                <!-- =================================================
+                     TELÉFONO
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-telephone"></i>
+
                   </span>
 
                   {{ u.telefono | telefono }}
@@ -371,11 +328,16 @@
                 </td>
 
 
-                <!-- FECHA -->
+                <!-- =================================================
+                     FECHA
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-calendar3"></i>
+
                   </span>
 
                   {{ u.created_at | fecha }}
@@ -390,6 +352,7 @@
                 <td class="actions">
 
                   <!-- VER -->
+
                   <a
                     [routerLink]="['/usuarios', u.id]"
                     class="btn-icon"
@@ -401,8 +364,11 @@
                   </a>
 
 
-                  <!-- EDITAR -->
+                  <!-- EDITAR Y ELIMINAR -->
+
                   @if (isAdmin()) {
+
+                    <!-- EDITAR -->
 
                     <a
                       [routerLink]="[
@@ -420,6 +386,7 @@
 
 
                     <!-- ELIMINAR -->
+
                     <button
                       class="btn-icon btn-icon-danger"
                       title="Eliminar usuario"
@@ -458,5 +425,119 @@
     }
 
   </main>
+
+
+  <!-- =====================================================
+       MODAL PERSONALIZADO DE ELIMINACIÓN
+       ===================================================== -->
+
+  @if (showDeleteModal()) {
+
+    <div
+      class="delete-modal-backdrop"
+      (click)="cancelDelete()">
+
+
+      <!-- =================================================
+           TARJETA
+           ================================================= -->
+
+      <div
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-modal-title"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- =================================================
+             ICONO DE ADVERTENCIA
+             ================================================= -->
+
+        <div class="delete-modal-icon">
+
+          <i class="bi bi-exclamation-triangle-fill"></i>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENIDO
+             ================================================= -->
+
+        <div class="delete-modal-content">
+
+          <h2 id="delete-modal-title">
+
+            Eliminar usuario
+
+          </h2>
+
+
+          <p>
+
+            ¿Estás seguro de que deseas eliminar
+
+            <strong>
+              '{{ usuarioToDelete()?.nombre }}'
+            </strong>?
+
+            Esta acción no se puede deshacer.
+
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BOTONES
+             ================================================= -->
+
+        <div class="delete-modal-actions">
+
+
+          <!-- CANCELAR -->
+
+          <button
+            type="button"
+            class="delete-modal-cancel"
+            (click)="cancelDelete()">
+
+            Cancelar
+
+          </button>
+
+
+          <!-- ELIMINAR -->
+
+          <button
+            type="button"
+            class="delete-modal-confirm"
+            [disabled]="deletingId() !== null"
+            (click)="deleteConfirmed()">
+
+            @if (deletingId() !== null) {
+
+              <i class="bi bi-hourglass-split"></i>
+
+              Eliminando...
+
+            }
+
+            @else {
+
+              Eliminar
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
 
 </div>
