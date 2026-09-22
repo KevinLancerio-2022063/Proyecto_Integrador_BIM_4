@@ -126,11 +126,9 @@ export class AlertaListComponent implements OnInit {
   }
 
   // Establece el filtro activo
-  setFiltro(filtroId: string): void {
-    this.filtroActivo = filtroId === "todos"
-      ? "todos"
-      : filtroId.toUpperCase();
-  }
+setFiltro(filtroId: string): void {
+  this.filtroActivo = filtroId;   // sin transformar
+}
 
   // Obtiene las alertas filtradas según el filtro activo y la búsqueda
   get alertasFiltradas(): Alerta[] {
@@ -138,7 +136,7 @@ export class AlertaListComponent implements OnInit {
 
     // Aplica filtro por tipo
     if (this.filtroActivo !== "todos") {
-      resultado = resultado.filter(a => a.tipo === this.filtroActivo);
+      resultado = resultado.filter(a => a.tipo.toLowerCase() === this.filtroActivo.toLowerCase());
     }
 
     // Aplica filtro por búsqueda
