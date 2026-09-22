@@ -7,20 +7,17 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Instalar pnpm
-RUN npm install -g pnpm
+# Copiar archivos de configuración (npm, no pnpm)
+COPY package.json package-lock.json ./
 
-# Copiar archivos de configuración
-COPY package.json pnpm-lock.yaml ./
+# Instalar dependencias con npm
+RUN npm ci
 
-# Instalar dependencias
-RUN pnpm install --frozen-lockfile
-
-# Copiar TODO el código (incluyendo nginx.conf)
+# Copiar el código fuente
 COPY . .
 
 # Construir la aplicación para producción
-RUN pnpm build:prod
+RUN npm run build:prod
 
 # Stage 2: Serve con Nginx
 FROM nginx:alpine
@@ -28,7 +25,7 @@ FROM nginx:alpine
 # Copiar build desde el stage anterior
 COPY --from=build /app/dist/browser /usr/share/nginx/html
 
-# Copiar configuración de nginx (desde el contexto de build)
+# Copiar configuración de nginx desde el build stage
 COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
