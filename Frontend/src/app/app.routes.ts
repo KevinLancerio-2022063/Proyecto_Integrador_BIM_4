@@ -1,15 +1,17 @@
+// src/app/app.routes.ts
 import { Routes } from "@angular/router";
 import { LayoutComponent } from "./features/logistica/components/layout/layout.component";
 import { coreRoutes } from "./features/core/core.routes";
+import { authGuard } from "../app/features/core/guards/auth.guard";
 
-// Filtramos las rutas de core para quitar login y register
+// Filtramos las rutas de core para quitar login y register (son públicas)
 const protectedCoreRoutes = coreRoutes.filter(
   (route) => route.path !== "login" && route.path !== "register"
 );
 
 export const routes: Routes = [
   // ==========================================
-  // 1. RUTAS PÚBLICAS (Sin Layout)
+  // 1. RUTAS PÚBLICAS (Sin Layout, sin guards)
   // ==========================================
   {
     path: "login",
@@ -32,15 +34,13 @@ export const routes: Routes = [
   {
     path: "",
     component: LayoutComponent,
+    canActivate: [authGuard], // CAPA 1: Requiere estar autenticado para entrar al layout
     children: [
-      // Redirección por defecto al entrar al sistema
       {
         path: "",
         redirectTo: "logistica",
         pathMatch: "full"
       },
-      
-      // Módulo de Logística
       {
         path: "logistica",
         loadChildren: () =>
@@ -48,8 +48,6 @@ export const routes: Routes = [
             (m) => m.LogisticaModule
           )
       },
-      
-      // Módulo de Incidentes (Incluye Historial)
       {
         path: "incidentes",
         loadChildren: () =>
@@ -57,8 +55,6 @@ export const routes: Routes = [
             (m) => m.IncidenteModule
           )
       },
-      
-      // Módulo de Operaciones (Incluye Alertas y Asignaciones)
       {
         path: "operaciones",
         loadChildren: () =>
@@ -67,10 +63,9 @@ export const routes: Routes = [
           )
       },
       
-      // Rutas de Core (Usuarios, Zonas, Perfil)
+      // CAPA 2: Las rutas de core se evalúan aquí con sus propios guards
       ...protectedCoreRoutes,
       
-      // Wildcard local: Si la ruta no existe dentro del layout, redirige a logistica
       {
         path: "**",
         redirectTo: "logistica"
@@ -79,7 +74,7 @@ export const routes: Routes = [
   },
 
   // ==========================================
-  // 3. REDIRECCIÓN GLOBAL (Si la ruta no existe)
+  // 3. REDIRECCIÓN GLOBAL
   // ==========================================
   {
     path: "**",
