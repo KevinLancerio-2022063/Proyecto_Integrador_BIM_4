@@ -1,0 +1,23 @@
+{
+  "name": "proyecto_integrador_bim_4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run-sql.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinLancerio-2022063/Proyecto_Integrador_BIM_4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KevinLancerio-2022063/Proyecto_Integrador_BIM_4/issues"
+  },
+  "homepage": "https://github.com/KevinLancerio-2022063/Proyecto_Integrador_BIM_4#readme",
+  "dependencies": {
+    "pg": "^8.23.0"
+  }
+}

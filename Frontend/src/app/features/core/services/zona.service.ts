@@ -9,7 +9,7 @@ import { ApiMessage } from '../interfaces/core.interface';
 @Injectable({ providedIn: 'root' })
 export class ZonaService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.apiUrl}/zonas`;
+    private readonly apiUrl = `${environment.apiUrl}/api/zonas`;
 
     findAll(): Observable<ZonaResponse[]> {
         return this.http.get<ZonaResponse[]>(this.apiUrl).pipe(catchError(this.handleError));

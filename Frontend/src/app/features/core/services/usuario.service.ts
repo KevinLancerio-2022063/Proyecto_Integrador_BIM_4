@@ -11,7 +11,7 @@ import { ApiError, ApiMessage } from '../interfaces/core.interface';
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.apiUrl}/usuarios`;
+    private readonly apiUrl = `${environment.apiUrl}/api/usuarios`;
 
     // ============ READ ============
 
