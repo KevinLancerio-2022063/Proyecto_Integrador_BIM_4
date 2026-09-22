@@ -1,322 +1,144 @@
+<!-- src/app/features/incidentes/components/historial/historial-detail/historial-detail.component.html -->
+
+<!-- Contenedor principal de la página -->
 <div class="detail-container">
 
-  <!-- ENCABEZADO -->
+  <!-- Encabezado -->
   <div class="page-header">
-
     <div class="header-info">
-
-      <button
-        mat-icon-button
-        class="back-button"
-        type="button"
-        (click)="volver()"
-        title="Volver al historial"
-      >
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-
       <div class="header-icon">
         <mat-icon>history</mat-icon>
       </div>
-
       <div>
         <h1>Detalle del Historial</h1>
-        <p>
-          Información del cambio registrado en el incidente
-        </p>
+        <p>Información completa del registro</p>
       </div>
-
     </div>
 
-    <button
-      mat-icon-button
-      class="refresh-button"
-      type="button"
-      (click)="recargar()"
-      title="Actualizar"
-    >
-      <mat-icon>refresh</mat-icon>
-    </button>
-
-  </div>
-
-
-  <!-- CARGANDO -->
-  <div
-    class="loading-container"
-    *ngIf="loading"
-  >
-
-    <mat-spinner diameter="42"></mat-spinner>
-
-    <p>Cargando información...</p>
-
-  </div>
-
-
-  <!-- ERROR -->
-  <div
-    class="error-card"
-    *ngIf="!loading && error"
-  >
-
-    <mat-icon>error_outline</mat-icon>
-
-    <h2>No se pudo cargar el registro</h2>
-
-    <p>{{ error }}</p>
-
-    <div class="error-actions">
-
-      <button
-        mat-stroked-button
-        type="button"
-        (click)="recargar()"
-      >
+    <div class="header-actions">
+      <button class="refresh-button" (click)="recargar()" title="Actualizar">
         <mat-icon>refresh</mat-icon>
-        Intentar nuevamente
       </button>
-
-      <button
-        mat-button
-        type="button"
-        (click)="volver()"
-      >
+      <button class="back-button" (click)="volver()" title="Volver">
         <mat-icon>arrow_back</mat-icon>
-        Volver
       </button>
+    </div>
+  </div>
 
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando detalle...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="!loading && error" class="error-card">
+    <mat-icon>error_outline</mat-icon>
+    <h2>Error al cargar</h2>
+    <p>{{ error }}</p>
+    <div class="error-actions">
+      <button mat-stroked-button (click)="recargar()">
+        <mat-icon>refresh</mat-icon>
+        Reintentar
+      </button>
+      <button mat-button (click)="volver()">
+        Volver al listado
+      </button>
+    </div>
+  </div>
+
+  <!-- Tarjeta de detalle -->
+  <div *ngIf="!loading && historial" class="detail-card">
+    
+    <!-- Header de la tarjeta -->
+    <div class="card-header">
+      <div class="incident-info">
+        <div class="incident-icon">
+          <mat-icon>{{ getIconoEstado(historial.estado_nuevo) }}</mat-icon>
+        </div>
+        <div>
+          <span class="label">INCIDENTE #{{ historial.incidente_id }}</span>
+          <h2>Registro de Historial #{{ historial.id }}</h2>
+        </div>
+      </div>
+      <span class="status-badge" [ngClass]="getClaseEstado(historial.estado_nuevo)">
+        <mat-icon>{{ getIconoEstado(historial.estado_nuevo) }}</mat-icon>
+        {{ historial.estado_nuevo }}
+      </span>
+    </div>
+
+    <!-- Contenido de la tarjeta -->
+    <div class="card-content">
+      
+      <!-- Sección de cambio de estado -->
+      <div class="state-section">
+        <div class="section-title">
+          <mat-icon>swap_horiz</mat-icon>
+          CAMBIO DE ESTADO
+        </div>
+        <div class="state-flow">
+          <div class="state-box previous">
+            <span class="state-label">Estado Anterior</span>
+            <strong>{{ getEstadoAnterior() }}</strong>
+          </div>
+          <div class="state-arrow">
+            <mat-icon>arrow_forward</mat-icon>
+          </div>
+          <div class="state-box current">
+            <span class="state-label">Estado Nuevo</span>
+            <strong>{{ historial.estado_nuevo }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de información -->
+      <div class="info-section">
+        <div class="section-title">
+          <mat-icon>info</mat-icon>
+          INFORMACIÓN DEL REGISTRO
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">ID REGISTRO</span>
+            <span class="info-value">#{{ historial.id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">ID INCIDENTE</span>
+            <span class="info-value">#{{ historial.incidente_id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">USUARIO ID</span>
+            <span class="info-value">{{ historial.usuario_id || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">FECHA</span>
+            <span class="info-value">{{ formatearFecha(historial.fecha) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de comentario -->
+      <div class="comment-section">
+        <div class="section-title">
+          <mat-icon>comment</mat-icon>
+          COMENTARIO
+        </div>
+        <div class="comment-box">
+          <mat-icon>format_quote</mat-icon>
+          <p>{{ getComentario() }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer de la tarjeta -->
+    <div class="card-footer">
+      <button mat-stroked-button class="back-footer-button" (click)="volver()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al listado
+      </button>
     </div>
 
   </div>
-
-
-  <!-- DETALLE -->
-  <ng-container *ngIf="!loading && historial">
-
-    <!-- TARJETA PRINCIPAL -->
-    <div class="detail-card">
-
-      <!-- CABECERA DE LA TARJETA -->
-      <div class="card-header">
-
-        <div class="incident-info">
-
-          <div class="incident-icon">
-            <mat-icon>warning</mat-icon>
-          </div>
-
-          <div>
-
-            <span class="label">
-              INCIDENTE
-            </span>
-
-            <h2>
-              #{{ historial.incidente_id }}
-            </h2>
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="status-badge"
-          [ngClass]="getClaseEstado(historial.estado_nuevo)"
-        >
-
-          <mat-icon>
-            {{ getIconoEstado(historial.estado_nuevo) }}
-          </mat-icon>
-
-          <span>
-            {{ historial.estado_nuevo }}
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- CONTENIDO -->
-      <div class="card-content">
-
-        <!-- ESTADOS -->
-        <div class="state-section">
-
-          <div class="section-title">
-            <mat-icon>swap_horiz</mat-icon>
-            <span>Cambio de estado</span>
-          </div>
-
-
-          <div class="state-flow">
-
-            <!-- ESTADO ANTERIOR -->
-            <div class="state-box previous">
-
-              <span class="state-label">
-                ESTADO ANTERIOR
-              </span>
-
-              <strong>
-                {{ getEstadoAnterior() }}
-              </strong>
-
-            </div>
-
-
-            <!-- FLECHA -->
-            <div class="state-arrow">
-              <mat-icon>arrow_forward</mat-icon>
-            </div>
-
-
-            <!-- ESTADO NUEVO -->
-            <div class="state-box current">
-
-              <span class="state-label">
-                ESTADO NUEVO
-              </span>
-
-              <strong>
-                {{ historial.estado_nuevo }}
-              </strong>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- INFORMACIÓN GENERAL -->
-        <div class="info-section">
-
-          <div class="section-title">
-            <mat-icon>info_outline</mat-icon>
-            <span>Información del registro</span>
-          </div>
-
-
-          <div class="info-grid">
-
-            <!-- ID -->
-            <div class="info-item">
-
-              <span class="info-label">
-                ID DEL REGISTRO
-              </span>
-
-              <span class="info-value">
-                #{{ historial.id }}
-              </span>
-
-            </div>
-
-
-            <!-- INCIDENTE -->
-            <div class="info-item">
-
-              <span class="info-label">
-                ID DEL INCIDENTE
-              </span>
-
-              <span class="info-value">
-                #{{ historial.incidente_id }}
-              </span>
-
-            </div>
-
-
-            <!-- USUARIO -->
-            <div class="info-item">
-
-              <span class="info-label">
-                USUARIO
-              </span>
-
-              <span class="info-value">
-                {{ historial.usuario_id || 'N/A' }}
-              </span>
-
-            </div>
-
-
-            <!-- FECHA -->
-            <div class="info-item">
-
-              <span class="info-label">
-                FECHA
-              </span>
-
-              <span class="info-value">
-                {{ formatearFecha(historial.fecha) }}
-              </span>
-
-            </div>
-
-
-            <!-- HORA -->
-            <div class="info-item">
-
-              <span class="info-label">
-                HORA
-              </span>
-
-              <span class="info-value">
-                {{ formatearHora(historial.fecha) }}
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- COMENTARIO -->
-        <div class="comment-section">
-
-          <div class="section-title">
-            <mat-icon>comment</mat-icon>
-            <span>Comentario</span>
-          </div>
-
-
-          <div class="comment-box">
-
-            <mat-icon>format_quote</mat-icon>
-
-            <p>
-              {{ getComentario() }}
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- FOOTER -->
-      <div class="card-footer">
-
-        <button
-          mat-stroked-button
-          type="button"
-          class="back-footer-button"
-          (click)="volver()"
-        >
-          <mat-icon>arrow_back</mat-icon>
-          Volver al historial
-        </button>
-
-      </div>
-
-    </div>
-
-  </ng-container>
 
 </div>
