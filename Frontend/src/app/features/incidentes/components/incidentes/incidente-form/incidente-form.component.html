@@ -1,129 +1,255 @@
+<!-- src/app/features/incidentes/components/incidentes/incidente-form/incidente-form.component.html -->
+
+<!-- Contenedor principal del modal con animación de entrada -->
 <div class="modal-container animate-modal-in">
   
+  <!-- Header del modal con título e icono -->
   <div class="modal-header">
     <div class="modal-header-content">
       <mat-icon class="modal-header-icon">warning</mat-icon>
-      <h2 class="modal-titulo">{{ modo === 'crear' ? 'Registrar Incidente' : 'Editar Incidente' }}</h2>
+      <h2 class="modal-titulo">{{ isEdit ? "Editar incidente" : "Registrar incidente" }}</h2>
     </div>
-    <button type="button" class="btn-cerrar" (click)="cancelar()" [disabled]="loading">
+    <!-- Botón de cerrar modal -->
+    <button class="btn-cerrar" (click)="onCancel()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()">
+  <!-- Formulario reactivo -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="formulario-contenido">
+      
+      <!-- Mensaje de error inline que aparece cuando hay validación fallida -->
+      <div *ngIf="mensajeErrorInline" class="mensaje-error-inline">
+        <mat-icon class="mensaje-icono">error_outline</mat-icon>
+        <span class="mensaje-texto">{{ mensajeErrorInline }}</span>
+      </div>
 
+      <!-- Campo título del incidente -->
       <div class="form-group">
-        <label class="form-label">Título del Incidente*</label>
+        <label class="form-label">Título del incidente*</label>
         <div class="input-wrapper">
           <mat-icon class="input-icon">title</mat-icon>
           <input 
-            type="text" 
-            class="form-input" 
+            matInput 
             formControlName="titulo" 
-            placeholder="Ej. Inundación Sector Norte" />
+            placeholder="Ej. Inundación Zona 1 Guatemala"
+            class="form-input"
+          />
         </div>
-        <span class="error-message" *ngIf="form.get('titulo')?.touched && form.get('titulo')?.hasError('required')">
+        <mat-error *ngIf="form.get('titulo')?.hasError('required')" class="error-message">
           El título es obligatorio
-        </span>
+        </mat-error>
+        <mat-error *ngIf="form.get('titulo')?.hasError('maxlength')" class="error-message">
+          Máximo 200 caracteres
+        </mat-error>
       </div>
 
-      <div class="form-row">
-        <div class="form-group form-group-half">
-          <label class="form-label">Tipo*</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">category</mat-icon>
-            <select class="form-select" formControlName="tipo">
-              <option value="INUNDACION">Inundación</option>
-              <option value="TERREMOTO">Terremoto</option>
-              <option value="INCENDIO">Incendio</option>
-              <option value="DESLIZAMIENTO">Deslizamiento</option>
-              <option value="ACTIVIDAD_VOLCANICA">Volcanes</option>
-              <option value="OTRO">Otro</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group form-group-half">
-          <label class="form-label">Nivel de Emergencia*</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">report_problem</mat-icon>
-            <select class="form-select" formControlName="nivelEmergencia">
-              <option value="BAJA">Baja</option>
-              <option value="MEDIA">Media</option>
-              <option value="ALTA">Alta</option>
-              <option value="CRITICA">Crítica</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Estado -->
-      <div class="form-row">
-        <div class="form-group form-group-half">
-          <label class="form-label">Estado*</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">info</mat-icon>
-            <select class="form-select" formControlName="estado">
-              <option value="REPORTADO">Reportado</option>
-              <option value="EN_ATENCION">En Atención</option>
-              <option value="MITIGADO">Mitigado</option>
-              <option value="CERRADO">Cerrado</option>
-            </select>
-          </div>
-        </div>
-        
-        <!-- Personas Afectadas -->
-        <div class="form-group form-group-half">
-          <label class="form-label">Personas Afectadas</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">groups</mat-icon>
-            <input 
-              type="number" 
-              class="form-input" 
-              formControlName="personasAfectadas" 
-              min="0" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Descripción -->
+      <!-- Campo descripción -->
       <div class="form-group">
-        <label class="form-label">Descripción</label>
+        <label class="form-label">Descripción*</label>
         <div class="input-wrapper textarea-wrapper">
           <mat-icon class="input-icon textarea-icon">description</mat-icon>
           <textarea 
-            class="form-textarea" 
+            matInput 
             formControlName="descripcion" 
-            placeholder="Escriba una descripción detallada...">
-          </textarea>
+            rows="3" 
+            placeholder="Describe detalladamente el incidente ocurrido"
+            class="form-textarea"
+          ></textarea>
+        </div>
+        <mat-error *ngIf="form.get('descripcion')?.hasError('required')" class="error-message">
+          La descripción es obligatoria
+        </mat-error>
+      </div>
+
+      <!-- Campos tipo y nivel de emergencia en una fila -->
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Tipo de incidente*</label>
+          <div class="input-wrapper select-wrapper">
+            <mat-select formControlName="tipo" class="form-select" placeholder="Seleccionar...">
+              <mat-select-trigger>
+                <div class="opcion-contenido" *ngIf="form.get('tipo')?.value">
+                  <mat-icon class="opcion-icono" [style.color]="getTipoColor(form.get('tipo')?.value)">
+                    {{ getTipoIcono(form.get('tipo')?.value) }}
+                  </mat-icon>
+                  <span class="opcion-texto">{{ form.get('tipo')?.value }}</span>
+                </div>
+              </mat-select-trigger>
+              
+              <mat-option *ngFor="let tipo of tiposIncidente" [value]="tipo.valor">
+                <div class="opcion-contenido">
+                  <mat-icon class="opcion-icono" [style.color]="tipo.color">
+                    {{ tipo.icono }}
+                  </mat-icon>
+                  <span class="opcion-texto">{{ tipo.texto }}</span>
+                </div>
+              </mat-option>
+            </mat-select>
+          </div>
+          <mat-error *ngIf="form.get('tipo')?.hasError('required')" class="error-message">
+            El tipo es obligatorio
+          </mat-error>
+        </div>
+
+        <div class="form-group form-group-half">
+          <label class="form-label">Nivel de emergencia*</label>
+          <div class="input-wrapper select-wrapper">
+            <mat-select formControlName="nivel_emergencia" class="form-select" placeholder="Seleccionar...">
+              <mat-select-trigger>
+                <div class="opcion-contenido" *ngIf="form.get('nivel_emergencia')?.value">
+                  <mat-icon class="opcion-icono" [style.color]="getNivelColor(form.get('nivel_emergencia')?.value)">
+                    {{ getNivelIcono(form.get('nivel_emergencia')?.value) }}
+                  </mat-icon>
+                  <span class="opcion-texto">{{ form.get('nivel_emergencia')?.value }}</span>
+                </div>
+              </mat-select-trigger>
+              
+              <mat-option *ngFor="let nivel of nivelesEmergencia" [value]="nivel.valor">
+                <div class="opcion-contenido">
+                  <mat-icon class="opcion-icono" [style.color]="nivel.color">
+                    {{ nivel.icono }}
+                  </mat-icon>
+                  <span class="opcion-texto">{{ nivel.texto }}</span>
+                </div>
+              </mat-option>
+            </mat-select>
+          </div>
+          <mat-error *ngIf="form.get('nivel_emergencia')?.hasError('required')" class="error-message">
+            El nivel es obligatorio
+          </mat-error>
         </div>
       </div>
 
-      <!-- Observaciones -->
+      <!-- Campo estado -->
       <div class="form-group">
-        <label class="form-label">Observaciones</label>
-        <div class="input-wrapper textarea-wrapper">
-          <mat-icon class="input-icon textarea-icon">notes</mat-icon>
-          <textarea 
-            class="form-textarea" 
-            formControlName="observaciones" 
-            placeholder="Observaciones adicionales...">
-          </textarea>
+        <label class="form-label">Estado*</label>
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="estado" class="form-select" placeholder="Seleccionar...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('estado')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getEstadoColor(form.get('estado')?.value)">
+                  {{ getEstadoIcono(form.get('estado')?.value) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ form.get('estado')?.value }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let estado of estadosIncidente" [value]="estado.valor">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="estado.color">
+                  {{ estado.icono }}
+                </mat-icon>
+                <span class="opcion-texto">{{ estado.texto }}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('estado')?.hasError('required')" class="error-message">
+          El estado es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Campo cantidad de personas afectadas -->
+      <div class="form-group">
+        <label class="form-label">Cantidad de personas afectadas*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">people</mat-icon>
+          <input 
+            matInput 
+            type="number" 
+            min="0"
+            formControlName="cantidad_personas_afectadas"
+            class="form-input"
+          />
+        </div>
+        <mat-error *ngIf="form.get('cantidad_personas_afectadas')?.hasError('required')" class="error-message">
+          La cantidad es obligatoria
+        </mat-error>
+        <mat-error *ngIf="form.get('cantidad_personas_afectadas')?.hasError('min')" class="error-message">
+          La cantidad no puede ser negativa
+        </mat-error>
+      </div>
+
+      <!-- Campos zona_id y reportado_por en una fila -->
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label class="form-label">Zona ID*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">map</mat-icon>
+            <input 
+              matInput 
+              type="number" 
+              min="1"
+              formControlName="zona_id"
+              class="form-input"
+              placeholder="Ej. 1"
+            />
+          </div>
+          <mat-error *ngIf="form.get('zona_id')?.hasError('required')" class="error-message">
+            El zona ID es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('zona_id')?.hasError('min')" class="error-message">
+            El zona ID debe ser mayor a cero
+          </mat-error>
+        </div>
+
+        <div class="form-group form-group-half">
+          <label class="form-label">Reportado por (Usuario ID)*</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">person</mat-icon>
+            <input 
+              matInput 
+              type="number" 
+              min="1"
+              formControlName="reportado_por"
+              class="form-input"
+              placeholder="Ej. 4"
+            />
+          </div>
+          <mat-error *ngIf="form.get('reportado_por')?.hasError('required')" class="error-message">
+            El usuario ID es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('reportado_por')?.hasError('min')" class="error-message">
+            El usuario ID debe ser mayor a cero
+          </mat-error>
         </div>
       </div>
+
+      <!-- Campo observaciones (opcional) -->
+      <div class="form-group">
+        <label class="form-label">Observaciones <span class="opcional-label">(opcional)</span></label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">note</mat-icon>
+          <textarea 
+            matInput 
+            formControlName="observaciones" 
+            rows="3" 
+            placeholder="Información adicional del incidente"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Botones -->
+    <!-- Botones de acción al pie del formulario -->
     <div class="botones-accion">
-      <button type="button" class="btn-cancelar" (click)="cancelar()" [disabled]="loading">
+      <button 
+        type="button" 
+        (click)="onCancel()" 
+        class="btn-cancelar"
+        [disabled]="loading">
         Cancelar
       </button>
-
-      <button type="submit" class="btn-registrar" [disabled]="form.invalid || loading">
+      <button 
+        type="submit" 
+        class="btn-registrar"
+        [disabled]="loading || form.invalid">
         <mat-icon *ngIf="!loading">check</mat-icon>
         <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-        <span>{{ modo === 'crear' ? 'Registrar' : 'Actualizar' }}</span>
+        {{ isEdit ? "Guardar cambios" : "Registrar" }}
       </button>
     </div>
   </form>
