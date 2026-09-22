@@ -33,6 +33,7 @@ export const authGuard: CanActivateFn = (
 /**
  * Valida sesión + rol ADMIN.
  * Uso: /usuarios/** → solo admin.
+ * Si no es admin, lo redirige a dashboard (no a login)
  */
 export const adminGuard: CanActivateFn = (
     _route: ActivatedRouteSnapshot,
@@ -44,14 +45,21 @@ export const adminGuard: CanActivateFn = (
 
     if (!isPlatformBrowser(platformId)) return true;
 
+    // Si no está logueado, redirigir a login
     if (!authService.isLoggedIn()) {
         router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
         return false;
     }
 
+    // Si está logueado pero NO es admin, redirigir a dashboard (NO a login)
     if (!authService.isAdmin()) {
-        router.navigate(['/login'], { queryParams: { error: 'no-admin' } });
+        // Mostrar mensaje de error opcional
+        console.warn('Acceso denegado: Se requiere rol ADMIN para acceder a', state.url);
+        
+        // Redirigir a una página segura
+        router.navigate(['/logistica/dashboard']);
         return false;
     }
+    
     return true;
 };
