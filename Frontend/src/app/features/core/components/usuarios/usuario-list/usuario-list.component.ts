@@ -1,6 +1,11 @@
-// src/app/features/core/components/usuarios/usuario-list/usuario-list.component.ts
+import {
+    Component,
+    inject,
+    OnInit,
+    signal,
+    computed
+} from '@angular/core';
 
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -13,9 +18,11 @@ import { RolLabelPipe } from '../../../pipes/rol-label.pipe';
 import { FechaPipe } from '../../../pipes/fecha.pipe';
 import { TelefonoPipe } from '../../../pipes/telefono.pipe';
 
+
 @Component({
     selector: 'app-usuario-list',
     standalone: true,
+
     imports: [
         CommonModule,
         RouterLink,
@@ -24,150 +31,360 @@ import { TelefonoPipe } from '../../../pipes/telefono.pipe';
         FechaPipe,
         TelefonoPipe
     ],
+
     templateUrl: './usuario-list.component.html',
-    styleUrls: ['./usuario-list.component.css']
+
+    styleUrls: [
+        './usuario-list.component.css'
+    ]
 })
 export class UsuarioListComponent implements OnInit {
 
-    private readonly usuarioService = inject(UsuarioService);
+    private readonly usuarioService =
+        inject(UsuarioService);
 
-    public readonly authService = inject(AuthService);
+    public readonly authService =
+        inject(AuthService);
 
-    readonly usuarios = signal<UsuarioResponse[]>([]);
-    readonly loading = signal(false);
-    readonly errorMessage = signal<string | null>(null);
-    readonly searchTerm = signal('');
-    readonly deletingId = signal<number | null>(null);
-    readonly successMessage = signal<string | null>(null);
 
-    readonly isAdmin = computed(() => this.authService.isAdmin());
+    // =====================================================
+    // SIGNALS
+    // =====================================================
+
+    readonly usuarios =
+        signal<UsuarioResponse[]>([]);
+
+    readonly loading =
+        signal(false);
+
+    readonly errorMessage =
+        signal<string | null>(null);
+
+    readonly searchTerm =
+        signal('');
+
+    readonly deletingId =
+        signal<number | null>(null);
+
+    readonly successMessage =
+        signal<string | null>(null);
+
+
+    // =====================================================
+    // MODAL DE ELIMINACIÓN
+    // =====================================================
+
+    readonly showDeleteModal =
+        signal(false);
+
+    readonly usuarioToDelete =
+        signal<UsuarioResponse | null>(null);
+
+
+    // =====================================================
+    // ADMIN
+    // =====================================================
+
+    readonly isAdmin =
+        computed(() => this.authService.isAdmin());
+
+
+    // =====================================================
+    // USUARIOS FILTRADOS
+    // =====================================================
 
     readonly filteredUsuarios = computed(() => {
-        const term = this.searchTerm().toLowerCase().trim();
+
+        const term =
+            this.searchTerm()
+                .toLowerCase()
+                .trim();
+
 
         if (!term) {
             return this.usuarios();
         }
 
+
         return this.usuarios().filter(
             (u) =>
-                u.nombre.toLowerCase().includes(term) ||
-                u.email.toLowerCase().includes(term) ||
-                u.rol.toLowerCase().includes(term)
+                u.nombre
+                    .toLowerCase()
+                    .includes(term)
+
+                ||
+
+                u.email
+                    .toLowerCase()
+                    .includes(term)
+
+                ||
+
+                u.rol
+                    .toLowerCase()
+                    .includes(term)
         );
     });
 
+
+    // =====================================================
+    // INIT
+    // =====================================================
+
     ngOnInit(): void {
+
         this.loadUsuarios();
+
     }
 
-    /**
-     * Convierte el rol recibido del backend
-     * en una clase CSS compatible con los badges.
-     *
-     * Ejemplos:
-     *
-     * "Voluntario"        -> "voluntario"
-     * "VOLUNTARIO"        -> "voluntario"
-     * "Gestor de Refugio" -> "gestor-de-refugio"
-     * "GESTOR_REFUGIO"    -> "gestor-refugio"
-     * "Administrador"     -> "administrador"
-     * "ADMINISTRADOR"     -> "administrador"
-     */
+
+    // =====================================================
+    // CLASE DEL ROL
+    // =====================================================
+
     rolClass(rol: string): string {
 
         const normalized = rol
             .toLowerCase()
             .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[_\s]+/g, '-');
+            .replace(
+                /[\u0300-\u036f]/g,
+                ''
+            )
+            .replace(
+                /[_\s]+/g,
+                '-'
+            );
+
 
         switch (normalized) {
 
             case 'admin':
             case 'administrador':
+
                 return 'administrador';
+
 
             case 'gestor-refugio':
             case 'gestor-de-refugio':
+
                 return 'gestor-de-refugio';
 
+
             case 'voluntario':
+
                 return 'voluntario';
 
+
             case 'rescatista':
+
                 return 'rescatista';
 
+
             case 'coordinador':
+
                 return 'coordinador';
 
+
             default:
+
                 return normalized;
         }
     }
 
+
+    // =====================================================
+    // CARGAR USUARIOS
+    // =====================================================
+
     loadUsuarios(): void {
+
         this.loading.set(true);
+
         this.errorMessage.set(null);
 
+
         this.usuarioService.findAll().subscribe({
+
             next: (data) => {
+
                 this.usuarios.set(data);
+
                 this.loading.set(false);
             },
 
+
             error: (err: Error) => {
-                this.errorMessage.set(err.message);
+
+                this.errorMessage.set(
+                    err.message
+                );
+
                 this.loading.set(false);
             }
+
         });
     }
 
+
+    // =====================================================
+    // BUSCAR
+    // =====================================================
+
     onSearchChange(value: string): void {
+
         this.searchTerm.set(value);
+
     }
 
-    confirmDelete(usuario: UsuarioResponse): void {
 
-        if (
-            !confirm(
-                `¿Eliminar a "${usuario.nombre}"? Esta acción es un soft delete.`
-            )
-        ) {
+    // =====================================================
+    // ABRIR MODAL
+    // =====================================================
+
+    confirmDelete(
+        usuario: UsuarioResponse
+    ): void {
+
+        this.usuarioToDelete.set(usuario);
+
+        this.showDeleteModal.set(true);
+
+    }
+
+
+    // =====================================================
+    // CANCELAR ELIMINACIÓN
+    // =====================================================
+
+    cancelDelete(): void {
+
+        // No permitir cerrar mientras
+        // se está realizando la petición.
+        if (this.deletingId() !== null) {
+
             return;
         }
 
-        this.deletingId.set(usuario.id);
 
-        this.usuarioService.delete(usuario.id).subscribe({
+        this.showDeleteModal.set(false);
 
-            next: () => {
+        this.usuarioToDelete.set(null);
 
-                this.usuarios.update((list) =>
-                    list.filter((u) => u.id !== usuario.id)
-                );
-
-                this.successMessage.set(
-                    `Usuario "${usuario.nombre}" eliminado`
-                );
-
-                this.deletingId.set(null);
-
-                setTimeout(() => {
-                    this.successMessage.set(null);
-                }, 3000);
-            },
-
-            error: (err: Error) => {
-
-                this.errorMessage.set(err.message);
-
-                this.deletingId.set(null);
-            }
-        });
     }
+
+
+    // =====================================================
+    // CONFIRMAR ELIMINACIÓN
+    // =====================================================
+
+    deleteConfirmed(): void {
+
+        const usuario =
+            this.usuarioToDelete();
+
+
+        // Seguridad adicional
+        if (!usuario) {
+
+            return;
+        }
+
+
+        // Mostrar estado de eliminación
+        this.deletingId.set(
+            usuario.id
+        );
+
+
+        this.errorMessage.set(null);
+
+
+        // Llamada al backend
+        this.usuarioService
+            .delete(usuario.id)
+            .subscribe({
+
+                // -----------------------------------------
+                // ÉXITO
+                // -----------------------------------------
+
+                next: () => {
+
+                    // Eliminar de la lista local
+                    this.usuarios.update(
+                        (list) =>
+                            list.filter(
+                                (u) =>
+                                    u.id !== usuario.id
+                            )
+                    );
+
+
+                    // Cerrar modal
+                    this.showDeleteModal.set(
+                        false
+                    );
+
+
+                    // Limpiar usuario seleccionado
+                    this.usuarioToDelete.set(
+                        null
+                    );
+
+
+                    // Finalizar loading
+                    this.deletingId.set(
+                        null
+                    );
+
+
+                    // Mensaje
+                    this.successMessage.set(
+                        `Usuario "${usuario.nombre}" eliminado`
+                    );
+
+
+                    // Ocultar mensaje
+                    setTimeout(() => {
+
+                        this.successMessage.set(
+                            null
+                        );
+
+                    }, 3000);
+                },
+
+
+                // -----------------------------------------
+                // ERROR
+                // -----------------------------------------
+
+                error: (err: Error) => {
+
+                    this.errorMessage.set(
+                        err.message
+                    );
+
+
+                    this.deletingId.set(
+                        null
+                    );
+
+                }
+
+            });
+    }
+
+
+    // =====================================================
+    // LOGOUT
+    // =====================================================
 
     logout(): void {
+
         this.authService.logout();
+
     }
+
 }
