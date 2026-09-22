@@ -84,4 +84,16 @@ export async function initializeApp() {
     }
 }
 
+// Middlewares
+app.use(cors({
+    origin: [
+        'http://localhost:4200',
+        'https://proyecto-integrador-bim-4-2.onrender.com',
+        process.env.CORS_ORIGIN || '*'
+    ].filter(Boolean), // Elimina valores undefined o null
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+}));
+
 export default app;

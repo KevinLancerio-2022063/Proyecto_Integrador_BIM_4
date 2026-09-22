@@ -1,4 +1,3 @@
-// src/app/features/core/services/auth.service.ts
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -24,7 +23,8 @@ export class AuthService {
     private readonly router = inject(Router);
     private readonly platformId = inject(PLATFORM_ID);
 
-    private readonly apiUrl = `${environment.apiUrl}/auth`;
+    // Agregar /api a la URL base
+    private readonly apiUrl = `${environment.apiUrl}/api/auth`;
 
     private readonly currentUserSubject = new BehaviorSubject<UsuarioResponse | null>(
         this.loadUserFromStorage()

@@ -17,7 +17,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Construir la aplicación
-RUN npm run build
+RUN npm run build -- --configuration=production
 
 # Debug: Ver estructura
 RUN echo "=== Estructura de dist/ ===" && ls -laR /app/dist/
