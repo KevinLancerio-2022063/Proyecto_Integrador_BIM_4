@@ -1,508 +1,711 @@
-:host {
-  display: block;
-  width: 100%;
-  min-height: 100vh;
+/* src/app/features/incidentes/components/historial/historial-form/historial-form.component.css */
+
+/* ============================================
+   Animaciones
+   ============================================ */
+
+/* Animación de entrada del modal */
+.animate-modal-in {
+  animation: modalIn 0.4s ease-out forwards;
 }
 
-.detail-container {
-  width: 100%;
-  min-height: 100vh;
-  padding: 28px 32px;
-  box-sizing: border-box;
-  background:
-    radial-gradient(circle at 35% 10%, rgba(35, 115, 255, 0.45), transparent 38%),
-    radial-gradient(circle at 80% 25%, rgba(0, 210, 255, 0.28), transparent 35%),
-    linear-gradient(135deg, #082e86 0%, #0759ad 45%, #087fbd 72%, #07519a 100%);
-  color: #ffffff;
+/* Define la animación de entrada del modal */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.page-header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 22px;
-}
+/* ============================================
+   Contenedor del modal con fondo oscuro
+   ============================================ */
 
-.header-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.header-info > div:last-child {
-  min-width: 0;
-}
-
-.header-info h1 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-}
-
-.header-info p {
-  margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 13px;
-}
-
-.back-button {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.back-button:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: translateX(-2px);
-}
-
-.header-icon {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.20);
-  border-radius: 11px;
-  backdrop-filter: blur(8px);
-}
-
-.header-icon mat-icon {
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  color: #d9f8ff;
-}
-
-.refresh-button {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.refresh-button:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: rotate(15deg);
-}
-
-.detail-card {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.97);
-  border-radius: 14px;
+/* Contenedor principal del modal con efecto cyberpunk */
+.modal-container {
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%);
+  border-radius: 20px;
   overflow: hidden;
-  color: #263746;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.2);
 }
 
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px 24px;
-  background: #f1f9fc;
-  border-bottom: 1px solid #dcecf2;
-}
+/* ============================================
+   Header del modal con gradiente metálico
+   ============================================ */
 
-.incident-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.incident-icon {
-  width: 46px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #dff4fb;
-  border-radius: 11px;
-}
-
-.incident-icon mat-icon {
-  color: #3c9fc2;
-  font-size: 25px;
-  width: 25px;
-  height: 25px;
-}
-
-.label {
-  display: block;
-  margin-bottom: 3px;
-  color: #75909e;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.7px;
-}
-
-.incident-info h2 {
-  margin: 0;
-  color: #274d61;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 11px;
-  border-radius: 7px;
-  font-size: 10px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.status-badge mat-icon {
-  width: 16px;
-  height: 16px;
-  font-size: 16px;
-}
-
-.estado-reportado {
-  background: #fff2cc;
-  color: #876800;
-}
-
-.estado-atencion {
-  background: #dceeff;
-  color: #23648f;
-}
-
-.estado-mitigado {
-  background: #d9f5fb;
-  color: #237489;
-}
-
-.estado-cerrado {
-  background: #dff4e7;
-  color: #277447;
-}
-
-.estado-default {
-  background: #e9edf0;
-  color: #68757d;
-}
-
-.card-content {
+/* Encabezado del modal con gradiente azul metálico */
+.modal-header {
+  background: linear-gradient(
+    135deg,
+    #1a3a6e 0%,
+    #0d2847 50%,
+    #1a3a6e 100%
+  );
   padding: 24px;
-}
-
-.section-title {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 7px;
-  margin-bottom: 13px;
-  color: #3d6c80;
-  font-size: 12px;
-  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.section-title mat-icon {
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
-  color: #55a9c7;
+/* Efecto de brillo metálico en el header */
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
-.state-section {
-  margin-bottom: 25px;
-}
-
-.state-flow {
+/* Contenido del header */
+.modal-header-content {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
-.state-box {
-  flex: 1;
-  min-height: 68px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 12px 15px;
-  box-sizing: border-box;
-  border-radius: 9px;
-  border: 1px solid #dce7ec;
-}
-
-.state-box.previous {
-  background: #f5f7f8;
-}
-
-.state-box.current {
-  background: #edf9fc;
-  border-color: #c7e8f1;
-}
-
-.state-label {
-  margin-bottom: 5px;
-  color: #82919a;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.state-box strong {
-  color: #405966;
-  font-size: 13px;
-}
-
-.state-box.current strong {
-  color: #287493;
-}
-
-.state-arrow {
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
+/* Logo del header */
+.modal-header-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e7f4f8;
-  border-radius: 50%;
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+  flex-shrink: 0;
+  overflow: visible;
 }
 
-.state-arrow mat-icon {
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
-  color: #4d9fbb;
+/* Para asegurar que el mat-icon dentro se vea completo */
+.modal-header-icon mat-icon {
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 1;
 }
 
-.info-section {
-  margin-bottom: 25px;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.info-item {
-  padding: 12px 13px;
-  background: #f7fafb;
-  border: 1px solid #e7eef1;
-  border-radius: 8px;
-}
-
-.info-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #81919a;
-  font-size: 8px;
+/* Título del modal */
+.modal-titulo {
+  font-size: 22px;
   font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Botón de cerrar */
+.btn-cerrar {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+/* Efecto hover del botón cerrar */
+.btn-cerrar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+  border-color: rgba(0, 240, 255, 0.5);
+}
+
+/* ============================================
+   Contenido del formulario
+   ============================================ */
+
+/* Contenedor del formulario */
+.formulario-contenido {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%);
+}
+
+/* ============================================
+   Grupos de formulario
+   ============================================ */
+
+/* Grupo de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Fila de formulario para campos lado a lado */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+/* Grupo de formulario a la mitad */
+.form-group-half {
+  flex: 1;
+}
+
+/* Etiqueta del formulario */
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #a0aec0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.info-value {
-  display: block;
-  color: #405b68;
-  font-size: 12px;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/* ============================================
+   Inputs y selects con estilo cyberpunk
+   ============================================ */
 
-.comment-section {
-  margin-bottom: 5px;
-}
-
-.comment-box {
+/* Contenedor del input con icono */
+.input-wrapper {
+  position: relative;
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 15px 17px;
-  background: #f5fafc;
-  border-left: 3px solid #65b4cf;
-  border-radius: 7px;
+  align-items: center;
+  background: rgba(10, 14, 39, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 240, 255, 0.05);
 }
 
-.comment-box > mat-icon {
-  flex-shrink: 0;
+/* Efecto focus del input */
+.input-wrapper:focus-within {
+  border-color: #00f0ff;
+  background: rgba(10, 14, 39, 1);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(0, 240, 255, 0.1),
+    0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+/* Icono dentro del input */
+.input-icon {
+  position: absolute;
+  left: 12px;
+  color: #00f0ff;
+  font-size: 20px;
   width: 20px;
   height: 20px;
-  font-size: 20px;
-  color: #69aec5;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
 }
 
-.comment-box p {
-  margin: 0;
-  color: #596f7b;
+/* Input del formulario */
+.form-input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #ffffff;
+  background: transparent;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Placeholder del input */
+.form-input::placeholder {
+  color: #64748b;
+}
+
+/* Input deshabilitado */
+.form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Select del formulario */
+.form-select {
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  font-size: 14px;
+  color: #ffffff;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Textarea del formulario */
+.form-textarea {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #ffffff;
+  background: transparent;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* Wrapper del textarea */
+.textarea-wrapper {
+  align-items: flex-start;
+}
+
+/* Icono del textarea */
+.textarea-icon {
+  margin-top: 14px;
+}
+
+/* ============================================
+   Mensajes de error
+   ============================================ */
+
+/* Mensaje de error */
+.error-message {
   font-size: 12px;
-  line-height: 1.6;
+  color: #ff006e;
+  margin-top: 6px;
+  display: block;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
 }
 
-.card-footer {
+/* ============================================
+   Botones de acción
+   ============================================ */
+
+/* Contenedor de botones */
+.botones-accion {
   display: flex;
   justify-content: flex-end;
-  padding: 15px 24px;
-  background: #f8fafb;
-  border-top: 1px solid #e5edf0;
+  gap: 12px;
+  padding: 20px 24px;
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%);
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
 }
 
-.back-footer-button {
-  color: #397d9b !important;
-  border-color: #9bc9d9 !important;
-  font-size: 12px;
+/* Botón de cancelar */
+.btn-cancelar {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.back-footer-button mat-icon {
-  margin-right: 5px;
+/* Efecto hover del botón cancelar */
+.btn-cancelar:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+  background: rgba(0, 240, 255, 0.05);
+  color: #00f0ff;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
 }
 
-.loading-container {
-  width: 100%;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-}
-
-.loading-container p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 13px;
-}
-
-.error-card {
-  width: 100%;
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 35px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.97);
-  border-radius: 14px;
-  color: #425563;
-  text-align: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
-}
-
-.error-card > mat-icon {
-  width: 45px;
-  height: 45px;
-  margin-bottom: 10px;
-  font-size: 45px;
-  color: #d47777;
-}
-
-.error-card h2 {
-  margin: 0 0 7px;
-  font-size: 17px;
-}
-
-.error-card p {
-  margin: 0 0 18px;
-  color: #788992;
-  font-size: 12px;
-}
-
-.error-actions {
-  display: flex;
+/* Botón de registrar con gradiente cyan */
+.btn-registrar {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 100%);
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0a0e27;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 15px rgba(0, 240, 255, 0.4),
+    0 0 20px rgba(0, 240, 255, 0.2);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.error-actions button {
-  color: #397d9b;
+/* Efecto hover del botón registrar */
+.btn-registrar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 240, 255, 0.6),
+    0 0 30px rgba(0, 240, 255, 0.3);
 }
 
-@media (max-width: 900px) {
-  .detail-container {
-    padding: 22px;
-  }
-
-  .info-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .state-flow {
-    align-items: stretch;
-  }
+/* Efecto active del botón registrar */
+.btn-registrar:active:not(:disabled) {
+  transform: translateY(0);
 }
 
-@media (max-width: 650px) {
-  .detail-container {
-    padding: 16px;
-  }
+/* Botón deshabilitado */
+.btn-registrar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
 
-  .page-header {
-    margin-bottom: 17px;
-  }
+/* ============================================
+   Spinner
+   ============================================ */
 
-  .header-info {
-    gap: 8px;
-  }
+/* Estilo personalizado para el spinner */
+::ng-deep .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #0a0e27;
+}
 
-  .header-info h1 {
-    font-size: 19px;
-  }
+/* ============================================
+   Responsive
+   ============================================ */
 
-  .header-info p {
-    font-size: 11px;
-  }
-
-  .header-icon {
-    width: 39px;
-    height: 39px;
-  }
-
-  .back-button,
-  .refresh-button {
-    width: 37px;
-    height: 37px;
-  }
-
-  .card-header {
-    align-items: flex-start;
+/* Ajustes para móviles */
+@media (max-width: 640px) {
+  .form-row {
     flex-direction: column;
-    padding: 17px;
+    gap: 0;
   }
 
-  .card-content {
-    padding: 17px;
+  .modal-titulo {
+    font-size: 18px;
   }
 
-  .state-flow {
+  .botones-accion {
     flex-direction: column;
   }
 
-  .state-arrow {
-    align-self: center;
-    transform: rotate(90deg);
+  .btn-cancelar,
+  .btn-registrar {
+    width: 100%;
+    justify-content: center;
   }
+}
 
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
+/* ============================================
+   Overrides para Angular Material
+   ============================================ */
 
-  .card-footer {
-    padding: 13px 17px;
-  }
+/* Eliminar bordes blancos del contenedor del modal */
+::ng-deep .mat-mdc-dialog-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* Eliminar bordes de los form fields */
+::ng-deep .mat-mdc-form-field {
+  border: none !important;
+}
+
+/* Eliminar el outline de los inputs */
+::ng-deep .mat-mdc-form-field-infix {
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Ocultar el underline de los form fields */
+::ng-deep .mat-mdc-form-field-underline {
+  display: none !important;
+}
+
+/* Ocultar el ripple effect */
+::ng-deep .mat-mdc-form-field-ripple {
+  display: none !important;
+}
+
+/* Ajustar el padding del form field */
+::ng-deep .mat-mdc-form-field-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   Ajustes para el backdrop del modal
+   ============================================ */
+
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* ============================================
+   Opciones del select con iconos y colores
+   ============================================ */
+
+/* Wrapper del select para alinear correctamente */
+.select-wrapper {
+  align-items: center !important;
+  padding: 0 !important;
+}
+
+/* Contenedor interno de cada opción */
+.opcion-contenido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+  width: 100%;
+}
+
+/* Icono dentro de la opción */
+.opcion-icono {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  filter: drop-shadow(0 0 4px currentColor);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Texto de la opción */
+.opcion-texto {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Efecto hover en las opciones */
+.opcion-contenido:hover .opcion-icono {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* ============================================
+   Ajustes para el panel de opciones de Material
+   ============================================ */
+
+/* Fondo oscuro para el panel desplegable */
+::ng-deep .mat-mdc-select-panel {
+  background: linear-gradient(145deg, #0a0e27 0%, #111638 100%) !important;
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+              0 0 20px rgba(0, 240, 255, 0.1) !important;
+  padding: 8px 0 !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Opciones individuales */
+::ng-deep .mat-mdc-option {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: none !important;
+  min-height: 48px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Hover en las opciones */
+::ng-deep .mat-mdc-option:hover {
+  background: rgba(0, 240, 255, 0.08) !important;
+}
+
+/* Opción enfocada */
+::ng-deep .mat-mdc-option:focus {
+  background: rgba(0, 240, 255, 0.12) !important;
+}
+
+/* Opción seleccionada */
+::ng-deep .mat-mdc-option.mat-mdc-selected {
+  background: rgba(0, 240, 255, 0.15) !important;
+}
+
+/* Check de la opción seleccionada */
+::ng-deep .mat-mdc-option .mat-pseudo-checkbox-checked {
+  background: #00f0ff !important;
+  border-color: #00f0ff !important;
+}
+
+/* ============================================
+   Valor mostrado en el select cerrado
+   ============================================ */
+
+/* Contenedor del valor seleccionado */
+::ng-deep .mat-mdc-select-value {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+/* Texto del valor seleccionado */
+::ng-deep .mat-mdc-select-value-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Trigger personalizado */
+::ng-deep .mat-mdc-select-trigger {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 14px !important; /* Padding uniforme */
+  margin: 0 !important;
+  gap: 12px;
+}
+
+/* Remove any leftover icon spacing */
+.select-wrapper .input-icon {
+  display: none !important;
+}
+
+/* Eliminar cualquier padding residual del contenedor */
+::ng-deep .mat-mdc-select-trigger-placeholder {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   Placeholder del select
+   ============================================ */
+
+/* Estilo del placeholder cuando no hay valor seleccionado */
+::ng-deep .mat-mdc-select-placeholder {
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  opacity: 1 !important;
+}
+
+/* Placeholder en hover */
+::ng-deep .mat-mdc-select:hover .mat-mdc-select-placeholder {
+  color: #00f0ff !important;
+  opacity: 0.7 !important;
+}
+
+/* Placeholder cuando el select está enfocado */
+::ng-deep .mat-mdc-select:focus .mat-mdc-select-placeholder {
+  color: #00f0ff !important;
+  opacity: 1 !important;
+}
+
+/* ============================================
+   Mensaje de error inline dentro del formulario
+   ============================================ */
+
+.mensaje-error-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.08) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  animation: shakeError 0.4s ease-out;
+  box-shadow: 
+    0 4px 12px rgba(239, 68, 68, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.mensaje-icono {
+  color: #ef4444;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+  flex-shrink: 0;
+}
+
+.mensaje-texto {
+  color: #fca5a5;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Animación de sacudida para el mensaje de error */
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+/* ============================================
+   Estilos para el MatSnackBar con tema cyberpunk
+   ============================================ */
+
+/* Clase base para todos los snackbars */
+::ng-deep .snackbar-cyber {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid !important;
+}
+
+/* Estilo para snackbars de éxito */
+::ng-deep .snackbar-exito {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Estilo para snackbars de error */
+::ng-deep .snackbar-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Botón de acción dentro del snackbar */
+::ng-deep .snackbar-cyber .mat-mdc-snack-bar-action {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Contenedor del snackbar */
+::ng-deep .mat-mdc-snack-bar-container {
+  margin: 16px !important;
 }
