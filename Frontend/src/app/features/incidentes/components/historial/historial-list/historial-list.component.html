@@ -1,210 +1,117 @@
+<!-- Contenedor principal de la página -->
 <div class="container-page">
 
-  <div class="page-header mb-3">
-    <h2 class="page-title">Historial de Incidentes</h2>
-    <p class="page-subtitle">
-      Registro de cambios y seguimiento de los incidentes
-    </p>
+  <!-- Encabezado de la sección -->
+  <div class="page-header">
+    <h1 class="page-title">Historial de Incidentes</h1>
+    <p class="page-subtitle">Registro de cambios y seguimiento de los incidentes</p>
   </div>
 
-  <div class="header-actions mb-4">
+  <!-- Barra de búsqueda y botón de acción -->
+  <div class="header-actions">
     <div class="search-container">
-      <mat-icon class="search-icon">search</mat-icon>
-
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
       <input
         type="text"
-        class="search-input"
         [(ngModel)]="busqueda"
-        placeholder="Buscar por comentario, usuario o estado..."
+        placeholder="Búsqueda global (ej: comentario, usuario, estado)..."
+        class="search-input"
         autocomplete="off"
       />
     </div>
-
-    <button
-      type="button"
-      class="btn-primary-cyber"
-      (click)="abrirFormularioCrear()"
-    >
+    <button class="btn-primary-cyber" (click)="abrirFormularioCrear()">
       <mat-icon>add</mat-icon>
-      Agregar Historial
+      Agregar historial
     </button>
   </div>
 
-  <div class="filtros-container mb-4">
-
-    <button
-      type="button"
+  <!-- Filtros hexagonales por estado -->
+  <div class="filtros-container">
+    <div 
+      *ngFor="let filtro of [
+        { id: 'todos', etiqueta: 'Todos', icono: 'history' },
+        { id: 'REPORTADO', etiqueta: 'Reportados', icono: 'report_problem' },
+        { id: 'EN_ATENCION', etiqueta: 'En Atención', icono: 'engineering' },
+        { id: 'MITIGADO', etiqueta: 'Mitigados', icono: 'healing' },
+        { id: 'CERRADO', etiqueta: 'Cerrados', icono: 'check_circle' }
+      ]" 
       class="filtro-hex"
-      [class.active]="filtroActivo === 'todos'"
-      (click)="setFiltro('todos')"
-    >
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)">
       <div class="hexagon-wrapper">
-        <div class="hexagon hex-todos">
-          <mat-icon>history</mat-icon>
+        <div class="hexagon" [class]="getHexagonClass(filtro.id)">
+          <mat-icon>{{ filtro.icono }}</mat-icon>
         </div>
       </div>
-
-      <span class="filtro-label">Todos</span>
-    </button>
-
-    <button
-      type="button"
-      class="filtro-hex"
-      [class.active]="filtroActivo === 'REPORTADO'"
-      (click)="setFiltro('REPORTADO')"
-    >
-      <div class="hexagon-wrapper">
-        <div class="hexagon hex-emergencia">
-          <mat-icon>report_problem</mat-icon>
-        </div>
-      </div>
-
-      <span class="filtro-label">Reportados</span>
-    </button>
-
-    <button
-      type="button"
-      class="filtro-hex"
-      [class.active]="filtroActivo === 'EN_ATENCION'"
-      (click)="setFiltro('EN_ATENCION')"
-    >
-      <div class="hexagon-wrapper">
-        <div class="hexagon hex-atencion">
-          <mat-icon>engineering</mat-icon>
-        </div>
-      </div>
-
-      <span class="filtro-label">En Atención</span>
-    </button>
-
-    <button
-      type="button"
-      class="filtro-hex"
-      [class.active]="filtroActivo === 'MITIGADO'"
-      (click)="setFiltro('MITIGADO')"
-    >
-      <div class="hexagon-wrapper">
-        <div class="hexagon hex-mitigado">
-          <mat-icon>healing</mat-icon>
-        </div>
-      </div>
-
-      <span class="filtro-label">Mitigados</span>
-    </button>
-
-    <button
-      type="button"
-      class="filtro-hex"
-      [class.active]="filtroActivo === 'CERRADO'"
-      (click)="setFiltro('CERRADO')"
-    >
-      <div class="hexagon-wrapper">
-        <div class="hexagon hex-cerrado">
-          <mat-icon>check_circle</mat-icon>
-        </div>
-      </div>
-
-      <span class="filtro-label">Cerrados</span>
-    </button>
-
+      <span class="filtro-label">{{ filtro.etiqueta }}</span>
+    </div>
   </div>
 
-  <div
-    *ngIf="loading"
-    class="estado-carga text-center py-5"
-  >
-    <mat-spinner
-      diameter="40"
-      class="mx-auto mb-3"
-    ></mat-spinner>
-
-    <p class="estado-vacio-texto">
-      Cargando historial...
-    </p>
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="estado-carga">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="text-secondary mt-4">Cargando historial...</p>
   </div>
 
-  <div
-    *ngIf="!loading && historialesFiltrados.length === 0"
-    class="estado-vacio text-center py-5"
-  >
-    <mat-icon class="estado-vacio-icono">history</mat-icon>
-
-    <h3 class="estado-vacio-titulo mt-3">
-      No se encontraron registros en el historial
-    </h3>
-
-    <p class="estado-vacio-texto">
-      {{
-        busqueda
-          ? 'Intenta ajustar los criterios de búsqueda.'
-          : 'Todavía no existen registros disponibles.'
-      }}
-    </p>
-  </div>
-
-  <div
-    *ngIf="!loading && historialesFiltrados.length > 0"
-    class="recursos-grid"
-  >
-    <div
-      *ngFor="let historial of historialesFiltrados"
-      class="recurso-card animate-modal-in"
-    >
-
-      <div class="recurso-header">
-        <div
-          class="icono-container"
-          [ngClass]="{
-            'icono-reportado': historial.estado_nuevo === 'REPORTADO',
-            'icono-atencion': historial.estado_nuevo === 'EN_ATENCION',
-            'icono-mitigado': historial.estado_nuevo === 'MITIGADO',
-            'icono-cerrado': historial.estado_nuevo === 'CERRADO'
-          }"
-        >
-          <mat-icon>
-            {{ (historial.estado_nuevo | estadoHistorial).icono }}
-          </mat-icon>
+  <!-- Grid de tarjetas de historial -->
+  <div *ngIf="!loading && historialesFiltrados.length > 0" class="historiales-grid">
+    <div 
+      *ngFor="let historial of historialesFiltrados; let i = index" 
+      class="historial-card"
+      [style.animation-delay]="(i * 80) + 'ms'">
+      
+      <!-- Encabezado de la tarjeta con icono y estado -->
+      <div class="historial-header">
+        <div class="icono-container" [style.background]="getColorEstado(historial.estado_nuevo)">
+          <mat-icon>{{ getIconoEstado(historial.estado_nuevo) }}</mat-icon>
         </div>
-
-        <span class="tipo-badge">
-          {{ (historial.estado_nuevo | estadoHistorial).texto }}
-        </span>
+        <span class="tipo-badge">{{ historial.estado_nuevo }}</span>
       </div>
 
-      <h3 class="recurso-nombre">
+      <!-- Título con ID del incidente -->
+      <h3 class="historial-nombre">
         Incidente #{{ historial.incidente_id }}
       </h3>
 
-      <div class="recurso-cantidad">
-        <mat-icon class="cantidad-icono">swap_horiz</mat-icon>
-
-        <span class="cantidad-texto">
-          {{ historial.estado_anterior ? (historial.estado_anterior | estadoHistorial).texto : 'Sin estado anterior' }}
-          <strong>→</strong>
-          {{ (historial.estado_nuevo | estadoHistorial).texto }}
-        </span>
+      <!-- Cambio de estado anterior a nuevo -->
+      <div class="historial-cambio">
+        <div class="cambio-info">
+          <mat-icon class="cambio-icono">swap_horiz</mat-icon>
+          <span class="cambio-texto">
+            {{ historial.estado_anterior ? (historial.estado_anterior | estadoHistorial).texto : 'Sin estado anterior' }}
+            <strong>→</strong>
+            {{ (historial.estado_nuevo | estadoHistorial).texto }}
+          </span>
+        </div>
       </div>
 
-      <p class="recurso-descripcion">
+      <!-- Comentario -->
+      <p class="historial-comentario">
         {{ getComentario(historial) }}
       </p>
 
-      <div class="d-flex flex-wrap gap-2 mb-3">
-        <span class="badge badge-id" title="ID del historial">
+      <!-- Badges de información -->
+      <div class="historial-badges">
+        <span class="badge-item badge-id" title="ID del historial">
           ID: #{{ historial.id }}
         </span>
 
-        <span class="badge badge-info-item" title="Usuario">
-          <mat-icon>person</mat-icon>{{ historial.usuario_id || 'N/A' }}
+        <span class="badge-item badge-usuario" title="Usuario">
+          <mat-icon>person</mat-icon>
+          {{ historial.usuario_id || 'N/A' }}
         </span>
       </div>
 
-      <div class="recurso-fecha">
-        <mat-icon>calendar_today</mat-icon>
-        <span>Registrado: {{ historial.fecha | fechaFormateada }}</span>
-      </div>
+      <!-- Fecha de registro -->
+      <p class="historial-fecha" *ngIf="historial.fecha">
+        <mat-icon class="fecha-icono">calendar_today</mat-icon>
+        Registrado: {{ historial.fecha | fechaFormateada }}
+      </p>
 
-      <div class="recurso-acciones">
+      <!-- Botones de acción -->
+      <div class="historial-acciones">
         <button
           type="button"
           class="btn-accion btn-editar"
@@ -217,7 +124,7 @@
         <button
           type="button"
           class="btn-accion btn-eliminar"
-          (click)="eliminarHistorial(historial)"
+          (click)="prepararEliminacion(historial)"
           title="Eliminar"
         >
           <mat-icon>delete</mat-icon>
@@ -227,139 +134,179 @@
     </div>
   </div>
 
-  <div
-    class="modal-overlay"
-    *ngIf="mostrarFormulario"
-  >
-    <div class="historial-modal">
+  <!-- Estado vacío cuando no hay registros -->
+  <div *ngIf="!loading && historialesFiltrados.length === 0" class="estado-vacio">
+    <mat-icon class="estado-vacio-icono">history</mat-icon>
+    <h3 class="estado-vacio-titulo">No hay registros en el historial</h3>
+    <p class="estado-vacio-texto">
+      {{ busqueda ? 'No se encontraron registros con ese criterio' : 'Todavía no existen registros disponibles' }}
+    </p>
+  </div>
 
+    <!-- Modal de formulario -->
+  <div class="modal-overlay" *ngIf="mostrarFormulario">
+    <div class="modal-container animate-modal-in">
+      
       <div class="modal-header">
-        <div>
-          <h2>{{ historialEditandoId !== null ? 'Editar Historial' : 'Agregar Historial' }}</h2>
-          <p>Registra un nuevo cambio en el historial</p>
+        <div class="modal-header-content">
+          <mat-icon class="modal-header-icon">history</mat-icon>
+          <h2 class="modal-titulo">{{ historialEditandoId !== null ? 'Editar Historial' : 'Agregar Historial' }}</h2>
         </div>
-
-        <button
-          type="button"
-          class="modal-close"
-          (click)="cerrarFormularioCrear()"
-          [disabled]="guardando"
-        >
+        <button class="btn-cerrar" (click)="cerrarFormularioCrear()" [disabled]="guardando">
           <mat-icon>close</mat-icon>
         </button>
       </div>
 
-      <div class="modal-body">
+      <form (ngSubmit)="guardarHistorial()">
+        <div class="formulario-contenido">
 
-        <div class="form-group">
-          <label>ID del incidente</label>
+          <div class="form-group">
+            <label class="form-label">ID del incidente*</label>
+            <div class="input-wrapper">
+              <mat-icon class="input-icon">warning</mat-icon>
+              <input 
+                type="number" 
+                [(ngModel)]="nuevoHistorial.incidente_id"
+                name="incidente_id"
+                placeholder="Ej. 1"
+                min="1"
+                [disabled]="guardando || historialEditandoId !== null"
+                class="form-input"
+              />
+            </div>
+          </div>
 
-          <input
-            type="number"
-            [(ngModel)]="nuevoHistorial.incidente_id"
-            placeholder="Ej. 1"
-            min="1"
-            [disabled]="guardando || historialEditandoId !== null"
-          />
+          <div class="form-row">
+            <div class="form-group form-group-half">
+              <label class="form-label">Estado anterior</label>
+              <div class="input-wrapper select-wrapper">
+                <mat-select 
+                  [(ngModel)]="nuevoHistorial.estado_anterior"
+                  name="estado_anterior"
+                  [disabled]="guardando || historialEditandoId !== null"
+                  class="form-select"
+                >
+                  <mat-select-trigger>
+                    <div class="opcion-contenido" *ngIf="nuevoHistorial.estado_anterior">
+                      <mat-icon class="opcion-icono" [style.color]="getColorEstado(nuevoHistorial.estado_anterior)">
+                        {{ getIconoEstado(nuevoHistorial.estado_anterior) }}
+                      </mat-icon>
+                      <span class="opcion-texto">{{ nuevoHistorial.estado_anterior }}</span>
+                    </div>
+                  </mat-select-trigger>
+                  
+                  <mat-option value="">Sin estado anterior</mat-option>
+                  <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado.valor">
+                    <div class="opcion-contenido">
+                      <mat-icon class="opcion-icono" [style.color]="estado.color">
+                        {{ estado.icono }}
+                      </mat-icon>
+                      <span class="opcion-texto">{{ estado.texto }}</span>
+                    </div>
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+            <div class="form-group form-group-half">
+              <label class="form-label">Estado nuevo*</label>
+              <div class="input-wrapper select-wrapper">
+                <mat-select 
+                  [(ngModel)]="nuevoHistorial.estado_nuevo"
+                  name="estado_nuevo"
+                  [disabled]="guardando || historialEditandoId !== null"
+                  class="form-select"
+                >
+                  <mat-select-trigger>
+                    <div class="opcion-contenido" *ngIf="nuevoHistorial.estado_nuevo">
+                      <mat-icon class="opcion-icono" [style.color]="getColorEstado(nuevoHistorial.estado_nuevo)">
+                        {{ getIconoEstado(nuevoHistorial.estado_nuevo) }}
+                      </mat-icon>
+                      <span class="opcion-texto">{{ nuevoHistorial.estado_nuevo }}</span>
+                    </div>
+                  </mat-select-trigger>
+                  
+                  <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado.valor">
+                    <div class="opcion-contenido">
+                      <mat-icon class="opcion-icono" [style.color]="estado.color">
+                        {{ estado.icono }}
+                      </mat-icon>
+                      <span class="opcion-texto">{{ estado.texto }}</span>
+                    </div>
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">ID del usuario*</label>
+            <div class="input-wrapper">
+              <mat-icon class="input-icon">person</mat-icon>
+              <input 
+                type="number" 
+                [(ngModel)]="nuevoHistorial.usuario_id"
+                name="usuario_id"
+                placeholder="Ej. 1"
+                min="1"
+                [disabled]="guardando || historialEditandoId !== null"
+                class="form-input"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Comentario*</label>
+            <div class="input-wrapper textarea-wrapper">
+              <mat-icon class="input-icon textarea-icon">comment</mat-icon>
+              <textarea 
+                [(ngModel)]="nuevoHistorial.comentario"
+                name="comentario"
+                rows="4" 
+                placeholder="Describe el cambio de estado o cualquier observación relevante"
+                [disabled]="guardando"
+                class="form-textarea"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-error" *ngIf="mensajeError">
+            <mat-icon class="mensaje-icono">error_outline</mat-icon>
+            <span class="mensaje-texto">{{ mensajeError }}</span>
+          </div>
+
         </div>
 
-        <div class="form-group">
-          <label>Estado anterior</label>
-
-          <select
-            [(ngModel)]="nuevoHistorial.estado_anterior"
-            [disabled]="guardando || historialEditandoId !== null"
-          >
-            <option value="">Sin estado anterior</option>
-            <option value="REPORTADO">REPORTADO</option>
-            <option value="EN_ATENCION">EN_ATENCION</option>
-            <option value="MITIGADO">MITIGADO</option>
-            <option value="CERRADO">CERRADO</option>
-          </select>
+        <div class="botones-accion">
+          <button 
+            type="button" 
+            (click)="cerrarFormularioCrear()" 
+            class="btn-cancelar"
+            [disabled]="guardando">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn-registrar"
+            [disabled]="guardando">
+            <mat-icon *ngIf="!guardando">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="guardando"></mat-spinner>
+            {{ guardando ? 'Guardando...' : 'Guardar Historial' }}
+          </button>
         </div>
-
-        <div class="form-group">
-          <label>Estado nuevo</label>
-
-          <select
-            [(ngModel)]="nuevoHistorial.estado_nuevo"
-            [disabled]="guardando || historialEditandoId !== null"
-          >
-            <option value="REPORTADO">REPORTADO</option>
-            <option value="EN_ATENCION">EN_ATENCION</option>
-            <option value="MITIGADO">MITIGADO</option>
-            <option value="CERRADO">CERRADO</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>ID del usuario</label>
-
-          <input
-            type="number"
-            [(ngModel)]="nuevoHistorial.usuario_id"
-            placeholder="Ej. 1"
-            min="1"
-            [disabled]="guardando || historialEditandoId !== null"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>Comentario</label>
-
-          <textarea
-            [(ngModel)]="nuevoHistorial.comentario"
-            placeholder="Escribe un comentario..."
-            rows="4"
-            [disabled]="guardando"
-          ></textarea>
-        </div>
-
-        <div
-          class="form-error"
-          *ngIf="mensajeError"
-        >
-          <mat-icon>error_outline</mat-icon>
-
-          <span>{{ mensajeError }}</span>
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-
-        <button
-          type="button"
-          class="btn-cancelar"
-          (click)="cerrarFormularioCrear()"
-          [disabled]="guardando"
-        >
-          Cancelar
-        </button>
-
-        <button
-          type="button"
-          class="btn-guardar"
-          (click)="guardarHistorial()"
-          [disabled]="guardando"
-        >
-          <mat-spinner
-            *ngIf="guardando"
-            diameter="20"
-          ></mat-spinner>
-
-          <mat-icon *ngIf="!guardando">save</mat-icon>
-
-          {{
-            guardando
-              ? 'Guardando...'
-              : 'Guardar Historial'
-          }}
-        </button>
-
-      </div>
-
+      </form>
     </div>
   </div>
+
+  <!-- Diálogo de confirmación de eliminación -->
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="Eliminar registro del historial"
+    [message]="'¿Estás seguro de que deseas eliminar este registro del historial? Esta acción no se puede deshacer.'"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
 
 </div>
