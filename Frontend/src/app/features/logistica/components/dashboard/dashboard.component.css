@@ -1,17 +1,11 @@
-/* ============================================
-   Contenedor del dashboard
-   ============================================ */
+/* src/app/features/logistica/components/dashboard/dashboard.component.css */
 
 .dashboard-container {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
   animation: fadeInUp 0.6s ease-out;
 }
-
-/* ============================================
-   Encabezado del dashboard
-   ============================================ */
 
 .dashboard-header {
   margin-bottom: 2.5rem;
@@ -32,10 +26,6 @@
   font-size: 1rem;
 }
 
-/* ============================================
-   Estado de carga
-   ============================================ */
-
 .dashboard-loading {
   display: flex;
   flex-direction: column;
@@ -50,19 +40,11 @@
   font-size: 1rem;
 }
 
-/* ============================================
-   Contenido del dashboard
-   ============================================ */
-
 .dashboard-content {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
 }
-
-/* ============================================
-   Tarjetas de resumen
-   ============================================ */
 
 .resumen-cards {
   display: grid;
@@ -138,20 +120,12 @@
   margin-top: 0.25rem;
 }
 
-/* ============================================
-   Contenedor de gráficas
-   ============================================ */
-
 .graficas-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   justify-items: center;
 }
-
-/* ============================================
-   Animaciones
-   ============================================ */
 
 @keyframes fadeInUp {
   from {
@@ -163,10 +137,6 @@
     transform: translateY(0);
   }
 }
-
-/* ============================================
-   Responsive
-   ============================================ */
 
 @media (max-width: 768px) {
   .dashboard-titulo {
@@ -180,4 +150,26 @@
   .graficas-container {
     grid-template-columns: 1fr;
   }
+}
+/* Mensaje cuando no hay gráficas para el rol */
+.no-graficas-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  color: #a0aec0;
+  background: rgba(26, 31, 78, 0.4);
+  border-radius: 18px;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+}
+
+.no-graficas-msg mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #00f0ff;
+  margin-bottom: 1rem;
+  opacity: 0.5;
 }
