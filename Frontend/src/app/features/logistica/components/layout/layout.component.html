@@ -1,9 +1,9 @@
-<!-- Contenedor principal con sidebar -->
+<!-- Contenedor principal del layout -->
 <div class="layout-container">
   
-  <!-- Sidebar -->
+  <!-- Sidebar de navegación -->
   <aside class="sidebar">
-    <!-- Logo -->
+    <!-- Header del sidebar con logo -->
     <div class="sidebar-header">
       <div class="logo-container">
         <img 
@@ -14,28 +14,28 @@
       </div>
     </div>
 
-    <!-- Navegación -->
-  <nav class="sidebar-nav">
-    <a 
-      *ngFor="let item of menuItems" 
-      [routerLink]="item.route" 
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="nav-item">
-      <mat-icon>{{ item.icon }}</mat-icon>
-      <span>{{ item.label }}</span>
-    </a>
-  </nav>
+    <!-- Navegación del sidebar -->
+    <nav class="sidebar-nav">
+      <a 
+        *ngFor="let item of menuItems" 
+        [routerLink]="item.route" 
+        [class.active-link]="isActive(item.route)"
+        class="nav-item">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
 
-  <div class="sidebar-footer">
-    <button class="nav-item logout-btn" (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      <span>Cerrar Sesión</span>
-    </button>
-  </div>
-</aside>
+    <!-- Footer del sidebar con botón de logout -->
+    <div class="sidebar-footer">
+      <button class="nav-item logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
 
-  <!-- Contenido principal -->
+  <!-- Contenido principal de la aplicación -->
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>
