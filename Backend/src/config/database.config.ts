@@ -15,12 +15,12 @@ if (process.env.DATABASE_URL) {
         },
         max: parseInt(process.env.DB_POOL_MAX || '10', 10),
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 10000, // Aumentar timeout
+        connectionTimeoutMillis: 10000,
     };
 } 
 // Prioridad 2: Variables separadas
 else if (process.env.DB_HOST && process.env.DB_PASSWORD) {
-    console.log('🔧 Usando variables separadas para conectar a PostgreSQL');
+    console.log(' Usando variables separadas para conectar a PostgreSQL');
     poolConfig = {
         host: process.env.DB_HOST,
         port: parseInt(process.env.DB_PORT || '5432', 10),
@@ -56,8 +56,10 @@ pool.on('connect', () => {
 
 pool.on('error', (err) => {
     console.error('❌ Error en el pool de PostgreSQL:', err);
-    console.error('Error code:', err.code);
-    console.error('Error message:', err.message);
+    // Type cast para acceder a propiedades de Node.js errors
+    const nodeError = err as NodeJS.ErrnoException;
+    console.error('Error code:', nodeError.code);
+    console.error('Error message:', nodeError.message);
 });
 
 export const testConnection = async (): Promise<void> => {
@@ -74,15 +76,14 @@ export const testConnection = async (): Promise<void> => {
         console.log('✅ Conexión exitosa a PostgreSQL');
         
         const result = await client.query('SELECT NOW()');
-        console.log(' Fecha del servidor:', result.rows[0].now);
+        console.log('📅 Fecha del servidor:', result.rows[0].now);
         
-        // Verificar conexión adicional
         const dbInfo = await client.query(`
             SELECT version(), current_database(), current_user
         `);
         console.log('🗄️  Versión PostgreSQL:', dbInfo.rows[0].version.split(' ')[0]);
         console.log('📦 Base de datos:', dbInfo.rows[0].current_database);
-        console.log('👤 Usuario:', dbInfo.rows[0].current_user);
+        console.log(' Usuario:', dbInfo.rows[0].current_user);
         
         client.release();
         console.log('✅ Conexión liberada correctamente');
