@@ -1,22 +1,25 @@
 # ============================================
-# Dockerfile para Backend Node.js
+# Dockerfile para Backend Node.js + TypeScript
 # ============================================
 
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Instalar dependencias de sistema si es necesario
-RUN apk add --no-cache postgresql-client
+# Instalar pnpm globalmente
+RUN npm install -g pnpm
 
-# Copiar package.json
-COPY package*.json ./
+# Copiar archivos de configuración de pnpm
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Instalar dependencias
-RUN npm ci --only=production
+# Instalar dependencias con pnpm
+RUN pnpm install --frozen-lockfile
 
 # Copiar el código fuente
 COPY . .
+
+# Compilar TypeScript
+RUN pnpm build
 
 # Exponer puerto
 EXPOSE 3000
