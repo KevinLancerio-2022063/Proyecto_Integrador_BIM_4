@@ -1,8 +1,8 @@
 # ============================================
-# Dockerfile para Frontend Angular
+# Dockerfile para Frontend Angular (Sin SSR)
 # ============================================
 
-# Usar Node.js v22 (requerido por Angular 17)
+# Stage 1: Build
 FROM node:22-alpine AS build
 
 WORKDIR /app
@@ -13,27 +13,23 @@ COPY package.json ./
 # Instalar dependencias
 RUN npm install --legacy-peer-deps
 
-# Copiar el código fuente
+# Copiar TODO el código
 COPY . .
 
-# Construir la aplicación para producción
+# Construir la aplicación (sin SSR)
 RUN npm run build
 
-# Debug: Ver dónde se generaron los archivos
-RUN echo "=== Contenido de dist/ ===" && ls -la dist/
-RUN echo "=== Buscando index.html ===" && find dist -name "index.html" || echo "No index.html found"
+# Debug: Ver estructura
+RUN echo "=== Contenido de dist/ ===" && ls -laR dist/
 
 # Stage 2: Serve con Nginx
 FROM nginx:alpine
 
-# Copiar configuración de nginx PRIMERO
+# Copiar configuración de nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copiar build de Angular (probar diferentes rutas)
+# Copiar build (Angular 17+ sin SSR genera dist/Frontend/browser/)
 COPY --from=build /app/dist/Frontend/browser /usr/share/nginx/html
-
-# Crear archivo de configuración por si no existe index.html
-RUN echo "Server configuration complete"
 
 EXPOSE 80
 
