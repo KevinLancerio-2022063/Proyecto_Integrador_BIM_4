@@ -1,121 +1,131 @@
+<!-- Contenedor principal de la página -->
 <div class="container-page">
 
-  <!-- Encabezado -->
-  <div class="page-header mb-3">
-    <h2 class="page-title">Gestión de Incidentes</h2>
+  <!-- Encabezado de la sección -->
+  <div class="page-header">
+    <h1 class="page-title">Gestión de Incidentes</h1>
     <p class="page-subtitle">Reporte y seguimiento de emergencias registradas</p>
   </div>
 
-  <!-- Barra de Búsqueda y Botón Alineados -->
-  <div class="header-actions mb-4">
+  <!-- Barra de búsqueda y botón de acción -->
+  <div class="header-actions">
     <div class="search-container">
-      <mat-icon class="search-icon">search</mat-icon>
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
       <input 
         type="text" 
-        class="search-input" 
         [(ngModel)]="busqueda" 
-        placeholder="Buscar por título o descripción..." 
+        placeholder="Búsqueda global (ej: inundación, terremoto, zona norte)..."
+        class="search-input"
       />
     </div>
-
-    <button type="button" class="btn-primary-cyber" (click)="abrirModalCrear()">
-      <mat-icon>add</mat-icon> Registrar Incidente
+    <button class="btn-primary-cyber" (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon>
+      Registrar incidente
     </button>
   </div>
 
-  <!-- Filtros Hexagonales -->
-  <div class="filtros-container mb-4">
-    <button 
-      *ngFor="let filtro of filtros"
-      type="button"
+  <!-- Filtros hexagonales por tipo de incidente -->
+  <div class="filtros-container">
+    <div 
+      *ngFor="let filtro of filtros" 
       class="filtro-hex"
       [class.active]="filtroActivo === filtro.id"
-      (click)="setFiltro(filtro.id)"
-    >
+      (click)="setFiltro(filtro.id)">
       <div class="hexagon-wrapper">
-        <div class="hexagon" [ngClass]="{
-          'hex-todos': filtro.id === 'todos',
-          'hex-emergencia': filtro.id === 'INUNDACION' || filtro.id === 'TERREMOTO' || filtro.id === 'INCENDIO',
-          'hex-refugio': filtro.id === 'DESLIZAMIENTO' || filtro.id === 'ACTIVIDAD_VOLCANICA',
-          'hex-otro': filtro.id === 'OTRO'
-        }">
+        <div class="hexagon" [class]="getHexagonClass(filtro.id)">
           <mat-icon>{{ filtro.icono }}</mat-icon>
         </div>
       </div>
       <span class="filtro-label">{{ filtro.etiqueta }}</span>
-    </button>
-  </div>
-
-  <!-- Estado de Carga -->
-  <div *ngIf="loading" class="estado-carga text-center py-5">
-    <mat-spinner diameter="40" class="mx-auto mb-3"></mat-spinner>
-    <p class="estado-vacio-texto">Cargando incidentes...</p>
-  </div>
-
-  <!-- Lista Vacía -->
-  <div *ngIf="!loading && incidentesFiltrados.length === 0" class="estado-vacio text-center py-5">
-    <mat-icon class="estado-vacio-icono">report_problem</mat-icon>
-    <h3 class="estado-vacio-titulo mt-3">No se encontraron incidentes</h3>
-    <p class="estado-vacio-texto">Intenta ajustar los criterios de búsqueda o registra uno nuevo.</p>
-  </div>
-
-  <!-- Grid de Tarjetas -->
-  <div *ngIf="!loading && incidentesFiltrados.length > 0" class="recursos-grid">
-    <div *ngFor="let incidente of incidentesFiltrados" class="recurso-card animate-modal-in">
-      
-      <!-- Header de la tarjeta -->
-      <div class="recurso-header">
-        <div class="icono-container" [ngClass]="{
-          'icono-emergencia': getNivelEmergencia(incidente) === 'ALTA' || getNivelEmergencia(incidente) === 'CRITICA',
-          'icono-seguimiento': getNivelEmergencia(incidente) === 'MEDIA',
-          'icono-recurso': getNivelEmergencia(incidente) === 'BAJA'
-        }">
-          <mat-icon>{{ (incidente.tipo | tipoIncidente).icono }}</mat-icon>
-        </div>
-        <span class="tipo-badge">{{ (incidente.tipo | tipoIncidente).texto }}</span>
-      </div>
-
-      <!-- Título -->
-      <h3 class="recurso-nombre text-truncate" [title]="incidente.titulo">{{ incidente.titulo }}</h3>
-
-      <!-- Cantidad de personas afectadas -->
-      <div class="recurso-cantidad">
-        <mat-icon class="cantidad-icono">group</mat-icon>
-        <span class="cantidad-texto">Afectados: {{ getPersonasAfectadas(incidente) }} personas</span>
-      </div>
-
-      <!-- Descripción -->
-      <p class="recurso-descripcion">
-        {{ incidente.descripcion || 'Sin descripción detallada proporcionada para este reporte.' }}
-      </p>
-
-      <!-- Badges de Nivel y Estado -->
-      <div class="d-flex flex-wrap gap-2 mb-3">
-        <span class="badge px-2 py-1" [ngClass]="(getNivelEmergencia(incidente) | nivelEmergencia).clase">
-          Nivel: {{ (getNivelEmergencia(incidente) | nivelEmergencia).texto }}
-        </span>
-        <span class="badge px-2 py-1" [ngClass]="(incidente.estado | estadoIncidente).clase">
-          Estado: {{ (incidente.estado | estadoIncidente).texto }}
-        </span>
-      </div>
-
-      <!-- Fecha y hora del reporte -->
-      <div class="recurso-fecha">
-        <mat-icon>calendar_today</mat-icon>
-        <span>Reportado: {{ incidente.fecha_reporte | fechaFormateada }}</span>
-      </div>
-
-      <!-- Acciones de tarjeta -->
-      <div class="recurso-acciones">
-        <button type="button" class="btn-accion btn-editar" (click)="abrirModalEditar(incidente)" title="Editar">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button type="button" class="btn-accion btn-eliminar" (click)="eliminarIncidente(incidente)" title="Eliminar">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-
     </div>
   </div>
 
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="estado-carga">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="text-secondary mt-4">Cargando incidentes...</p>
+  </div>
+
+  <!-- Grid de tarjetas de incidentes -->
+  <div *ngIf="!loading && incidentesFiltrados.length > 0" class="incidentes-grid">
+    <div 
+      *ngFor="let incidente of incidentesFiltrados; let i = index" 
+      class="incidente-card"
+      [style.animation-delay]="(i * 80) + 'ms'">
+      
+      <!-- Encabezado de la tarjeta con icono y tipo -->
+      <div class="incidente-header">
+        <div class="icono-container" [style.background]="getColorNivel(getNivelEmergencia(incidente))">
+          <mat-icon>{{ getIconoNivel(getNivelEmergencia(incidente)) }}</mat-icon>
+        </div>
+        <span class="tipo-badge">{{ incidente.tipo }}</span>
+      </div>
+
+      <!-- Título del incidente -->
+      <h3 class="incidente-nombre">{{ incidente.titulo }}</h3>
+
+      <!-- Cantidad de personas afectadas -->
+      <div class="incidente-afectados">
+        <div class="cantidad-info">
+          <mat-icon class="cantidad-icono">group</mat-icon>
+          <span class="cantidad-texto">
+            {{ getPersonasAfectadas(incidente) }} AFECTADOS
+          </span>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <p class="incidente-descripcion">
+        {{ incidente.descripcion || "Sin descripción detallada proporcionada para este reporte." }}
+      </p>
+
+      <!-- Nivel y Estado -->
+      <div class="incidente-detalles">
+        <div class="detalle-item">
+          <strong>Nivel:</strong> {{ (getNivelEmergencia(incidente) | nivelEmergencia).texto }}
+        </div>
+        <div class="detalle-item">
+          <strong>Estado:</strong> {{ (incidente.estado | estadoIncidente).texto }}
+        </div>
+      </div>
+
+      <!-- Fecha de registro -->
+      <p class="incidente-fecha" *ngIf="incidente.fecha_reporte">
+        <mat-icon class="fecha-icono">calendar_today</mat-icon>
+        Reportado: {{ incidente.fecha_reporte | fechaFormateada }}
+      </p>
+
+      <!-- Botones de acción (Editar y Eliminar) -->
+      <div class="incidente-acciones">
+        <button class="btn-accion btn-editar" (click)="abrirModalEditar(incidente)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button class="btn-accion btn-eliminar" (click)="prepararEliminacion(incidente)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vacío cuando no hay incidentes -->
+  <div *ngIf="!loading && incidentesFiltrados.length === 0" class="estado-vacio">
+    <mat-icon class="estado-vacio-icono">report_problem</mat-icon>
+    <h3 class="estado-vacio-titulo">No hay incidentes registrados</h3>
+    <p class="estado-vacio-texto">
+      {{ busqueda ? "No se encontraron incidentes con ese criterio" : "Comienza registrando tu primer incidente" }}
+    </p>
+  </div>
+
+  <!-- Diálogo de confirmación para eliminar incidente -->
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="Eliminar incidente"
+    [message]="'¿Estás seguro de que deseas eliminar \'' + (incidenteSeleccionadoParaEliminar?.titulo || 'este incidente') + '\'? Esta acción no se puede deshacer.'"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
 </div>
