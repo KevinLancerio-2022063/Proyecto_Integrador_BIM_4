@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://tu-backend-produccion.com/api' // cámbialo cuando despliegues
+  apiUrl: 'https://proyecto-integrador-bim-4-3.onrender.com/api'
 };
