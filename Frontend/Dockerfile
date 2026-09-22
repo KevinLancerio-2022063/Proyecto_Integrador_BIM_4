@@ -10,14 +10,17 @@ WORKDIR /app
 # Copiar package.json
 COPY package.json ./
 
-# Limpiar cache de npm y instalar
-RUN npm cache clean --force && npm install
+# Eliminar node_modules si existe y forzar instalación limpia
+RUN rm -rf node_modules package-lock.json
+RUN npm cache clean --force
+RUN npm install --legacy-peer-deps
 
 # Copiar el código fuente
 COPY . .
 
 # Construir la aplicación para producción
-RUN npm run build:prod
+# Usar 'build' en lugar de 'build:prod' si no existe
+RUN npm run build || npm run build:prod
 
 # Stage 2: Serve con Nginx
 FROM nginx:alpine

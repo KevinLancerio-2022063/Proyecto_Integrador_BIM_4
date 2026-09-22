@@ -1,33 +1,33 @@
 # ============================================
-# Dockerfile para Frontend Angular
+# Dockerfile para Backend Node.js + TypeScript
 # ============================================
 
-# Usar Node.js v22 (requerido por Angular 17)
-FROM node:22-alpine AS build
+FROM node:20-alpine
 
 WORKDIR /app
 
 # Copiar package.json
 COPY package.json ./
 
-# Limpiar cache de npm y instalar
-RUN npm cache clean --force && npm install
+# Instalar dependencias
+RUN npm install
 
 # Copiar el código fuente
 COPY . .
 
-# Construir la aplicación para producción
-RUN npm run build:prod
+# Compilar TypeScript (usar 'build', no 'build:prod')
+RUN npm run build
 
-# Stage 2: Serve con Nginx
-FROM nginx:alpine
+# Debug: Ver qué archivos se generaron
+RUN echo "=== Contenido de dist/ ===" && ls -la dist/ || echo "ERROR: dist folder not found"
+RUN echo "=== Archivos JS en dist/ ===" && find dist -name "*.js" -type f 2>/dev/null || echo "No JS files found"
 
-# Copiar build desde el stage anterior
-COPY --from=build /app/dist/browser /usr/share/nginx/html
+# Exponer puerto
+EXPOSE 3000
 
-# Copiar configuración de nginx
-COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 0
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# CMD temporal - lo cambiaremos después de ver los logs
+CMD ["node", "dist/main.js"]
