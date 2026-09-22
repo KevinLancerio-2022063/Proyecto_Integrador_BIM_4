@@ -37,6 +37,10 @@ export class ZonaListComponent implements OnInit {
     readonly deletingId = signal<number | null>(null);
     readonly successMessage = signal<string | null>(null);
 
+    // Señales para el modal personalizado de eliminación
+    readonly showDeleteModal = signal<boolean>(false);
+    readonly zonaToDelete = signal<ZonaResponse | null>(null);
+
     readonly isAdmin = computed(() => this.authService.isAdmin());
 
     readonly filteredZonas = computed(() => {
@@ -84,8 +88,22 @@ export class ZonaListComponent implements OnInit {
         this.filterNivel.set(value);
     }
 
+    // Abre el modal personalizado
     confirmDelete(zona: ZonaResponse): void {
-        if (!confirm(`¿Eliminar la zona "${zona.nombre}"?`)) return;
+        this.zonaToDelete.set(zona);
+        this.showDeleteModal.set(true);
+    }
+
+    // Cierra el modal y limpia la selección
+    cancelDelete(): void {
+        this.showDeleteModal.set(false);
+        this.zonaToDelete.set(null);
+    }
+
+    // Ejecuta la eliminación real desde el modal
+    deleteConfirmed(): void {
+        const zona = this.zonaToDelete();
+        if (!zona) return;
 
         this.deletingId.set(zona.id);
 
@@ -95,20 +113,17 @@ export class ZonaListComponent implements OnInit {
                     list.filter((z) => z.id !== zona.id)
                 );
 
-                this.successMessage.set(
-                    `Zona "${zona.nombre}" eliminada`
-                );
-
+                this.successMessage.set(`Zona "${zona.nombre}" eliminada`);
+                
+                // Cerrar modal y limpiar estados
+                this.showDeleteModal.set(false);
+                this.zonaToDelete.set(null);
                 this.deletingId.set(null);
 
-                setTimeout(
-                    () => this.successMessage.set(null),
-                    3000
-                );
+                setTimeout(() => this.successMessage.set(null), 3000);
             },
-
             error: (err: Error) => {
-                this.errorMessage.set(err.message);
+                this.errorMessage.set(err.message || 'Error al eliminar la zona');
                 this.deletingId.set(null);
             }
         });
