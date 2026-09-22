@@ -1,92 +1,6 @@
 <div class="app-layout">
 
   <!-- =====================================================
-       BARRA LATERAL
-       ===================================================== -->
-
-  <aside class="sidebar">
-
-    <div class="sidebar-brand">
-
-      <img
-        src="/logo_SIGED.png"
-        alt="SIGED"
-        class="siged-logo" />
-
-    </div>
-
-    <nav class="sidebar-menu">
-
-      <ul>
-
-        <li>
-          <a
-            routerLink="/recursos"
-            class="menu-item">
-
-            <i class="bi bi-box-seam menu-icon"></i>
-
-            Recursos
-
-          </a>
-        </li>
-
-        <li>
-          <a
-            routerLink="/refugios"
-            class="menu-item">
-
-            <i class="bi bi-house-door menu-icon"></i>
-
-            Refugios
-
-          </a>
-        </li>
-
-        <li>
-          <a
-            routerLink="/zonas"
-            class="menu-item active">
-
-            <i class="bi bi-geo-alt menu-icon"></i>
-
-            Zonas
-
-          </a>
-        </li>
-
-        <li>
-          <a
-            routerLink="/usuarios"
-            class="menu-item">
-
-            <i class="bi bi-people menu-icon"></i>
-
-            Usuarios
-
-          </a>
-        </li>
-
-        <li>
-          <a
-            routerLink="/asignaciones"
-            class="menu-item">
-
-            <i class="bi bi-file-earmark-text menu-icon"></i>
-
-            Asignaciones
-
-          </a>
-        </li>
-
-      </ul>
-
-    </nav>
-
-  </aside>
-
-
-  <!-- =====================================================
        CONTENIDO PRINCIPAL
        ===================================================== -->
 
@@ -139,13 +53,9 @@
         }
 
 
-        <!-- =================================================
-             CERRAR SESIÓN
-             ================================================= -->
-
         <button
           type="button"
-          class="btn-logout"
+          class="btn-danger"
           (click)="logout()">
 
           <i class="bi bi-box-arrow-right"></i>
@@ -160,7 +70,7 @@
 
 
     <!-- =====================================================
-         MENSAJES
+         MENSAJE DE ÉXITO
          ===================================================== -->
 
     @if (successMessage()) {
@@ -173,6 +83,10 @@
 
     }
 
+
+    <!-- =====================================================
+         MENSAJE DE ERROR
+         ===================================================== -->
 
     @if (errorMessage()) {
 
@@ -191,6 +105,8 @@
 
     <div class="toolbar">
 
+      <!-- BUSCADOR -->
+
       <div class="search-wrapper">
 
         <i class="bi bi-search search-icon"></i>
@@ -204,6 +120,8 @@
 
       </div>
 
+
+      <!-- FILTRO DE RIESGO -->
 
       <div class="filter-wrapper">
 
@@ -238,6 +156,8 @@
 
       </div>
 
+
+      <!-- CANTIDAD -->
 
       <span class="result-count">
 
@@ -341,13 +261,21 @@
 
               <tr>
 
-                <!-- ID -->
+                <!-- =================================================
+                     ID
+                     ================================================= -->
+
                 <td>
+
                   {{ z.id }}
+
                 </td>
 
 
-                <!-- NOMBRE -->
+                <!-- =================================================
+                     NOMBRE
+                     ================================================= -->
+
                 <td class="strong">
 
                   <span class="zone-icon">
@@ -357,17 +285,24 @@
                   </span>
 
                   <span class="zone-name">
+
                     {{ z.nombre }}
+
                   </span>
 
                 </td>
 
 
-                <!-- MUNICIPIO -->
+                <!-- =================================================
+                     MUNICIPIO
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-building"></i>
+
                   </span>
 
                   {{ z.municipio || '—' }}
@@ -375,11 +310,16 @@
                 </td>
 
 
-                <!-- DEPARTAMENTO -->
+                <!-- =================================================
+                     DEPARTAMENTO
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-map"></i>
+
                   </span>
 
                   {{ z.departamento || '—' }}
@@ -387,11 +327,16 @@
                 </td>
 
 
-                <!-- PAÍS -->
+                <!-- =================================================
+                     PAÍS
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-globe-americas"></i>
+
                   </span>
 
                   {{ z.pais }}
@@ -399,11 +344,16 @@
                 </td>
 
 
-                <!-- COORDENADAS -->
+                <!-- =================================================
+                     COORDENADAS
+                     ================================================= -->
+
                 <td class="coords">
 
                   <span class="table-icon">
+
                     <i class="bi bi-crosshair"></i>
+
                   </span>
 
                   {{ z.latitud | coordenadas: 'lat' }},
@@ -431,11 +381,16 @@
                 </td>
 
 
-                <!-- FECHA -->
+                <!-- =================================================
+                     FECHA
+                     ================================================= -->
+
                 <td>
 
                   <span class="table-icon">
+
                     <i class="bi bi-calendar3"></i>
+
                   </span>
 
                   {{ z.created_at | fecha }}
@@ -450,6 +405,7 @@
                 <td class="actions">
 
                   <!-- VER -->
+
                   <a
                     [routerLink]="['/zonas', z.id]"
                     class="btn-icon"
@@ -461,8 +417,11 @@
                   </a>
 
 
-                  <!-- EDITAR -->
+                  <!-- EDITAR Y ELIMINAR -->
+
                   @if (isAdmin()) {
+
+                    <!-- EDITAR -->
 
                     <a
                       [routerLink]="[
@@ -480,7 +439,9 @@
 
 
                     <!-- ELIMINAR -->
+
                     <button
+                      type="button"
                       class="btn-icon btn-icon-danger"
                       title="Eliminar zona"
                       aria-label="Eliminar zona"
@@ -518,5 +479,118 @@
     }
 
   </main>
+
+
+  <!-- =====================================================
+       MODAL PERSONALIZADO DE ELIMINACIÓN
+       ===================================================== -->
+
+  @if (showDeleteModal()) {
+
+    <div
+      class="delete-modal-backdrop"
+      (click)="cancelDelete()">
+
+
+      <!-- =================================================
+           TARJETA
+           ================================================= -->
+
+      <div
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-modal-title"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- =================================================
+             ICONO DE ADVERTENCIA
+             ================================================= -->
+
+        <div class="delete-modal-icon">
+
+          <i class="bi bi-exclamation-triangle-fill"></i>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENIDO
+             ================================================= -->
+
+        <div class="delete-modal-content">
+
+          <h2 id="delete-modal-title">
+
+            Eliminar zona
+
+          </h2>
+
+
+          <p>
+
+            ¿Estás seguro de que deseas eliminar
+
+            <strong>
+              '{{ zonaToDelete()?.nombre }}'
+            </strong>?
+
+            Esta acción no se puede deshacer.
+
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BOTONES
+             ================================================= -->
+
+        <div class="delete-modal-actions">
+
+          <!-- CANCELAR -->
+
+          <button
+            type="button"
+            class="delete-modal-cancel"
+            (click)="cancelDelete()">
+
+            Cancelar
+
+          </button>
+
+
+          <!-- ELIMINAR -->
+
+          <button
+            type="button"
+            class="delete-modal-confirm"
+            [disabled]="deletingId() !== null"
+            (click)="deleteConfirmed()">
+
+            @if (deletingId() !== null) {
+
+              <i class="bi bi-hourglass-split"></i>
+
+              Eliminando...
+
+            }
+
+            @else {
+
+              Eliminar
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
 
 </div>
