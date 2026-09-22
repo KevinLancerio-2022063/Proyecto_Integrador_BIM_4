@@ -1,5 +1,7 @@
+// src/app/features/core/core.routes.ts
 import { Routes } from '@angular/router';
 import { authGuard, adminGuard } from './guards/auth.guard';
+
 export const coreRoutes: Routes = [
     {
         path: 'login',
@@ -11,10 +13,13 @@ export const coreRoutes: Routes = [
         loadComponent: () =>
             import('./components/auth/register/register.component').then((m) => m.RegisterComponent)
     },
-    // ============ USUARIOS (solo admin por guard) ============
+    
+    // ==========================================
+    // USUARIOS: Solo ADMIN
+    // ==========================================
     {
         path: 'usuarios',
-        canActivate: [authGuard],
+        canActivate: [adminGuard], // CAPA 2: Requiere rol ADMIN
         children: [
             {
                 path: '',
@@ -46,10 +51,13 @@ export const coreRoutes: Routes = [
             }
         ]
     },
-    // ============ ZONAS (cualquier rol autenticado) ============
+    
+    // ==========================================
+    // ZONAS: Solo ADMIN
+    // ==========================================
     {
         path: 'zonas',
-        canActivate: [authGuard],
+        canActivate: [adminGuard], // CAPA 2: Requiere rol ADMIN
         children: [
             {
                 path: '',
@@ -81,10 +89,13 @@ export const coreRoutes: Routes = [
             }
         ]
     },
-    // ============ PERFIL ============
+    
+    // ==========================================
+    // PERFIL: Cualquier usuario autenticado
+    // ==========================================
     {
         path: 'perfil',
-        canActivate: [authGuard],
+        canActivate: [authGuard], // CAPA 2: Solo requiere estar logueado
         loadComponent: () =>
             import('./components/usuarios/usuario-profile/usuario-profile.component').then(
                 (m) => m.UsuarioProfileComponent
