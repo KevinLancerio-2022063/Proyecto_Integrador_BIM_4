@@ -6,6 +6,7 @@ import {
   CrearAlertaDTO,
   RespuestaAlertaAPI
 } from "../models/alerta.model";
+import { environment } from '../../../../environments/environment'; 
 
 // Marca la clase como inyectable en toda la aplicación
 @Injectable({
@@ -13,7 +14,7 @@ import {
 })
 export class AlertaService {
   // URL base de la API del backend
-  private apiUrl = "http://localhost:3000/api/alertas";
+  private apiUrl = `${environment.apiUrl}/api/alertas`;
 
   // Inyecta el cliente HTTP para hacer peticiones
   constructor(private http: HttpClient) {}
