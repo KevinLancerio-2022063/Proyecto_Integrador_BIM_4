@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, map } from "rxjs";
 import { Recurso, CrearRecursoDTO, RespuestaAPI } from "../models/recurso.model";
+import { environment } from '../../../../environments/environment'; 
 
 // Marca la clase como inyectable en toda la aplicación
 @Injectable({
@@ -9,7 +10,7 @@ import { Recurso, CrearRecursoDTO, RespuestaAPI } from "../models/recurso.model"
 })
 export class RecursoService {
   // URL base de la API del backend
-  private apiUrl = "http://localhost:3000/api/recursos";
+  private apiUrl = `${environment.apiUrl}/api/recursos`;
 
   // Inyecta el cliente HTTP para hacer peticiones
   constructor(private http: HttpClient) {}

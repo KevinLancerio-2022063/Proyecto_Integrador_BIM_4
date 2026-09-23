@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, map } from "rxjs";
 import { Refugio, CrearRefugioDTO, ActualizarRefugioDTO } from "../models/refugio.model";
+import { environment } from '../../../../environments/environment'; 
 
 // Marca la clase como inyectable en toda la aplicacion
 @Injectable({
@@ -9,7 +10,7 @@ import { Refugio, CrearRefugioDTO, ActualizarRefugioDTO } from "../models/refugi
 })
 export class RefugioService {
   // URL base de la API del backend
-  private apiUrl = "http://localhost:3000/api/refugios";
+    private apiUrl = `${environment.apiUrl}/api/refugios`;
 
   // Inyecta el cliente HTTP para hacer peticiones
   constructor(private http: HttpClient) {}
