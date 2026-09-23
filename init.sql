@@ -1168,3 +1168,4 @@ call sp_agregar_historial_incidente(2, 'MITIGADO', 'EN_ATENCION', 'evaluación d
 call sp_agregar_historial_incidente(3, 'EN_ATENCION', 'REPORTADO', 'bomberos en el lugar combatiendo fuego', 3);
 call sp_agregar_historial_incidente(4, 'CERRADO', 'MITIGADO', 'zona estabilizada, residentes retornados', 2);
 call sp_agregar_historial_incidente(5, 'EN_ATENCION', 'REPORTADO', 'monitoreo volcánico activo, evacuación preventiva', 2);
+
