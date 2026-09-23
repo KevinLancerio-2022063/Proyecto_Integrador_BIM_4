@@ -14,7 +14,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class AsignacionPersonalService {
   // URL base de la API del backend
-  private apiUrl = `${environment.apiUrl}/api/asignacion_personal`;
+  private apiUrl = `${environment.apiUrl}/api/asignacion-personal`;
 
   // Inyecta el cliente HTTP para hacer peticiones
   constructor(private http: HttpClient) {}
