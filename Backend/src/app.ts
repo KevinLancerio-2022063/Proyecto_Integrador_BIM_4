@@ -21,14 +21,19 @@ const app: Application = express();
 
 // Middlewares
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || "*",
+    origin: [
+        'http://localhost:4200',
+        'https://proyecto-integrador-bim-4-2.onrender.com',
+        process.env.CORS_ORIGIN || '*'
+    ].filter(Boolean),
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas de API - ORDEN IMPORTANTE
+// Rutas de API
 app.use("/api/auth", authRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/zonas", zonaRoutes);
@@ -40,7 +45,7 @@ app.use("/api/historial-incidentes", historialIncidenteRoutes);
 app.use("/api/asignacion-personal", asignacionPersonalRoutes);
 app.use("/api/alertas", alertaRoutes);
 
-// Health check - DEBE IR DESPUÉS de las rutas
+// Health check
 app.get("/api/health", (req: Request, res: Response) => {
     res.json({ 
         status: "OK", 
@@ -64,7 +69,7 @@ app.get("/", (req: Request, res: Response) => {
     });
 });
 
-// Manejo de errores 404
+// Manejo de errores 404 (DEBE IR AL FINAL)
 app.use((req: Request, res: Response) => {
     res.status(404).json({
         success: false,
@@ -76,24 +81,12 @@ app.use((req: Request, res: Response) => {
 export async function initializeApp() {
     try {
         await testConnection();
-        console.log("✅ Conexion a PostgreSQL establecida");
+        console.log("Conexion a PostgreSQL establecida");
         return app;
     } catch (error) {
-        console.error("❌ Error al conectar a la base de datos:", error);
+        console.error("Error al conectar a la base de datos:", error);
         throw error;
     }
 }
-
-// Middlewares
-app.use(cors({
-    origin: [
-        'http://localhost:4200',
-        'https://proyecto-integrador-bim-4-2.onrender.com',
-        process.env.CORS_ORIGIN || '*'
-    ].filter(Boolean), // Elimina valores undefined o null
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
-}));
 
 export default app;
