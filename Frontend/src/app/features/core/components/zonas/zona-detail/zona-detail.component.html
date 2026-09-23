@@ -1,0 +1,633 @@
+<!-- src/app/features/core/components/zonas/zona-detail/zona-detail.component.html -->
+
+<div class="page-container">
+
+  <!-- =====================================================
+       DECORACIONES DE FONDO
+       ===================================================== -->
+
+  <div class="bg-decoration decoration-one"></div>
+  <div class="bg-decoration decoration-two"></div>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-title">
+
+      <div class="section-kicker">
+
+        <span class="kicker-line"></span>
+
+        MONITOREO DE RIESGO
+
+      </div>
+
+
+      <h1>
+        Detalle de Zona
+      </h1>
+
+
+      <p>
+        Información y estado de la zona monitoreada
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      @if (authService.isAdmin() && zona()) {
+
+        <a
+          [routerLink]="[
+            '/zonas',
+            zona()!.id,
+            'editar'
+          ]"
+          class="btn-primary">
+
+          <i class="bi bi-pencil-square"></i>
+
+          Editar
+
+        </a>
+
+      }
+
+
+      <a
+        routerLink="/zonas"
+        class="btn-secondary">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Volver
+
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       ERROR
+       ===================================================== -->
+
+  @if (errorMessage()) {
+
+    <div class="alert alert-error">
+
+      <div class="alert-icon">
+
+        <i class="bi bi-exclamation-lg"></i>
+
+      </div>
+
+
+      <div>
+
+        <strong>
+          No se pudo cargar la zona
+        </strong>
+
+        <span>
+          {{ errorMessage() }}
+        </span>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+  @if (loading()) {
+
+    <div class="loading-card">
+
+      <div class="loading-spinner"></div>
+
+
+      <div>
+
+        <strong>
+          Cargando información
+        </strong>
+
+        <span>
+          Obteniendo datos de la zona...
+        </span>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       INFORMACIÓN DE LA ZONA
+       ===================================================== -->
+
+  @else if (zona()) {
+
+    <div class="detail-card">
+
+
+      <!-- =================================================
+           CABECERA DE LA ZONA
+           ================================================= -->
+
+      <div class="detail-header">
+
+
+        <!-- ICONO PRINCIPAL -->
+
+        <div class="zona-icon-wrapper">
+
+          <div class="zona-icon">
+
+            <i class="bi bi-geo-alt-fill"></i>
+
+          </div>
+
+
+          <div class="icon-ring ring-one"></div>
+
+          <div class="icon-ring ring-two"></div>
+
+        </div>
+
+
+        <!-- NOMBRE -->
+
+        <div class="zona-heading">
+
+          <div class="zona-id">
+
+            ZONA #{{ zona()!.id }}
+
+          </div>
+
+
+          <h2>
+
+            {{ zona()!.nombre }}
+
+          </h2>
+
+
+          <div class="location-preview">
+
+            <span class="location-dot"></span>
+
+
+            {{ zona()!.municipio || 'Ubicación no disponible' }}
+
+
+            @if (zona()!.departamento) {
+
+              <span class="separator">
+                •
+              </span>
+
+              {{ zona()!.departamento }}
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- NIVEL DE RIESGO -->
+
+        <div class="risk-panel">
+
+          <span class="risk-label">
+            NIVEL DE RIESGO
+          </span>
+
+
+          <span
+            class="badge"
+            [class]="'badge-' + zona()!.nivel_riesgo.toLowerCase()">
+
+            <span class="risk-dot"></span>
+
+            {{ zona()!.nivel_riesgo | nivelRiesgo }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           SEPARADOR
+           ================================================= -->
+
+      <div class="section-divider">
+
+        <span></span>
+
+        <i class="bi bi-grid-3x3-gap-fill"></i>
+
+        INFORMACIÓN DE LA ZONA
+
+        <span></span>
+
+      </div>
+
+
+      <!-- =================================================
+           DATOS
+           ================================================= -->
+
+      <dl class="detail-grid">
+
+
+        <!-- ID -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-hash"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              ID DE ZONA
+            </dt>
+
+            <dd>
+              {{ zona()!.id }}
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- PAÍS -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-globe-americas"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              PAÍS
+            </dt>
+
+            <dd>
+              {{ zona()!.pais }}
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- DEPARTAMENTO -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-map"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              DEPARTAMENTO
+            </dt>
+
+            <dd>
+              {{ zona()!.departamento || '—' }}
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- MUNICIPIO -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-building"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              MUNICIPIO
+            </dt>
+
+            <dd>
+              {{ zona()!.municipio || '—' }}
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- LATITUD -->
+
+        <div class="detail-item coordinate-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-arrows-vertical"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              LATITUD
+            </dt>
+
+            <dd class="coordinate">
+
+              {{ zona()!.latitud | coordenadas: 'lat' }}
+
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- LONGITUD -->
+
+        <div class="detail-item coordinate-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-arrows"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              LONGITUD
+            </dt>
+
+            <dd class="coordinate">
+
+              {{ zona()!.longitud | coordenadas: 'long' }}
+
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- ESTADO -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-activity"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              ESTADO
+            </dt>
+
+
+            <dd class="status-value">
+
+              <span
+                class="status-indicator"
+                [class.active]="zona()!.activo">
+              </span>
+
+
+              {{ zona()!.activo ? 'Activa' : 'Inactiva' }}
+
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- CREADA -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-calendar-plus"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              CREADA
+            </dt>
+
+            <dd>
+              {{ zona()!.created_at | fecha: 'larga' }}
+            </dd>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACTUALIZADA -->
+
+        <div class="detail-item">
+
+          <div class="item-icon">
+
+            <i class="bi bi-clock-history"></i>
+
+          </div>
+
+
+          <div class="item-content">
+
+            <dt>
+              ACTUALIZADA
+            </dt>
+
+            <dd>
+              {{ zona()!.updated_at | fecha: 'larga' }}
+            </dd>
+
+          </div>
+
+        </div>
+
+      </dl>
+
+
+      <!-- =================================================
+           MAPA
+           ================================================= -->
+
+      <section class="map-section">
+
+
+        <!-- HEADER DEL MAPA -->
+
+        <div class="map-header">
+
+
+          <div class="map-title">
+
+            <div class="map-icon">
+
+              <i class="bi bi-geo-alt-fill"></i>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Ubicación geográfica
+              </strong>
+
+              <span>
+                Coordenadas de la zona monitoreada
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- COORDENADAS -->
+
+          <div class="coordinates-pill">
+
+            <i class="bi bi-crosshair"></i>
+
+            {{ zona()!.latitud | coordenadas: 'lat' }}
+
+            ,
+
+            {{ zona()!.longitud | coordenadas: 'long' }}
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAPA EMBEBIDO
+             ================================================= -->
+
+        @if (mapUrl()) {
+
+          <div class="map-container">
+
+            <iframe
+              title="Mapa de ubicación de la zona"
+              loading="lazy"
+              [src]="mapUrl()">
+            </iframe>
+
+          </div>
+
+        }
+
+
+        <!-- =================================================
+             FOOTER DEL MAPA
+             ================================================= -->
+
+        <div class="map-footer">
+
+
+          <div class="map-status">
+
+            <span class="map-status-dot"></span>
+
+            <span>
+              Ubicación registrada
+            </span>
+
+          </div>
+
+
+          <a
+            [href]="getMapUrl()"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="map-external-link">
+
+            <i class="bi bi-box-arrow-up-right"></i>
+
+            Abrir mapa completo
+
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           FOOTER DE TARJETA
+           ================================================= -->
+
+      <div class="card-footer">
+
+        <span class="footer-dot"></span>
+
+        SIGED · Sistema Integral de Gestión de Emergencias
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

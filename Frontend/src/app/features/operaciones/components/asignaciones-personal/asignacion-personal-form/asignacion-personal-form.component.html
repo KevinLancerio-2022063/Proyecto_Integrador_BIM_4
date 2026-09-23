@@ -1,0 +1,368 @@
+<div class="modal-container animate-modal-in">
+
+  <!-- ENCABEZADO -->
+  <div class="modal-header">
+
+    <div class="modal-header-content">
+
+      <mat-icon class="modal-header-icon">
+        assignment_ind
+      </mat-icon>
+
+      <h2 class="modal-titulo">
+        {{
+          isEdit
+            ? "Editar asignación de personal"
+            : "Registrar asignación de personal"
+        }}
+      </h2>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-cerrar"
+      (click)="onCancel()"
+      [disabled]="loading">
+
+      <mat-icon>
+        close
+      </mat-icon>
+
+    </button>
+
+  </div>
+
+
+  <!-- FORMULARIO -->
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()">
+
+    <div class="formulario-contenido">
+
+
+      <!-- USUARIO -->
+      <div class="form-row">
+
+        <div class="form-group form-group-half">
+
+          <label class="form-label">
+            ID del usuario*
+          </label>
+
+          <div class="input-wrapper">
+
+            <mat-icon class="input-icon">
+              person
+            </mat-icon>
+
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="usuario_id"
+              placeholder="Ingrese el ID del usuario"
+              class="form-input"
+            />
+
+          </div>
+
+          <mat-error
+            *ngIf="form.get('usuario_id')?.hasError('required')"
+            class="error-message">
+
+            El usuario es obligatorio
+
+          </mat-error>
+
+          <div
+            *ngIf="errorUsuario"
+            class="error-message">
+
+            {{ errorUsuario }}
+
+          </div>
+
+        </div>
+
+
+        <!-- ROL ASIGNADO -->
+        <div class="form-group form-group-half">
+
+          <label class="form-label">
+            Rol asignado*
+          </label>
+
+          <div class="input-wrapper">
+
+            <mat-icon class="input-icon">
+              badge
+            </mat-icon>
+
+            <mat-select
+              formControlName="rol_asignado"
+              class="form-select">
+
+              <mat-option
+                *ngFor="let rol of rolesAsignacion"
+                [value]="rol">
+
+                {{ rol }}
+
+              </mat-option>
+
+            </mat-select>
+
+          </div>
+
+          <mat-error
+            *ngIf="form.get('rol_asignado')?.hasError('required')"
+            class="error-message">
+
+            El rol asignado es obligatorio
+
+          </mat-error>
+
+        </div>
+
+      </div>
+
+
+      <!-- INCIDENTE / REFUGIO -->
+      <div class="form-row">
+
+
+        <!-- INCIDENTE -->
+        <div class="form-group form-group-half">
+
+          <label class="form-label">
+            ID del incidente
+          </label>
+
+          <div class="input-wrapper">
+
+            <mat-icon class="input-icon">
+              report_problem
+            </mat-icon>
+
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="incidente_id"
+              placeholder="Ingrese el ID del incidente"
+              class="form-input"
+            />
+
+          </div>
+
+          <div
+            *ngIf="errorIncidente"
+            class="error-message">
+
+            {{ errorIncidente }}
+
+          </div>
+
+        </div>
+
+
+        <!-- REFUGIO -->
+        <div class="form-group form-group-half">
+
+          <label class="form-label">
+            ID del refugio
+          </label>
+
+          <div class="input-wrapper">
+
+            <mat-icon class="input-icon">
+              home
+            </mat-icon>
+
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="refugio_id"
+              placeholder="Ingrese el ID del refugio"
+              class="form-input"
+            />
+
+          </div>
+
+          <div
+            *ngIf="errorRefugio"
+            class="error-message">
+
+            {{ errorRefugio }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MENSAJE DE ERROR DESTINO -->
+      <div
+        *ngIf="!isEdit && mostrarErrorDestino"
+        class="error-message">
+
+        Debe indicar exactamente un incidente o un refugio.
+
+      </div>
+
+
+      <!-- ERROR GENERAL -->
+      <div
+        *ngIf="errorGeneral"
+        class="error-message">
+
+        {{ errorGeneral }}
+
+      </div>
+
+
+      <!-- ESTADO -->
+      <div class="form-group">
+
+        <label class="form-label">
+          Estado*
+        </label>
+
+        <div class="input-wrapper">
+
+          <mat-icon class="input-icon">
+            flag
+          </mat-icon>
+
+          <mat-select
+            formControlName="estado"
+            class="form-select">
+
+            <mat-option
+              *ngFor="let estado of estadosAsignacion"
+              [value]="estado">
+
+              {{ estado }}
+
+            </mat-option>
+
+          </mat-select>
+
+        </div>
+
+        <mat-error
+          *ngIf="form.get('estado')?.hasError('required')"
+          class="error-message">
+
+          El estado es obligatorio
+
+        </mat-error>
+
+      </div>
+
+
+      <!-- FECHA DE FINALIZACIÓN -->
+      <div
+        class="form-group"
+        *ngIf="isEdit">
+
+        <label class="form-label">
+          Fecha de finalización
+        </label>
+
+        <div class="input-wrapper">
+
+          <mat-icon class="input-icon">
+            event
+          </mat-icon>
+
+          <input
+            matInput
+            type="datetime-local"
+            formControlName="fecha_finalizacion"
+            class="form-input"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- OBSERVACIONES -->
+      <div class="form-group">
+
+        <label class="form-label">
+          Observaciones
+        </label>
+
+        <div class="input-wrapper textarea-wrapper">
+
+          <mat-icon class="input-icon textarea-icon">
+            notes
+          </mat-icon>
+
+          <textarea
+            matInput
+            formControlName="observaciones"
+            rows="4"
+            maxlength="500"
+            placeholder="Escriba las observaciones de la asignación"
+            class="form-textarea">
+          </textarea>
+
+        </div>
+
+        <mat-error
+          *ngIf="form.get('observaciones')?.hasError('maxlength')"
+          class="error-message">
+
+          Las observaciones no pueden superar los 500 caracteres
+
+        </mat-error>
+
+      </div>
+
+    </div>
+
+
+    <!-- BOTONES -->
+    <div class="botones-accion">
+
+      <button
+        type="button"
+        (click)="onCancel()"
+        class="btn-cancelar"
+        [disabled]="loading">
+
+        Cancelar
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn-registrar"
+        [disabled]="loading || form.invalid">
+
+        <mat-icon *ngIf="!loading">
+          check
+        </mat-icon>
+
+        <mat-spinner
+          diameter="20"
+          *ngIf="loading">
+        </mat-spinner>
+
+        {{ isEdit ? "Guardar cambios" : "Registrar" }}
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

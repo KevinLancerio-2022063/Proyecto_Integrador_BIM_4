@@ -1,0 +1,286 @@
+/* ============================================
+   Layout principal
+   ============================================ */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  background: #0a0e27;
+}
+
+/* ============================================
+   Sidebar con scroll personalizado
+   ============================================ */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(180deg, #0a0e27 0%, #111638 100%);
+  border-right: 1px solid rgba(0, 240, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   Scrollbar personalizado estilo cyberpunk
+   ============================================ */
+
+/* Webkit (Chrome, Safari, Edge) */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(10, 14, 39, 0.5);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00f0ff 0%, #0ea5e9 100%);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00f0ff 0%, #00a8ff 100%);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Firefox */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: #00f0ff rgba(10, 14, 39, 0.5);
+}
+
+/* ============================================
+   Header del sidebar con logo
+   ============================================ */
+.sidebar-header {
+  padding: 24px 16px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, transparent 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logo-image {
+  max-width: 180px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 6px 16px rgba(0, 240, 255, 0.3));
+}
+
+/* ============================================
+   Navegación del sidebar
+   ============================================ */
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  margin: 6px 12px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  border: 1px solid transparent;
+}
+
+/* Fondo degradado sutil */
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #0a0e27, #1a3a6e, #00f0ff);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 8px;
+}
+
+/* Destello brillante */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 2;
+}
+
+/* Estados hover */
+.nav-item:hover {
+  color: #ffffff;
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 0 12px 24px rgba(0, 240, 255, 0.25),
+              0 4px 10px rgba(26, 58, 110, 0.4);
+}
+
+.nav-item:hover::before {
+  transform: scaleX(1);
+}
+
+.nav-item:hover::after {
+  left: 150%;
+  transition: left 0.6s ease-in-out;
+}
+
+.nav-item:hover .nav-icon {
+  color: #00f0ff;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
+}
+
+.nav-item:hover .nav-label {
+  transform: translateX(4px);
+}
+
+/* Estado activo */
+.nav-item.active-link {
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(10, 14, 39, 0.8), rgba(26, 58, 110, 0.6), rgba(0, 240, 255, 0.15));
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15),
+              inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.nav-item.active-link::before,
+.nav-item.active-link::after {
+  display: none;
+}
+
+.nav-item.active-link .nav-icon {
+  color: #00f0ff;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6));
+}
+
+.nav-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  transition: all 0.3s ease;
+  color: #a0aec0;
+}
+
+.nav-label {
+  font-size: 14px;
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+/* ============================================
+   Footer del sidebar (Cerrar Sesión)
+   ============================================ */
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.logout-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  transform: translateX(4px);
+}
+
+/* ============================================
+   Contenido principal
+   ============================================ */
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 32px;
+  min-height: 100vh;
+  background: #0a0e27;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+}

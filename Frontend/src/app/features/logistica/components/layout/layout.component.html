@@ -1,0 +1,43 @@
+<!-- Contenedor principal del layout -->
+<div class="layout-container">
+  
+  <!-- Sidebar de navegación -->
+  <aside class="sidebar">
+    <!-- Header del sidebar con logo -->
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <img 
+          src="/assets/logo_SIGED.png" 
+          alt="SIGED Logo" 
+          class="logo-image"
+        />
+      </div>
+    </div>
+
+    <!-- Navegación del sidebar -->
+    <nav class="sidebar-nav">
+      <a 
+        *ngFor="let item of menuItems" 
+        [routerLink]="item.route" 
+        [class.active-link]="isActive(item.route)"
+        class="nav-item">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <!-- Footer del sidebar con botón de logout -->
+    <div class="sidebar-footer">
+      <button class="nav-item logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal de la aplicación -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

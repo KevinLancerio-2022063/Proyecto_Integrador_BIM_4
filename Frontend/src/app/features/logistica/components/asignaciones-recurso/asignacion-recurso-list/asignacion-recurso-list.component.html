@@ -1,0 +1,144 @@
+<div class="container-page">
+  
+  <!-- Encabezado de la sección -->
+  <div class="page-header">
+    <h1 class="page-title">Gestión de asignaciones</h1>
+    <p class="page-subtitle">Consulta, registra y edita asignaciones de recursos</p>
+  </div>
+
+  <!-- Barra de búsqueda y botón de acción -->
+  <div class="header-actions">
+    <div class="search-container">
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Buscar por recurso, estado o destino..."
+        class="search-input"
+      />
+    </div>
+    <button 
+      class="btn-primary-cyber"
+      (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon>
+      Nueva asignación
+    </button>
+  </div>
+
+<!-- Filtros hexagonales con colores específicos -->
+<div class="filtros-container">
+  <button 
+    *ngFor="let filtro of filtros"
+    class="filtro-hex"
+    [class.active]="filtroActivo === filtro.id"
+    (click)="setFiltro(filtro.id)">
+    <div class="hexagon-wrapper">
+      <div class="hexagon" [ngClass]="getClaseHexagono(filtro.id)">
+        <mat-icon>{{ filtro.icono }}</mat-icon>
+      </div>
+    </div>
+    <span class="filtro-label">{{ filtro.etiqueta }}</span>
+  </button>
+</div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="estado-carga">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="text-navy-600 mt-4">Cargando asignaciones...</p>
+  </div>
+
+  <!-- Grid de asignaciones -->
+  <div *ngIf="!loading && asignacionesFiltradas.length > 0" class="asignaciones-grid">
+    <!-- Tarjeta de asignación -->
+    <div
+      *ngFor="let asignacion of asignacionesFiltradas; let i = index"
+      class="asignacion-card"
+      [style.animation-delay]="i * 50 + 'ms'">
+      
+      <!-- Header con estado -->
+      <div class="asignacion-header">
+        <div class="icono-container" [style.background]="getColorEstado(asignacion.estado)">
+          <mat-icon>assignment</mat-icon>
+        </div>
+        <span class="tipo-badge" [style.borderColor]="getColorEstado(asignacion.estado)">
+          {{ asignacion.estado }}
+        </span>
+      </div>
+
+      <!-- Recurso asignado -->
+      <h3 class="asignacion-nombre">
+        {{ asignacion.nombre_recurso || "Recurso #" + asignacion.recurso_id }}
+      </h3>
+
+      <!-- Cantidad asignada -->
+      <div class="asignacion-cantidad">
+        <mat-icon class="cantidad-icono">inventory</mat-icon>
+        <span class="cantidad-texto">
+          {{ asignacion.cantidad }} unidades
+        </span>
+      </div>
+
+      <!-- Destino -->
+      <div class="asignacion-destino">
+        <mat-icon class="destino-icono">
+          {{ getIconoDestino(asignacion) }}
+        </mat-icon>
+        <span class="destino-texto">
+          {{ getDestino(asignacion) }}
+        </span>
+      </div>
+
+      <!-- Fechas -->
+      <div class="asignacion-fecha">
+        <mat-icon class="fecha-icono">schedule</mat-icon>
+        <span class="fecha-texto">
+          Solicitado: {{ asignacion.fecha_solicitud | date:'shortDate' }}
+        </span>
+      </div>
+
+      <!-- Observaciones -->
+      <p class="asignacion-observaciones" *ngIf="asignacion.observaciones">
+        <mat-icon class="observaciones-icono">note</mat-icon>
+        {{ asignacion.observaciones }}
+      </p>
+
+      <!-- Acciones -->
+      <div class="asignacion-acciones">
+        <button class="btn-accion btn-editar" (click)="abrirModalEditar(asignacion)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button> <!-- <--- AQUÍ ESTABA EL ERROR: FALTABA CERRAR ESTE BOTÓN -->
+        
+        <!-- Botón de eliminar en la tarjeta -->
+        <button 
+          class="btn-accion btn-eliminar" 
+          (click)="prepararEliminacion(asignacion)" 
+          title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vacío -->
+  <div *ngIf="!loading && asignacionesFiltradas.length === 0" class="estado-vacio">
+    <mat-icon class="estado-vacio-icono">assignment</mat-icon>
+    <h3 class="estado-vacio-titulo">No hay asignaciones registradas</h3>
+    <p class="estado-vacio-texto">
+      {{ busqueda ? 'No se encontraron asignaciones con ese criterio de búsqueda' : 'Comienza creando tu primera asignación' }}
+    </p>
+  </div>
+
+  <!-- Diálogo de confirmación de eliminación -->
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="¿Eliminar asignación?"
+    message="Esta acción eliminará permanentemente la asignación del sistema. ¿Estás seguro de continuar?"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
+
+</div>

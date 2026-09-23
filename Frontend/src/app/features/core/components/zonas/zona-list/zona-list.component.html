@@ -1,0 +1,596 @@
+<div class="app-layout">
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
+
+  <main class="main-content">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <h1>
+          Gestión de Zonas
+        </h1>
+
+        <p class="page-subtitle">
+          Monitoreo de zonas de riesgo
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          routerLink="/perfil"
+          class="btn-secondary">
+
+          <i class="bi bi-person-circle"></i>
+
+          Mi perfil
+
+        </a>
+
+
+        @if (isAdmin()) {
+
+          <a
+            routerLink="/zonas/nuevo"
+            class="btn-primary">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Nueva Zona
+
+          </a>
+
+        }
+
+
+        <button
+          type="button"
+          class="btn-danger"
+          (click)="logout()">
+
+          <i class="bi bi-box-arrow-right"></i>
+
+          Cerrar sesión
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJE DE ÉXITO
+         ===================================================== -->
+
+    @if (successMessage()) {
+
+      <div class="alert alert-success">
+
+        {{ successMessage() }}
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         MENSAJE DE ERROR
+         ===================================================== -->
+
+    @if (errorMessage()) {
+
+      <div class="alert alert-error">
+
+        {{ errorMessage() }}
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         TOOLBAR
+         ===================================================== -->
+
+    <div class="toolbar">
+
+      <!-- BUSCADOR -->
+
+      <div class="search-wrapper">
+
+        <i class="bi bi-search search-icon"></i>
+
+        <input
+          type="text"
+          placeholder="Buscar por nombre, municipio o departamento..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchChange($event)"
+          class="search-input" />
+
+      </div>
+
+
+      <!-- FILTRO DE RIESGO -->
+
+      <div class="filter-wrapper">
+
+        <i class="bi bi-funnel filter-icon"></i>
+
+        <select
+          class="filter-select"
+          [ngModel]="filterNivel()"
+          (ngModelChange)="onNivelChange($event)">
+
+          <option value="">
+            Todos los niveles
+          </option>
+
+          <option value="BAJO">
+            Bajo
+          </option>
+
+          <option value="MEDIO">
+            Medio
+          </option>
+
+          <option value="ALTO">
+            Alto
+          </option>
+
+          <option value="CRITICO">
+            Crítico
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- CANTIDAD -->
+
+      <span class="result-count">
+
+        <i class="bi bi-geo-alt-fill"></i>
+
+        {{ filteredZonas().length }} zonas
+
+      </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         CARGANDO
+         ===================================================== -->
+
+    @if (loading()) {
+
+      <div class="loading">
+
+        <i class="bi bi-arrow-repeat loading-icon"></i>
+
+        Cargando zonas...
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         SIN RESULTADOS
+         ===================================================== -->
+
+    @else if (filteredZonas().length === 0) {
+
+      <div class="empty-state">
+
+        <i class="bi bi-geo-alt empty-icon"></i>
+
+        @if (searchTerm() || filterNivel()) {
+
+          <span>
+            No se encontraron zonas con esos filtros
+          </span>
+
+        }
+
+        @else {
+
+          <span>
+            No hay zonas registradas
+          </span>
+
+        }
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+
+    @else {
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+
+              <th>Nombre</th>
+
+              <th>Municipio</th>
+
+              <th>Departamento</th>
+
+              <th>País</th>
+
+              <th>Coordenadas</th>
+
+              <th>Riesgo</th>
+
+              <th>Creada</th>
+
+              <th>Acciones</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (z of filteredZonas(); track z.id) {
+
+              <tr>
+
+                <!-- =================================================
+                     ID
+                     ================================================= -->
+
+                <td>
+
+                  {{ z.id }}
+
+                </td>
+
+
+                <!-- =================================================
+                     NOMBRE
+                     ================================================= -->
+
+                <td class="strong">
+
+                  <span class="zone-icon">
+
+                    <i class="bi bi-geo-alt-fill"></i>
+
+                  </span>
+
+                  <span class="zone-name">
+
+                    {{ z.nombre }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- =================================================
+                     MUNICIPIO
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-building"></i>
+
+                  </span>
+
+                  {{ z.municipio || '—' }}
+
+                </td>
+
+
+                <!-- =================================================
+                     DEPARTAMENTO
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-map"></i>
+
+                  </span>
+
+                  {{ z.departamento || '—' }}
+
+                </td>
+
+
+                <!-- =================================================
+                     PAÍS
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-globe-americas"></i>
+
+                  </span>
+
+                  {{ z.pais }}
+
+                </td>
+
+
+                <!-- =================================================
+                     COORDENADAS
+                     ================================================= -->
+
+                <td class="coords">
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-crosshair"></i>
+
+                  </span>
+
+                  {{ z.latitud | coordenadas: 'lat' }},
+                  {{ z.longitud | coordenadas: 'long' }}
+
+                </td>
+
+
+                <!-- =================================================
+                     NIVEL DE RIESGO
+                     ================================================= -->
+
+                <td>
+
+                  <span
+                    class="badge"
+                    [ngClass]="'badge-' + z.nivel_riesgo.toLowerCase()">
+
+                    <span class="risk-dot"></span>
+
+                    {{ z.nivel_riesgo | nivelRiesgo }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- =================================================
+                     FECHA
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-calendar3"></i>
+
+                  </span>
+
+                  {{ z.created_at | fecha }}
+
+                </td>
+
+
+                <!-- =================================================
+                     ACCIONES
+                     ================================================= -->
+
+                <td class="actions">
+
+                  <!-- VER -->
+
+                  <a
+                    [routerLink]="['/zonas', z.id]"
+                    class="btn-icon"
+                    title="Ver zona"
+                    aria-label="Ver zona">
+
+                    <i class="bi bi-eye"></i>
+
+                  </a>
+
+
+                  <!-- EDITAR Y ELIMINAR -->
+
+                  @if (isAdmin()) {
+
+                    <!-- EDITAR -->
+
+                    <a
+                      [routerLink]="[
+                        '/zonas',
+                        z.id,
+                        'editar'
+                      ]"
+                      class="btn-icon btn-icon-edit"
+                      title="Editar zona"
+                      aria-label="Editar zona">
+
+                      <i class="bi bi-pencil"></i>
+
+                    </a>
+
+
+                    <!-- ELIMINAR -->
+
+                    <button
+                      type="button"
+                      class="btn-icon btn-icon-danger"
+                      title="Eliminar zona"
+                      aria-label="Eliminar zona"
+                      [disabled]="deletingId() === z.id"
+                      (click)="confirmDelete(z)">
+
+                      @if (deletingId() === z.id) {
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                      }
+
+                      @else {
+
+                        <i class="bi bi-trash"></i>
+
+                      }
+
+                    </button>
+
+                  }
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  </main>
+
+
+  <!-- =====================================================
+       MODAL PERSONALIZADO DE ELIMINACIÓN
+       ===================================================== -->
+
+  @if (showDeleteModal()) {
+
+    <div
+      class="delete-modal-backdrop"
+      (click)="cancelDelete()">
+
+
+      <!-- =================================================
+           TARJETA
+           ================================================= -->
+
+      <div
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-modal-title"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- =================================================
+             ICONO DE ADVERTENCIA
+             ================================================= -->
+
+        <div class="delete-modal-icon">
+
+          <i class="bi bi-exclamation-triangle-fill"></i>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENIDO
+             ================================================= -->
+
+        <div class="delete-modal-content">
+
+          <h2 id="delete-modal-title">
+
+            Eliminar zona
+
+          </h2>
+
+
+          <p>
+
+            ¿Estás seguro de que deseas eliminar
+
+            <strong>
+              '{{ zonaToDelete()?.nombre }}'
+            </strong>?
+
+            Esta acción no se puede deshacer.
+
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BOTONES
+             ================================================= -->
+
+        <div class="delete-modal-actions">
+
+          <!-- CANCELAR -->
+
+          <button
+            type="button"
+            class="delete-modal-cancel"
+            (click)="cancelDelete()">
+
+            Cancelar
+
+          </button>
+
+
+          <!-- ELIMINAR -->
+
+          <button
+            type="button"
+            class="delete-modal-confirm"
+            [disabled]="deletingId() !== null"
+            (click)="deleteConfirmed()">
+
+            @if (deletingId() !== null) {
+
+              <i class="bi bi-hourglass-split"></i>
+
+              Eliminando...
+
+            }
+
+            @else {
+
+              Eliminar
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

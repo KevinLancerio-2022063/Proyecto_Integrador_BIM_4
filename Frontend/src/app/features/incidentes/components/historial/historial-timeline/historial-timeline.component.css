@@ -1,0 +1,517 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.timeline-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 35% 10%, rgba(35, 115, 255, 0.45), transparent 38%),
+    radial-gradient(circle at 80% 25%, rgba(0, 210, 255, 0.28), transparent 35%),
+    linear-gradient(135deg, #082e86 0%, #0759ad 45%, #087fbd 72%, #07519a 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.header-icon mat-icon {
+  font-size: 23px;
+  width: 23px;
+  height: 23px;
+}
+
+.header-title h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.header-title p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+}
+
+.refresh-button {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(20deg);
+}
+
+.loading-container {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #526174;
+  font-size: 14px;
+}
+
+.error-container {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 25px;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #526174;
+}
+
+.error-container > mat-icon {
+  width: 42px;
+  height: 42px;
+  font-size: 42px;
+  color: #dc3545;
+}
+
+.error-container p {
+  margin: 0 0 5px;
+  font-size: 14px;
+}
+
+.error-container button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+}
+
+.empty-container {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.empty-container > mat-icon {
+  width: 45px;
+  height: 45px;
+  font-size: 45px;
+  color: #1689c7;
+  margin-bottom: 8px;
+}
+
+.empty-container h3 {
+  margin: 0 0 5px;
+  color: #26364a;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.empty-container p {
+  margin: 0;
+  color: #718096;
+  font-size: 13px;
+}
+
+.timeline {
+  position: relative;
+  padding: 5px 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  min-height: 150px;
+}
+
+.timeline-line-container {
+  position: relative;
+  width: 54px;
+  min-width: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-dot {
+  position: relative;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+}
+
+.timeline-dot mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 42px;
+  bottom: -8px;
+  width: 3px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 5px;
+}
+
+.timeline-content {
+  flex: 1;
+  margin: 0 0 18px 12px;
+  padding: 16px 18px;
+  background: #ffffff;
+  border-radius: 13px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+  min-width: 0;
+}
+
+.timeline-item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 13px;
+}
+
+.timeline-date {
+  display: block;
+  margin-bottom: 4px;
+  color: #7a8797;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.timeline-item-header h3 {
+  margin: 0;
+  color: #26364a;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-badge mat-icon {
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
+}
+
+.estado-reportado {
+  color: #8a5a00;
+  background: #fff1c7;
+  border-color: #ffc107;
+}
+
+.timeline-dot.estado-reportado {
+  color: #d99400;
+}
+
+.estado-atencion {
+  color: #0759ad;
+  background: #dcebff;
+  border-color: #1689c7;
+}
+
+.timeline-dot.estado-atencion {
+  color: #087fbd;
+}
+
+.estado-mitigado {
+  color: #087fbd;
+  background: #d9f7ff;
+  border-color: #00bcd4;
+}
+
+.timeline-dot.estado-mitigado {
+  color: #00a6c7;
+}
+
+.estado-cerrado {
+  color: #177245;
+  background: #d9f4e3;
+  border-color: #28a745;
+}
+
+.timeline-dot.estado-cerrado {
+  color: #24964c;
+}
+
+.estado-default {
+  color: #526174;
+  background: #edf0f4;
+  border-color: #aab4c0;
+}
+
+.timeline-dot.estado-default {
+  color: #687789;
+}
+
+.state-change {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 13px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: #f5f8fb;
+  border: 1px solid #e4eaf0;
+}
+
+.state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.state span {
+  color: #8491a1;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.state strong {
+  color: #34465a;
+  font-size: 12px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.state-change > mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  color: #1689c7;
+}
+
+.timeline-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 11px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.timeline-comment mat-icon {
+  width: 17px;
+  height: 17px;
+  font-size: 17px;
+  color: #1689c7;
+  margin-top: 1px;
+}
+
+.timeline-comment p {
+  margin: 0;
+  color: #526174;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.timeline-user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #7a8797;
+  font-size: 11px;
+}
+
+.timeline-user mat-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  color: #1689c7;
+}
+
+.timeline-user strong {
+  color: #45566a;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .timeline-container {
+    padding: 15px;
+  }
+
+  .timeline-header {
+    margin-bottom: 15px;
+  }
+
+  .header-title h2 {
+    font-size: 18px;
+  }
+
+  .header-title p {
+    font-size: 12px;
+  }
+
+  .timeline-line-container {
+    width: 44px;
+    min-width: 44px;
+  }
+
+  .timeline-dot {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .timeline-dot mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+
+  .timeline-line {
+    top: 36px;
+  }
+
+  .timeline-content {
+    margin-left: 8px;
+    padding: 13px;
+  }
+
+  .timeline-item-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .status-badge {
+    align-self: flex-start;
+  }
+
+  .state-change {
+    gap: 7px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-container {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .header-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .header-icon mat-icon {
+    font-size: 20px;
+  }
+
+  .timeline-line-container {
+    width: 38px;
+    min-width: 38px;
+  }
+
+  .timeline-dot {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+
+  .timeline-dot mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+
+  .timeline-line {
+    top: 32px;
+  }
+
+  .timeline-content {
+    margin-left: 6px;
+    padding: 11px;
+  }
+
+  .timeline-item-header h3 {
+    font-size: 15px;
+  }
+
+  .state-change {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .state-change > mat-icon {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+
+  .state strong {
+    font-size: 11px;
+  }
+}

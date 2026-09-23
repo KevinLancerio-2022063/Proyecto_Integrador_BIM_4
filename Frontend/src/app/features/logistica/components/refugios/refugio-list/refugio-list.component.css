@@ -1,0 +1,1001 @@
+/* ============================================
+   Variables y fondo animado
+   ============================================ */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #1a1f4e 0%, #0a0e27 50%, #050714 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Efecto de fondo con partículas sutiles */
+:host::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 110, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(131, 56, 236, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: backgroundPulse 8s ease-in-out infinite;
+}
+
+/* Animación de pulso del fondo */
+@keyframes backgroundPulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   Animaciones keyframes
+   ============================================ */
+
+/* Entrada suave desde abajo */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Entrada con escala */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Brillo que recorre el borde */
+@keyframes borderShine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Pulso de glow */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.6);
+  }
+}
+
+/* Rotación del hexágono activo */
+@keyframes hexRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Flotación suave */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ============================================
+   Contenedor principal
+   ============================================ */
+.container-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* ============================================
+   Encabezado con título gradiente
+   ============================================ */
+.page-header {
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00f0ff 0%, #0ea5e9 50%, #8338ec 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-family: var(--font-body);
+  color: #a0aec0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* ============================================
+   Barra de búsqueda con efecto glass
+   ============================================ */
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  animation: fadeInUp 0.7s ease-out;
+}
+
+.search-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Contenedor del icono con glow */
+.search-icon-wrapper {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.6));
+}
+
+/* Icono nítido sin filtros */
+.search-icon {
+  color: #00f0ff;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1.25rem 1rem 3.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #00f0ff;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 0 4px rgba(0, 240, 255, 0.1),
+    0 8px 24px rgba(0, 240, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.search-input::placeholder {
+  color: #64748b;
+}
+
+/* ============================================
+   Botón principal con efectos paleta (rojo-naranja-amarillo)
+   ============================================ */
+
+/* Botón principal con gradiente cálido y animación de brillo */
+.btn-primary-cyber {
+  position: relative;
+  background: linear-gradient(135deg, #ff006e 0%, #ff6b35 50%, #ffbe0b 100%);
+  background-size: 200% 200%;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 1rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 15px rgba(255, 0, 110, 0.4),
+    0 8px 30px rgba(255, 107, 53, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: fadeInUp 0.7s ease-out, gradientShift 3s ease infinite;
+}
+
+/* Animación del degradado que se desplaza suavemente */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Brillo que recorre el botón al hacer hover */
+.btn-primary-cyber::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+/* Activa el brillo al hacer hover */
+.btn-primary-cyber:hover::before {
+  left: 100%;
+}
+
+/* Efecto hover con elevación y sombras intensificadas */
+.btn-primary-cyber:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 25px rgba(255, 0, 110, 0.6),
+    0 12px 40px rgba(255, 107, 53, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Efecto active al hacer clic */
+.btn-primary-cyber:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* ============================================
+   Filtros hexagonales con degradado y destello
+   ============================================ */
+.filtros-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  animation: fadeInUp 0.8s ease-out;
+  padding: 1rem 0;
+}
+
+.filtro-hex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.filtro-hex:hover {
+  transform: translateY(-8px) scale(1.05);
+}
+
+/* Contenedor del hexágono - completamente transparente */
+.hexagon-wrapper {
+  width: 85px;
+  height: 85px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* El hexágono con clip-path y degradado */
+.hexagon {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  position: relative;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+/* Efecto de relieve en el hexágono */
+.hexagon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Destello blanco que cruza el hexágono */
+.hexagon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Activa el destello al hacer hover */
+.filtro-hex:hover .hexagon::after {
+  left: 150%;
+  transition: left 0.6s ease-in-out;
+}
+
+.hexagon mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.filtro-hex:hover .hexagon mat-icon {
+  transform: scale(1.15) rotate(10deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+/* Hexágono activo con glow */
+.filtro-hex.active .hexagon-wrapper {
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6));
+}
+
+.filtro-hex.active .hexagon {
+  transform: scale(1.1);
+}
+
+.filtro-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a0aec0;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.filtro-hex.active .filtro-label {
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Degradados para cada estado de refugio */
+.hex-todos {
+  background: linear-gradient(135deg, #3b6dd9 0%, #2955a6 40%, #1c3b75 100%);
+}
+
+.hex-disponible {
+  background: linear-gradient(135deg, #2dd4a8 0%, #10b981 40%, #059669 100%);
+}
+
+.hex-parcial {
+  background: linear-gradient(135deg, #f5a04a 0%, #f59e0b 40%, #d97706 100%);
+}
+
+.hex-lleno {
+  background: linear-gradient(135deg, #e86060 0%, #ef4444 40%, #dc2626 100%);
+}
+
+.hex-inactivo {
+  background: linear-gradient(135deg, #8b95a5 0%, #6b7280 40%, #4b5563 100%);
+}
+
+/* ============================================
+   Grid de tarjetas
+   ============================================ */
+.refugios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.75rem;
+  perspective: 1000px;
+}
+
+/* ============================================
+   Tarjeta de refugio con efecto 3D
+   ============================================ */
+.refugio-card {
+  background: linear-gradient(
+    145deg,
+    rgba(26, 31, 78, 0.6) 0%,
+    rgba(10, 14, 39, 0.8) 100%
+  );
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 18px;
+  padding: 1.75rem;
+  backdrop-filter: blur(12px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  animation: fadeInUp 0.6s ease-out backwards;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Línea de brillo superior animada */
+.refugio-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #00f0ff 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: borderShine 3s linear infinite;
+  opacity: 0.7;
+}
+
+/* Efecto de brillo en hover */
+.refugio-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 240, 255, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.refugio-card:hover::after {
+  opacity: 1;
+}
+
+.refugio-card:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+  transform: translateY(-12px) rotateX(2deg);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 240, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   Header de tarjeta
+   ============================================ */
+.refugio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   Icono del estado con color dinámico
+   ============================================ */
+.icono-container {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Brillo interno del icono */
+.icono-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.icono-container mat-icon {
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  transition: all 0.4s ease;
+  z-index: 1;
+}
+
+.refugio-card:hover .icono-container {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.5),
+    0 0 20px currentColor;
+}
+
+.refugio-card:hover .icono-container mat-icon {
+  transform: scale(1.15);
+}
+
+/* ============================================
+   Badge de estado
+   ============================================ */
+.tipo-badge {
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(0, 240, 255, 0.08);
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  backdrop-filter: blur(8px);
+  box-shadow: 
+    0 2px 8px rgba(0, 240, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.refugio-card:hover .tipo-badge {
+  background: rgba(0, 240, 255, 0.15);
+  box-shadow: 
+    0 4px 12px rgba(0, 240, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   Contenido de tarjeta
+   ============================================ */
+.refugio-nombre {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.refugio-direccion {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  color: #a0aec0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.direccion-icono {
+  color: #f59e0b;
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+}
+
+/* ============================================
+   Capacidad y ocupación
+   ============================================ */
+.refugio-capacidad {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.cantidad-info,
+.ocupacion-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.08) 0%,
+    rgba(14, 165, 233, 0.05) 100%
+  );
+  border-radius: 10px;
+  border-left: 3px solid #00f0ff;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 240, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.refugio-card:hover .cantidad-info,
+.refugio-card:hover .ocupacion-info {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.12) 0%,
+    rgba(14, 165, 233, 0.08) 100%
+  );
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 240, 255, 0.1);
+}
+
+.cantidad-icono {
+  font-size: 1.1rem !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  color: #00f0ff;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.5));
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.refugio-card:hover .cantidad-icono {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.7));
+}
+
+.cantidad-texto {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   Barra de progreso
+   ============================================ */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar-wrapper {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-percentage {
+  font-size: 0.9rem;
+  font-weight: 700;
+  min-width: 45px;
+  text-align: right;
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* ============================================
+   Teléfono y fecha
+   ============================================ */
+.refugio-telefono {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #a0aec0;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+}
+
+.telefono-icono {
+  color: #10b981;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+}
+
+.refugio-fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.fecha-icono {
+  font-size: 0.85rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  color: #00f0ff;
+  opacity: 0.7;
+}
+
+/* ============================================
+   Acciones de tarjeta
+   ============================================ */
+.refugio-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 240, 255, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.btn-accion {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-accion mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Brillo en hover de botones */
+.btn-accion::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-accion:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+.btn-editar {
+  background: rgba(0, 240, 255, 0.1);
+  color: #00f0ff;
+  box-shadow: 
+    0 2px 8px rgba(0, 240, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-editar:hover {
+  background: #00f0ff;
+  color: #0a0e27;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 
+    0 6px 16px rgba(0, 240, 255, 0.4),
+    0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+.btn-eliminar {
+  background: rgba(255, 0, 110, 0.1);
+  color: #ff006e;
+  box-shadow: 
+    0 2px 8px rgba(255, 0, 110, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-eliminar:hover {
+  background: #ff006e;
+  color: white;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 
+    0 6px 16px rgba(255, 0, 110, 0.4),
+    0 0 20px rgba(255, 0, 110, 0.3);
+}
+
+/* ============================================
+   Estados de carga y vacío
+   ============================================ */
+.estado-carga,
+.estado-vacio {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(
+    145deg,
+    rgba(26, 31, 78, 0.4) 0%,
+    rgba(10, 14, 39, 0.6) 100%
+  );
+  border-radius: 18px;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  backdrop-filter: blur(12px);
+  animation: scaleIn 0.5s ease-out;
+}
+
+.estado-vacio-icono {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  color: #00f0ff;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+  animation: float 3s ease-in-out infinite;
+}
+
+.estado-vacio-titulo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.estado-vacio-texto {
+  font-size: 0.95rem;
+  color: #a0aec0;
+}
+
+/* ============================================
+   Spinner personalizado
+   ============================================ */
+::ng-deep .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #00f0ff;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  .container-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary-cyber {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .refugios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-container {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hexagon-wrapper {
+    width: 70px;
+    height: 70px;
+  }
+
+  .refugio-capacidad {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .refugio-card {
+    padding: 1.25rem;
+  }
+}

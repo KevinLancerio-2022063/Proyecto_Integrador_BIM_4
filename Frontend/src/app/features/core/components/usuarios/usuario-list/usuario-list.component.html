@@ -1,0 +1,543 @@
+<div class="app-layout">
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
+
+  <main class="main-content">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <h1>
+          Gestión de Usuarios
+        </h1>
+
+        <p class="page-subtitle">
+          Bienvenido,
+          {{ (authService.currentUser$ | async)?.nombre }}
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          routerLink="/perfil"
+          class="btn-secondary">
+
+          <i class="bi bi-person-circle"></i>
+
+          Mi perfil
+
+        </a>
+
+
+        @if (isAdmin()) {
+
+          <a
+            routerLink="/usuarios/nuevo"
+            class="btn-primary">
+
+            <i class="bi bi-person-plus-fill"></i>
+
+            Nuevo Usuario
+
+          </a>
+
+        }
+
+
+        <button
+          class="btn-danger"
+          (click)="logout()">
+
+          <i class="bi bi-box-arrow-right"></i>
+
+          Cerrar sesión
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJE DE ÉXITO
+         ===================================================== -->
+
+    @if (successMessage()) {
+
+      <div class="alert alert-success">
+
+        {{ successMessage() }}
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         MENSAJE DE ERROR
+         ===================================================== -->
+
+    @if (errorMessage()) {
+
+      <div class="alert alert-error">
+
+        {{ errorMessage() }}
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         BUSCADOR
+         ===================================================== -->
+
+    <div class="toolbar">
+
+      <div class="search-wrapper">
+
+        <i class="bi bi-search search-icon"></i>
+
+        <input
+          type="text"
+          placeholder="Buscar por nombre, email o rol..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchChange($event)"
+          class="search-input" />
+
+      </div>
+
+
+      <span class="result-count">
+
+        <i class="bi bi-people-fill"></i>
+
+        {{ filteredUsuarios().length }} usuarios
+
+      </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         CARGANDO
+         ===================================================== -->
+
+    @if (loading()) {
+
+      <div class="loading">
+
+        Cargando usuarios...
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         SIN RESULTADOS
+         ===================================================== -->
+
+    @else if (filteredUsuarios().length === 0) {
+
+      <div class="empty-state">
+
+        @if (searchTerm()) {
+
+          No se encontraron resultados para
+          "{{ searchTerm() }}"
+
+        }
+
+        @else {
+
+          No hay usuarios registrados
+
+        }
+
+      </div>
+
+    }
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+
+    @else {
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+
+              <th>Nombre</th>
+
+              <th>Email</th>
+
+              <th>Teléfono</th>
+
+              <th>Rol</th>
+
+              <th>Disponibilidad</th>
+
+              <th>Creado</th>
+
+              <th>Acciones</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (u of filteredUsuarios(); track u.id) {
+
+              <tr>
+
+                <!-- =================================================
+                     ID
+                     ================================================= -->
+
+                <td>
+
+                  {{ u.id }}
+
+                </td>
+
+
+                <!-- =================================================
+                     NOMBRE
+                     ================================================= -->
+
+                <td class="strong">
+
+                  <span class="user-avatar">
+
+                    {{ u.nombre.charAt(0).toUpperCase() }}
+
+                  </span>
+
+                  <span class="user-name">
+
+                    {{ u.nombre }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- =================================================
+                     EMAIL
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-envelope"></i>
+
+                  </span>
+
+                  {{ u.email }}
+
+                </td>
+
+
+                <!-- =================================================
+                     TELÉFONO
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-telephone"></i>
+
+                  </span>
+
+                  {{ u.telefono | telefono }}
+
+                </td>
+
+
+                <!-- =================================================
+                     ROL
+                     ================================================= -->
+
+                <td>
+
+                  <span
+                    class="badge"
+                    [ngClass]="'badge-' + rolClass(u.rol)">
+
+                    {{ u.rol | rolLabel }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- =================================================
+                     DISPONIBILIDAD
+                     ================================================= -->
+
+                <td>
+
+                  @if (u.disponible) {
+
+                    <span class="availability-badge available">
+
+                      <span class="availability-dot"></span>
+
+                      Disponible
+
+                    </span>
+
+                  }
+
+                  @else {
+
+                    <span class="availability-badge unavailable">
+
+                      <span class="availability-dot"></span>
+
+                      No disponible
+
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- =================================================
+                     FECHA
+                     ================================================= -->
+
+                <td>
+
+                  <span class="table-icon">
+
+                    <i class="bi bi-calendar3"></i>
+
+                  </span>
+
+                  {{ u.created_at | fecha }}
+
+                </td>
+
+
+                <!-- =================================================
+                     ACCIONES
+                     ================================================= -->
+
+                <td class="actions">
+
+                  <!-- VER -->
+
+                  <a
+                    [routerLink]="['/usuarios', u.id]"
+                    class="btn-icon"
+                    title="Ver detalles"
+                    aria-label="Ver detalles">
+
+                    <i class="bi bi-eye"></i>
+
+                  </a>
+
+
+                  <!-- EDITAR Y ELIMINAR -->
+
+                  @if (isAdmin()) {
+
+                    <!-- EDITAR -->
+
+                    <a
+                      [routerLink]="[
+                        '/usuarios',
+                        u.id,
+                        'editar'
+                      ]"
+                      class="btn-icon btn-icon-edit"
+                      title="Editar usuario"
+                      aria-label="Editar usuario">
+
+                      <i class="bi bi-pencil"></i>
+
+                    </a>
+
+
+                    <!-- ELIMINAR -->
+
+                    <button
+                      class="btn-icon btn-icon-danger"
+                      title="Eliminar usuario"
+                      aria-label="Eliminar usuario"
+                      [disabled]="deletingId() === u.id"
+                      (click)="confirmDelete(u)">
+
+                      @if (deletingId() === u.id) {
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                      }
+
+                      @else {
+
+                        <i class="bi bi-trash"></i>
+
+                      }
+
+                    </button>
+
+                  }
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  </main>
+
+
+  <!-- =====================================================
+       MODAL PERSONALIZADO DE ELIMINACIÓN
+       ===================================================== -->
+
+  @if (showDeleteModal()) {
+
+    <div
+      class="delete-modal-backdrop"
+      (click)="cancelDelete()">
+
+
+      <!-- =================================================
+           TARJETA
+           ================================================= -->
+
+      <div
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-modal-title"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- =================================================
+             ICONO DE ADVERTENCIA
+             ================================================= -->
+
+        <div class="delete-modal-icon">
+
+          <i class="bi bi-exclamation-triangle-fill"></i>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENIDO
+             ================================================= -->
+
+        <div class="delete-modal-content">
+
+          <h2 id="delete-modal-title">
+
+            Eliminar usuario
+
+          </h2>
+
+
+          <p>
+
+            ¿Estás seguro de que deseas eliminar
+
+            <strong>
+              '{{ usuarioToDelete()?.nombre }}'
+            </strong>?
+
+            Esta acción no se puede deshacer.
+
+          </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BOTONES
+             ================================================= -->
+
+        <div class="delete-modal-actions">
+
+
+          <!-- CANCELAR -->
+
+          <button
+            type="button"
+            class="delete-modal-cancel"
+            (click)="cancelDelete()">
+
+            Cancelar
+
+          </button>
+
+
+          <!-- ELIMINAR -->
+
+          <button
+            type="button"
+            class="delete-modal-confirm"
+            [disabled]="deletingId() !== null"
+            (click)="deleteConfirmed()">
+
+            @if (deletingId() !== null) {
+
+              <i class="bi bi-hourglass-split"></i>
+
+              Eliminando...
+
+            }
+
+            @else {
+
+              Eliminar
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

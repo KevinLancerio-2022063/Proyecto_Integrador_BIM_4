@@ -1,0 +1,2692 @@
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
+.app-layout {
+  display: flex;
+
+  width: 100%;
+  height: 100vh;
+
+  background-color: #0a0f24;
+  color: #e2e8f0;
+
+  font-family: 'Segoe UI', Roboto, sans-serif;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CURSOR NEÓN SIGED
+   ========================================================= */
+
+.app-layout {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 2L4 26L10.5 19.5L15 29L19 27L14.5 17.5L25 17.5Z' fill='%2300E5FF' stroke='%2307152F' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, auto;
+}
+
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"],
+.btn-icon,
+.menu-item {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 2L4 26L10.5 19.5L15 29L19 27L14.5 17.5L25 17.5Z' fill='%2339FF88' stroke='%2307152F' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, pointer !important;
+}
+
+
+button:disabled {
+  cursor: not-allowed !important;
+}
+
+
+/* =========================================================
+   BARRA LATERAL
+   ========================================================= */
+
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+
+  height: 100vh;
+
+  flex: 0 0 260px;
+
+  background-color: #0e132b;
+
+  border-right:
+    1px solid
+    rgba(0, 198, 255, 0.15);
+
+  position: relative;
+
+  box-sizing: border-box;
+
+  z-index: 10;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   MARCA / LOGO SIGED
+   ========================================================= */
+
+.sidebar-brand {
+  padding: 30px 24px;
+
+  text-align: center;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+}
+
+
+.siged-logo {
+  width: 150px;
+  height: auto;
+
+  display: block;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(34, 197, 148, 0.3)
+    );
+
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+}
+
+
+.siged-logo:hover {
+  transform: scale(1.03);
+
+  filter:
+    drop-shadow(
+      0 0 12px
+      rgba(34, 197, 148, 0.45)
+    );
+}
+
+
+/* =========================================================
+   MENÚ
+   ========================================================= */
+
+.sidebar-menu {
+  margin-top: 20px;
+}
+
+
+.sidebar-menu ul {
+  list-style: none;
+
+  padding: 0;
+  margin: 0;
+}
+
+
+.menu-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 20px;
+
+  color: #94a3b8;
+
+  text-decoration: none;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+  position: relative;
+
+  z-index: 1;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  margin: 6px 14px;
+
+  transition:
+    all 0.4s
+    cubic-bezier(0.25, 1, 0.5, 1);
+
+  box-sizing: border-box;
+}
+
+
+.menu-icon {
+  font-size: 1.25rem;
+
+  flex-shrink: 0;
+}
+
+
+/* Fondo */
+
+.menu-item::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00c6ff,
+      #0072ff
+    );
+
+  z-index: -1;
+
+  transform: scaleX(0);
+
+  transform-origin: left;
+
+  transition:
+    transform 0.4s
+    cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+
+/* Destello */
+
+.menu-item::after {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: -150%;
+
+  width: 50%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0)
+    );
+
+  transform: skewX(-25deg);
+
+  z-index: 2;
+}
+
+
+.menu-item:hover,
+.menu-item.active {
+  color: #ffffff;
+
+  transform:
+    translateY(-2px)
+    scale(1.02);
+
+  box-shadow:
+    0 8px 20px
+    rgba(0, 198, 255, 0.3);
+}
+
+
+.menu-item.active {
+  box-shadow:
+    inset 4px 0 0 #00c6ff,
+    0 4px 15px
+    rgba(0, 198, 255, 0.15);
+}
+
+
+.menu-item:hover::before,
+.menu-item.active::before {
+  transform: scaleX(1);
+}
+
+
+.menu-item:hover::after {
+  left: 150%;
+
+  transition:
+    left 0.6s ease-in-out;
+}
+
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
+.main-content {
+  flex: 1 1 0;
+
+  width: 0;
+
+  min-width: 0;
+  min-height: 0;
+
+  margin-left: 0;
+
+  padding: 2.5rem 2rem;
+
+  box-sizing: border-box;
+
+  /* El contenido principal NO tendrá scroll vertical */
+  overflow-y: hidden;
+
+  /* El scroll horizontal general también queda bloqueado */
+  overflow-x: hidden;
+}
+
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 1.5rem;
+
+  width: 100%;
+
+  min-width: 0;
+
+  margin-bottom: 2rem;
+
+  border-bottom:
+    1px solid
+    rgba(0, 198, 255, 0.15);
+
+  padding-bottom: 1.5rem;
+
+  box-sizing: border-box;
+}
+
+
+.page-header > div:first-child {
+  min-width: 0;
+
+  flex: 1 1 auto;
+}
+
+
+.page-header h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 2.2rem;
+
+  line-height: 1.2;
+
+  text-shadow:
+    0 0 12px
+    rgba(0, 198, 255, 0.3);
+}
+
+
+.page-subtitle {
+  margin: 0.4rem 0 0;
+
+  color: #64748b;
+
+  font-size: 0.95rem;
+}
+
+
+.header-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 0.75rem;
+
+  min-width: 0;
+
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   BOTONES PRINCIPALES
+   ========================================================= */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding:
+    0.65rem 1.25rem;
+
+  border-radius: 30px;
+
+  font-weight: bold;
+
+  font-size: 0.875rem;
+
+  text-decoration: none;
+
+  border: none;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  transition:
+    all 0.2s ease;
+
+  box-sizing: border-box;
+
+  white-space: nowrap;
+}
+
+
+.btn-primary {
+  background:
+    linear-gradient(
+      90deg,
+      #ff007f 0%,
+      #ff6600 100%
+    );
+
+  color: #ffffff;
+}
+
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(255, 0, 127, 0.25);
+}
+
+
+.btn-secondary {
+  background:
+    rgba(18, 24, 56, 0.8);
+
+  color: #00f0ff;
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.4);
+}
+
+
+.btn-secondary:hover {
+  background:
+    rgba(0, 198, 255, 0.1);
+
+  box-shadow:
+    0 0 15px
+    rgba(0, 198, 255, 0.15);
+}
+
+
+.btn-danger {
+  background:
+    rgba(255, 77, 77, 0.1);
+
+  color: #ff4d4d;
+
+  border:
+    1px solid
+    rgba(255, 77, 77, 0.4);
+}
+
+
+.btn-danger:hover {
+  background:
+    rgba(255, 77, 77, 0.15);
+
+  box-shadow:
+    0 0 15px
+    rgba(255, 77, 77, 0.15);
+}
+
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+
+.alert {
+  padding: 0.9rem 1.2rem;
+
+  border-radius: 8px;
+
+  margin-bottom: 1.5rem;
+
+  font-size: 0.9rem;
+
+  box-sizing: border-box;
+}
+
+
+.alert-success {
+  background:
+    rgba(57, 255, 20, 0.08);
+
+  border:
+    1px solid
+    rgba(57, 255, 20, 0.25);
+
+  color: #39ff88;
+}
+
+
+.alert-error {
+  background:
+    rgba(255, 77, 77, 0.08);
+
+  border:
+    1px solid
+    rgba(255, 77, 77, 0.3);
+
+  color: #ff6b6b;
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.toolbar {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  width: 100%;
+
+  min-width: 0;
+
+  margin-bottom: 1.5rem;
+
+  gap: 1.5rem;
+
+  box-sizing: border-box;
+}
+
+
+.search-wrapper {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  max-width: 100%;
+}
+
+
+.search-icon {
+  position: absolute;
+
+  left: 1.1rem;
+
+  color: #64748b;
+
+  z-index: 2;
+}
+
+
+.search-input {
+  display: block;
+
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(18, 24, 56, 0.8);
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.3);
+
+  padding:
+    0.75rem
+    1.25rem
+    0.75rem
+    2.8rem;
+
+  border-radius: 30px;
+
+  color: #ffffff;
+
+  outline: none;
+
+  transition:
+    all 0.2s ease;
+}
+
+
+.search-input::placeholder {
+  color: #64748b;
+}
+
+
+.search-input:focus {
+  border-color: #00c6ff;
+
+  box-shadow:
+    0 0 15px
+    rgba(0, 198, 255, 0.12);
+}
+
+
+.result-count {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  flex: 0 0 auto;
+
+  color: #e2e8f0;
+
+  white-space: nowrap;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+}
+
+
+.result-count i {
+  color: #00f0ff;
+}
+
+
+/* =========================================================
+   TABLA
+   ========================================================= */
+
+.table-wrapper {
+  width: 100%;
+
+  max-width: 100%;
+
+  min-width: 0;
+
+  /*
+   * SOLO LA TABLA tendrá desplazamiento horizontal.
+   */
+  overflow-x: auto;
+
+  /*
+   * La tabla no genera scroll vertical propio.
+   */
+  overflow-y: hidden;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18, 24, 56, 0.85) 0%,
+      rgba(10, 15, 36, 0.85) 100%
+    );
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.2);
+
+  border-radius: 12px;
+
+  /*
+   * Hace que la barra horizontal tenga un
+   * comportamiento suave.
+   */
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(0, 240, 255, 0.35)
+    #0a0f24;
+}
+
+
+
+/* =========================================================
+   TABLA PRINCIPAL
+   ========================================================= */
+
+.data-table {
+
+  width: 100%;
+
+  min-width: 1200px;
+
+  max-width: none;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+
+  box-sizing: border-box;
+}
+
+
+
+.data-table th {
+  padding:
+    0.85rem
+    0.75rem;
+
+  color: #00f0ff;
+
+  text-transform: uppercase;
+
+  font-size: 0.8rem;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  box-sizing: border-box;
+}
+
+
+.data-table td {
+  padding:
+    0.85rem
+    0.75rem;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  vertical-align: middle;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  box-sizing: border-box;
+}
+
+
+.data-table tbody tr {
+  transition:
+    background 0.2s ease;
+}
+
+
+.data-table tbody tr:hover {
+  background:
+    rgba(0, 198, 255, 0.035);
+}
+
+
+/* =========================================================
+   ANCHOS DE LAS 8 COLUMNAS
+   ========================================================= */
+
+/*
+ * ID
+ */
+
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+  width: 55px;
+}
+
+
+/*
+ * Nombre
+ */
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 17%;
+}
+
+
+/*
+ * Email
+ */
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+  width: 21%;
+}
+
+
+/*
+ * Teléfono
+ */
+
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 13%;
+}
+
+
+/*
+ * Rol
+ */
+
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  width: 13%;
+}
+
+
+/*
+ * Disponibilidad
+ */
+
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 14%;
+}
+
+
+/*
+ * Creado
+ */
+
+.data-table th:nth-child(7),
+.data-table td:nth-child(7) {
+  width: 110px;
+}
+
+
+/*
+ * Acciones
+ *
+ * Antes era 7%, lo cual era insuficiente
+ * para 3 botones de 38px.
+ */
+
+.data-table th:nth-child(8),
+.data-table td:nth-child(8) {
+  width: 120px;
+}
+
+
+/* =========================================================
+   NOMBRE / PERFIL DE USUARIO
+   ========================================================= */
+
+.strong {
+  font-weight: 600;
+
+  color: #ffffff;
+
+  white-space: nowrap;
+
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   AVATAR CIRCULAR
+   ========================================================= */
+
+.user-avatar {
+  width: 34px;
+
+  height: 34px;
+
+  min-width: 34px;
+
+  max-width: 34px;
+
+  min-height: 34px;
+
+  max-height: 34px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  vertical-align: middle;
+
+  box-sizing: border-box;
+
+  margin-right: 10px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #00c6ff 0%,
+      #0072ff 100%
+    );
+
+  border:
+    1px solid
+    rgba(0, 240, 255, 0.55);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  text-align: center;
+
+  box-shadow:
+    0 0 10px
+    rgba(0, 198, 255, 0.35);
+
+  flex-shrink: 0;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.user-name {
+  display: inline-block;
+
+  vertical-align: middle;
+
+  max-width: calc(100% - 50px);
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #ffffff;
+}
+
+
+.strong:hover .user-avatar {
+  transform: scale(1.08);
+
+  box-shadow:
+    0 0 15px
+    rgba(0, 198, 255, 0.65);
+}
+
+
+/* =========================================================
+   ICONOS DE TABLA
+   ========================================================= */
+
+.table-icon {
+  color: #7da2c7;
+
+  margin-right: 0.4rem;
+}
+
+
+/* =========================================================
+   BADGES DE ROLES
+   ========================================================= */
+
+.badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 28px;
+
+  max-width: 100%;
+
+  padding:
+    0.3rem
+    0.65rem;
+
+  border-radius: 5px;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  border: 1px solid transparent;
+
+  line-height: 1.2;
+
+  box-sizing: border-box;
+}
+
+
+/* Administrador */
+
+.badge-administrador {
+  background:
+    rgba(0, 240, 255, 0.14);
+
+  color: #00f0ff;
+
+  border-color:
+    rgba(0, 240, 255, 0.3);
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 240, 255, 0.08);
+}
+
+
+/* Voluntario */
+
+.badge-voluntario {
+  background:
+    rgba(57, 255, 20, 0.10);
+
+  color: #39ff14;
+
+  border-color:
+    rgba(57, 255, 20, 0.25);
+
+  box-shadow:
+    0 0 8px
+    rgba(57, 255, 20, 0.06);
+}
+
+
+/* Rescatista */
+
+.badge-rescatista {
+  background:
+    rgba(255, 132, 0, 0.10);
+
+  color: #ff9d3d;
+
+  border-color:
+    rgba(255, 132, 0, 0.25);
+
+  box-shadow:
+    0 0 8px
+    rgba(255, 132, 0, 0.06);
+}
+
+
+/* Coordinador */
+
+.badge-coordinador {
+  background:
+    rgba(139, 92, 246, 0.12);
+
+  color: #a78bfa;
+
+  border-color:
+    rgba(139, 92, 246, 0.28);
+
+  box-shadow:
+    0 0 8px
+    rgba(139, 92, 246, 0.06);
+}
+
+
+/* Gestor de Refugio */
+
+.badge-gestor-de-refugio {
+  background:
+    rgba(0, 198, 255, 0.10);
+
+  color: #38bdf8;
+
+  border-color:
+    rgba(0, 198, 255, 0.28);
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 198, 255, 0.06);
+}
+
+
+/* =========================================================
+   DISPONIBILIDAD
+   ========================================================= */
+
+.availability-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.45rem;
+
+  max-width: 100%;
+
+  padding:
+    0.4rem
+    0.65rem;
+
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  border: 1px solid;
+
+  box-sizing: border-box;
+}
+
+
+/* Disponible */
+
+.availability-badge.available {
+  background:
+    rgba(57, 255, 20, 0.08);
+
+  color: #39ff14;
+
+  border-color:
+    rgba(57, 255, 20, 0.28);
+
+  box-shadow:
+    0 0 10px
+    rgba(57, 255, 20, 0.08);
+}
+
+
+/* No disponible */
+
+.availability-badge.unavailable {
+  background:
+    rgba(255, 45, 85, 0.09);
+
+  color: #ff476f;
+
+  border-color:
+    rgba(255, 45, 85, 0.32);
+
+  box-shadow:
+    0 0 10px
+    rgba(255, 45, 85, 0.08);
+}
+
+
+/* Punto de disponibilidad */
+
+.availability-dot {
+  width: 8px;
+
+  height: 8px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+
+/* Punto verde */
+
+.available .availability-dot {
+  background: #39ff14;
+
+  box-shadow:
+    0 0 8px
+    #39ff14;
+}
+
+
+/* Punto rojo */
+
+.unavailable .availability-dot {
+  background: #ff365f;
+
+  box-shadow:
+    0 0 8px
+    #ff365f;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  gap: 0.45rem;
+
+  white-space: nowrap;
+
+  overflow: visible !important;
+}
+
+
+.btn-icon {
+  width: 38px;
+
+  height: 38px;
+
+  min-width: 38px;
+
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(10, 15, 36, 0.7);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 8px;
+
+  color: #8fb4df;
+
+  font-size: 1rem;
+
+  text-decoration: none;
+
+  transition:
+    all 0.2s ease;
+
+  box-sizing: border-box;
+}
+
+
+.btn-icon:hover {
+  color: #00f0ff;
+
+  border-color:
+    rgba(0, 240, 255, 0.45);
+
+  background:
+    rgba(0, 198, 255, 0.08);
+
+  box-shadow:
+    0 0 10px
+    rgba(0, 198, 255, 0.12);
+
+  transform: translateY(-1px);
+}
+
+
+/* Editar */
+
+.btn-icon-edit:hover {
+  color: #a78bfa;
+
+  border-color:
+    rgba(167, 139, 250, 0.45);
+
+  background:
+    rgba(139, 92, 246, 0.08);
+
+  box-shadow:
+    0 0 10px
+    rgba(139, 92, 246, 0.12);
+}
+
+
+/* Eliminar */
+
+.btn-icon-danger {
+  color: #ff5c76;
+}
+
+
+.btn-icon-danger:hover {
+  color: #ff365f;
+
+  border-color:
+    rgba(255, 54, 95, 0.45);
+
+  background:
+    rgba(255, 45, 85, 0.08);
+
+  box-shadow:
+    0 0 10px
+    rgba(255, 45, 85, 0.12);
+}
+
+
+.btn-icon:disabled {
+  opacity: 0.5;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   ESTADOS
+   ========================================================= */
+
+.loading,
+.empty-state {
+  padding: 4rem 2rem;
+
+  text-align: center;
+
+  color: #64748b;
+
+  background:
+    rgba(18, 24, 56, 0.5);
+
+  border:
+    1px solid
+    rgba(0, 198, 255, 0.12);
+
+  border-radius: 12px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SCROLLBAR DEL CONTENIDO
+   ========================================================= */
+
+.main-content::-webkit-scrollbar {
+  width: 8px;
+
+  height: 8px;
+}
+
+
+.main-content::-webkit-scrollbar-track {
+  background: #0a0f24;
+}
+
+
+.main-content::-webkit-scrollbar-thumb {
+  background:
+    rgba(0, 240, 255, 0.2);
+
+  border-radius: 4px;
+
+  border:
+    2px solid
+    #0a0f24;
+}
+
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(0, 240, 255, 0.5);
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 240, 255, 0.4);
+}
+
+
+/* =========================================================
+   SCROLLBAR DEL SIDEBAR
+   ========================================================= */
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+
+.sidebar::-webkit-scrollbar-track {
+  background: #0e132b;
+}
+
+
+.sidebar::-webkit-scrollbar-thumb {
+  background:
+    rgba(0, 240, 255, 0.2);
+
+  border-radius: 4px;
+}
+
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(0, 240, 255, 0.5);
+}
+
+
+/* =========================================================
+   RESPONSIVE - PANTALLAS MEDIANAS
+   ========================================================= */
+
+/*
+ * IMPORTANTE:
+ *
+ * Antes tenías el breakpoint en 1100px.
+ * Eso no tenía en cuenta que el sidebar
+ * también ocupa espacio.
+ *
+ * Ahora empezamos a compactar desde 1400px.
+ */
+
+@media (max-width: 1400px) {
+
+  .sidebar {
+    width: 220px;
+
+    min-width: 220px;
+
+    flex-basis: 220px;
+  }
+
+
+  .main-content {
+    padding:
+      2rem 1.5rem;
+  }
+
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+
+  .data-table th,
+  .data-table td {
+    padding:
+      0.7rem
+      0.55rem;
+
+    font-size: 0.85rem;
+  }
+
+
+  .user-avatar {
+    width: 30px;
+
+    height: 30px;
+
+    min-width: 30px;
+
+    max-width: 30px;
+
+    min-height: 30px;
+
+    max-height: 30px;
+
+    margin-right: 6px;
+  }
+
+
+  .btn-icon {
+    width: 34px;
+
+    height: 34px;
+
+    min-width: 34px;
+  }
+
+
+  .actions {
+    gap: 0.25rem;
+  }
+
+
+  .data-table th:nth-child(7),
+  .data-table td:nth-child(7) {
+    width: 100px;
+  }
+
+
+  .data-table th:nth-child(8),
+  .data-table td:nth-child(8) {
+    width: 110px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .main-content {
+    padding:
+      1.5rem 1rem;
+  }
+
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+
+  .header-actions {
+    justify-content: flex-start;
+  }
+
+
+  .toolbar {
+    gap: 1rem;
+  }
+
+
+  .data-table th,
+  .data-table td {
+    font-size: 0.8rem;
+
+    padding:
+      0.65rem
+      0.45rem;
+  }
+
+
+  .badge {
+    padding:
+      0.25rem
+      0.5rem;
+
+    font-size: 0.7rem;
+  }
+
+
+  .availability-badge {
+    padding:
+      0.35rem
+      0.5rem;
+
+    font-size: 0.7rem;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVIL / TABLET PEQUEÑA
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  /* -----------------------------------------
+     SIDEBAR COMPACTO
+     ----------------------------------------- */
+
+  .sidebar {
+    width: 80px;
+
+    min-width: 80px;
+
+    flex-basis: 80px;
+  }
+
+
+  .sidebar-brand {
+    padding:
+      20px 10px;
+  }
+
+
+  .siged-logo {
+    width: 60px;
+
+    height: auto;
+  }
+
+
+  .menu-item {
+    justify-content: center;
+
+    padding:
+      14px 10px;
+
+    font-size: 0;
+  }
+
+
+  .menu-icon {
+    font-size: 1.25rem;
+  }
+
+
+  /* -----------------------------------------
+     CONTENIDO
+     ----------------------------------------- */
+
+  .main-content {
+    padding:
+      1.25rem;
+  }
+
+
+  .page-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 1rem;
+  }
+
+
+  .page-header > div:first-child {
+    width: 100%;
+  }
+
+
+  .page-header h1 {
+    font-size: 1.7rem;
+  }
+
+
+  .header-actions {
+    width: 100%;
+
+    max-width: 100%;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    padding:
+      0.6rem
+      1rem;
+
+    font-size: 0.8rem;
+  }
+
+
+  /* -----------------------------------------
+     TOOLBAR
+     ----------------------------------------- */
+
+  .toolbar {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 0.75rem;
+  }
+
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+
+  .result-count {
+    align-self: flex-start;
+  }
+
+
+  /* -----------------------------------------
+     CONTENEDOR DE TABLA
+     ----------------------------------------- */
+
+.table-wrapper {
+  width: 100%;
+
+  max-width: 100%;
+
+  min-width: 0;
+
+  /*
+   * En móvil NO queremos scroll horizontal,
+   * porque la tabla se convierte en tarjetas.
+   */
+  overflow-x: hidden;
+
+  overflow-y: visible;
+
+  border: none;
+
+  background: transparent;
+}
+
+  /* -----------------------------------------
+     TABLA COMO CONTENEDOR
+     ----------------------------------------- */
+
+  .data-table {
+    display: block;
+
+    width: 100%;
+
+    min-width: 0;
+
+    table-layout: auto;
+  }
+
+
+  .data-table thead {
+    display: none;
+  }
+
+
+  .data-table tbody {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1rem;
+
+    width: 100%;
+  }
+
+
+  /* -----------------------------------------
+     CADA FILA SE CONVIERTE EN CARD
+     ----------------------------------------- */
+
+  .data-table tbody tr {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+
+    gap: 0.4rem 0.75rem;
+
+    width: 100%;
+
+    padding: 1rem;
+
+    box-sizing: border-box;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(18, 24, 56, 0.95),
+        rgba(10, 15, 36, 0.95)
+      );
+
+    border:
+      1px solid
+      rgba(0, 198, 255, 0.18);
+
+    border-radius: 12px;
+
+    box-shadow:
+      0 4px 15px
+      rgba(0, 0, 0, 0.15);
+  }
+
+
+  /* -----------------------------------------
+     CELDAS EN MOBILE
+     ----------------------------------------- */
+
+  .data-table td {
+    display: block;
+
+    width: auto !important;
+
+    min-width: 0;
+
+    padding:
+      0.3rem
+      0;
+
+    border: none;
+
+    white-space: normal;
+
+    overflow: visible;
+
+    text-overflow: unset;
+
+    box-sizing: border-box;
+  }
+
+
+  /* -----------------------------------------
+     ID
+     ----------------------------------------- */
+
+  .data-table td:nth-child(1) {
+    grid-column: 1 / -1;
+
+    color: #64748b;
+
+    font-size: 0.72rem;
+
+    padding-bottom: 0;
+  }
+
+
+  /*
+   * Ocultamos visualmente el texto del ID
+   * solamente si se desea una card más limpia.
+   *
+   * El dato sigue estando en el DOM.
+   */
+  .data-table td:nth-child(1)::before {
+    content: 'ID: ';
+
+    color: #64748b;
+  }
+
+
+  /* -----------------------------------------
+     NOMBRE
+     ----------------------------------------- */
+
+  .data-table td:nth-child(2) {
+    grid-column: 1 / -1;
+
+    order: -1;
+
+    padding:
+      0.15rem
+      0
+      0.5rem;
+  }
+
+
+  .strong {
+    display: flex;
+
+    align-items: center;
+
+    white-space: normal;
+  }
+
+
+  .user-avatar {
+    width: 36px;
+
+    height: 36px;
+
+    min-width: 36px;
+
+    max-width: 36px;
+
+    min-height: 36px;
+
+    max-height: 36px;
+
+    margin-right: 10px;
+  }
+
+
+  .user-name {
+    max-width: calc(100% - 46px);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+
+  /* -----------------------------------------
+     EMAIL
+     ----------------------------------------- */
+
+  .data-table td:nth-child(3) {
+    grid-column: 1 / -1;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+    color: #cbd5e1;
+  }
+
+
+  /* -----------------------------------------
+     TELÉFONO
+     ----------------------------------------- */
+
+  .data-table td:nth-child(4) {
+    grid-column: 1;
+
+    min-width: 0;
+  }
+
+
+  /* -----------------------------------------
+     ROL
+     ----------------------------------------- */
+
+  .data-table td:nth-child(5) {
+    grid-column: 2;
+
+    justify-self: end;
+
+    align-self: center;
+
+    min-width: 0;
+  }
+
+
+  .badge {
+    max-width: 100%;
+
+    font-size: 0.7rem;
+  }
+
+
+  /* -----------------------------------------
+     DISPONIBILIDAD
+     ----------------------------------------- */
+
+  .data-table td:nth-child(6) {
+    grid-column: 1 / -1;
+
+    padding-top: 0.25rem;
+  }
+
+
+  /* -----------------------------------------
+     FECHA / CREADO
+     ----------------------------------------- */
+
+  .data-table td:nth-child(7) {
+    grid-column: 1 / -1;
+
+    color: #94a3b8;
+
+    padding-top: 0.15rem;
+  }
+
+
+  /* -----------------------------------------
+     ACCIONES
+     ----------------------------------------- */
+
+  .data-table td:nth-child(8) {
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    width: 100% !important;
+
+    padding-top: 0.75rem;
+
+    margin-top: 0.5rem;
+
+    border-top:
+      1px solid
+      rgba(255, 255, 255, 0.06);
+  }
+
+
+  .actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 0.5rem;
+
+    width: 100%;
+  }
+
+
+  .btn-icon {
+    width: 40px;
+
+    height: 40px;
+
+    min-width: 40px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVIL PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .sidebar {
+    width: 64px;
+
+    min-width: 64px;
+
+    flex-basis: 64px;
+  }
+
+
+  .sidebar-brand {
+    padding:
+      16px 6px;
+  }
+
+
+  .siged-logo {
+    width: 48px;
+  }
+
+
+  .menu-item {
+    margin:
+      5px 8px;
+
+    padding:
+      12px 8px;
+  }
+
+
+  .main-content {
+    padding:
+      1rem 0.75rem;
+  }
+
+
+  .page-header {
+    margin-bottom: 1.25rem;
+
+    padding-bottom: 1rem;
+  }
+
+
+  .page-header h1 {
+    font-size: 1.45rem;
+  }
+
+
+  .page-subtitle {
+    font-size: 0.85rem;
+  }
+
+
+  .header-actions {
+    display: grid;
+
+    grid-template-columns:
+      1fr;
+
+    width: 100%;
+  }
+
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    width: 100%;
+  }
+
+
+  .toolbar {
+    margin-bottom: 1rem;
+  }
+
+
+  .search-input {
+    padding:
+      0.7rem
+      1rem
+      0.7rem
+      2.5rem;
+  }
+
+
+  .data-table tbody {
+    gap: 0.75rem;
+  }
+
+
+  .data-table tbody tr {
+    padding:
+      0.85rem;
+  }
+
+
+  .data-table td:nth-child(3) {
+    font-size: 0.8rem;
+  }
+
+
+  .availability-badge {
+    font-size: 0.7rem;
+  }
+
+
+  .btn-icon {
+    width: 38px;
+
+    height: 38px;
+
+    min-width: 38px;
+  }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD / PANTALLAS MUY PEQUEÑAS
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .sidebar {
+    width: 56px;
+
+    min-width: 56px;
+
+    flex-basis: 56px;
+  }
+
+
+  .siged-logo {
+    width: 42px;
+  }
+
+
+  .menu-item {
+    margin:
+      4px 6px;
+
+    padding:
+      11px 6px;
+  }
+
+
+  .main-content {
+    padding:
+      0.75rem 0.6rem;
+  }
+
+
+  .page-header h1 {
+    font-size: 1.3rem;
+  }
+
+
+  .data-table tbody tr {
+    padding:
+      0.75rem;
+  }
+
+
+  .actions {
+    gap: 0.35rem;
+  }
+
+
+  .btn-icon {
+    width: 36px;
+
+    height: 36px;
+
+    min-width: 36px;
+  }
+}
+
+/* =========================================================
+   MODAL PERSONALIZADO - ELIMINAR
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   FONDO / OVERLAY
+   --------------------------------------------------------- */
+
+.delete-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 1.5rem;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(2, 6, 23, 0.78);
+
+  backdrop-filter:
+    blur(5px);
+
+  -webkit-backdrop-filter:
+    blur(5px);
+
+  animation:
+    deleteBackdropIn 0.2s ease-out;
+}
+
+
+/* ---------------------------------------------------------
+   TARJETA
+   --------------------------------------------------------- */
+
+.delete-modal {
+  width: min(590px, 100%);
+
+  box-sizing: border-box;
+
+  padding: 2.1rem 2.2rem;
+
+  display: grid;
+
+  grid-template-columns:
+    72px minmax(0, 1fr);
+
+  column-gap: 1.35rem;
+
+  row-gap: 1.5rem;
+
+  align-items: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #20243d 0%,
+      #191d35 100%
+    );
+
+  border:
+    1px solid
+    rgba(126, 142, 190, 0.32);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 25px 70px
+      rgba(0, 0, 0, 0.55),
+    0 0 35px
+      rgba(0, 198, 255, 0.04);
+
+  color: #ffffff;
+
+  animation:
+    deleteModalIn 0.25s
+    cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+/* ---------------------------------------------------------
+   ICONO DE ADVERTENCIA
+   --------------------------------------------------------- */
+
+.delete-modal-icon {
+  width: 62px;
+
+  height: 62px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #ffae00;
+
+  font-size: 2.35rem;
+
+  filter:
+    drop-shadow(
+      0 0 10px
+      rgba(255, 174, 0, 0.28)
+    );
+
+  align-self: start;
+
+  margin-top: 0.15rem;
+}
+
+
+.delete-modal-icon i {
+  display: block;
+}
+
+
+/* ---------------------------------------------------------
+   CONTENIDO
+   --------------------------------------------------------- */
+
+.delete-modal-content {
+  min-width: 0;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+
+.delete-modal-content h2 {
+  margin: 0 0 0.8rem;
+
+  color: #ffffff;
+
+  font-size: 1.75rem;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.02em;
+}
+
+
+.delete-modal-content p {
+  margin: 0;
+
+  color: #c4c9d8;
+
+  font-size: 1rem;
+
+  line-height: 1.7;
+
+  font-weight: 400;
+}
+
+
+.delete-modal-content strong {
+  color: #e8ebf3;
+
+  font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   BOTONES
+   --------------------------------------------------------- */
+
+.delete-modal-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 1.25rem;
+
+  width: 100%;
+
+  padding-top: 0.1rem;
+}
+
+
+/* ---------------------------------------------------------
+   BOTÓN CANCELAR
+   --------------------------------------------------------- */
+
+.delete-modal-cancel,
+.delete-modal-confirm {
+  height: 60px;
+
+  min-width: 153px;
+
+  padding:
+    0 1.5rem;
+
+  border-radius: 13px;
+
+  font-family:
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.55rem;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+
+  outline: none;
+}
+
+
+.delete-modal-cancel {
+  background:
+    rgba(42, 47, 72, 0.9);
+
+  color: #aeb5c8;
+
+  border:
+    1px solid
+    rgba(117, 128, 160, 0.42);
+}
+
+
+.delete-modal-cancel:hover {
+  background:
+    rgba(53, 59, 88, 0.95);
+
+  color: #ffffff;
+
+  border-color:
+    rgba(140, 151, 184, 0.6);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* ---------------------------------------------------------
+   BOTÓN ELIMINAR
+   --------------------------------------------------------- */
+
+.delete-modal-confirm {
+  background:
+    linear-gradient(
+      135deg,
+      #ff4747 0%,
+      #f63d3d 100%
+    );
+
+  color: #ffffff;
+
+  border:
+    1px solid
+    rgba(255, 107, 107, 0.45);
+
+  box-shadow:
+    0 7px 18px
+    rgba(255, 55, 55, 0.22);
+}
+
+
+.delete-modal-confirm:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #ff5555 0%,
+      #ff4141 100%
+    );
+
+  box-shadow:
+    0 10px 25px
+    rgba(255, 55, 55, 0.32);
+
+  transform:
+    translateY(-2px);
+}
+
+
+.delete-modal-confirm:active:not(:disabled) {
+  transform:
+    translateY(0);
+}
+
+
+.delete-modal-confirm:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* ---------------------------------------------------------
+   ANIMACIONES
+   --------------------------------------------------------- */
+
+@keyframes deleteBackdropIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes deleteModalIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .delete-modal {
+    padding: 1.6rem;
+
+    grid-template-columns:
+      54px minmax(0, 1fr);
+
+    column-gap: 1rem;
+
+    row-gap: 1.3rem;
+
+    border-radius: 16px;
+  }
+
+
+  .delete-modal-icon {
+    width: 50px;
+
+    height: 50px;
+
+    font-size: 2rem;
+  }
+
+
+  .delete-modal-content h2 {
+    font-size: 1.4rem;
+  }
+
+
+  .delete-modal-content p {
+    font-size: 0.9rem;
+
+    line-height: 1.55;
+  }
+
+
+  .delete-modal-actions {
+    gap: 0.75rem;
+  }
+
+
+  .delete-modal-cancel,
+  .delete-modal-confirm {
+    height: 52px;
+
+    min-width: 0;
+
+    flex: 1;
+
+    padding:
+      0 1rem;
+
+    font-size: 0.9rem;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVIL
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+  .delete-modal-backdrop {
+    padding: 1rem;
+  }
+
+
+  .delete-modal {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 1rem;
+
+    padding: 1.5rem;
+
+    text-align: center;
+
+    border-radius: 16px;
+  }
+
+
+  .delete-modal-icon {
+    align-self: center;
+
+    margin: 0;
+  }
+
+
+  .delete-modal-content h2 {
+    margin-bottom: 0.65rem;
+
+    font-size: 1.35rem;
+  }
+
+
+  .delete-modal-content p {
+    font-size: 0.88rem;
+  }
+
+
+  .delete-modal-actions {
+    display: flex;
+
+    flex-direction: column-reverse;
+
+    gap: 0.7rem;
+
+    padding-top: 0.5rem;
+  }
+
+
+  .delete-modal-cancel,
+  .delete-modal-confirm {
+    width: 100%;
+
+    flex: none;
+
+    height: 50px;
+  }
+
+}

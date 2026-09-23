@@ -1,0 +1,131 @@
+<!-- Contenedor principal de la página -->
+<div class="container-page">
+
+  <!-- Encabezado de la sección -->
+  <div class="page-header">
+    <h1 class="page-title">Gestión de Incidentes</h1>
+    <p class="page-subtitle">Reporte y seguimiento de emergencias registradas</p>
+  </div>
+
+  <!-- Barra de búsqueda y botón de acción -->
+  <div class="header-actions">
+    <div class="search-container">
+      <div class="search-icon-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda" 
+        placeholder="Búsqueda global (ej: inundación, terremoto, zona norte)..."
+        class="search-input"
+      />
+    </div>
+    <button class="btn-primary-cyber" (click)="abrirModalCrear()">
+      <mat-icon>add</mat-icon>
+      Registrar incidente
+    </button>
+  </div>
+
+  <!-- Filtros hexagonales por tipo de incidente -->
+  <div class="filtros-container">
+    <div 
+      *ngFor="let filtro of filtros" 
+      class="filtro-hex"
+      [class.active]="filtroActivo === filtro.id"
+      (click)="setFiltro(filtro.id)">
+      <div class="hexagon-wrapper">
+        <div class="hexagon" [class]="getHexagonClass(filtro.id)">
+          <mat-icon>{{ filtro.icono }}</mat-icon>
+        </div>
+      </div>
+      <span class="filtro-label">{{ filtro.etiqueta }}</span>
+    </div>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="estado-carga">
+    <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+    <p class="text-secondary mt-4">Cargando incidentes...</p>
+  </div>
+
+  <!-- Grid de tarjetas de incidentes -->
+  <div *ngIf="!loading && incidentesFiltrados.length > 0" class="incidentes-grid">
+    <div 
+      *ngFor="let incidente of incidentesFiltrados; let i = index" 
+      class="incidente-card"
+      [style.animation-delay]="(i * 80) + 'ms'">
+      
+      <!-- Encabezado de la tarjeta con icono y tipo -->
+      <div class="incidente-header">
+        <div class="icono-container" [style.background]="getColorNivel(getNivelEmergencia(incidente))">
+          <mat-icon>{{ getIconoNivel(getNivelEmergencia(incidente)) }}</mat-icon>
+        </div>
+        <span class="tipo-badge">{{ incidente.tipo }}</span>
+      </div>
+
+      <!-- Título del incidente -->
+      <h3 class="incidente-nombre">{{ incidente.titulo }}</h3>
+
+      <!-- Cantidad de personas afectadas -->
+      <div class="incidente-afectados">
+        <div class="cantidad-info">
+          <mat-icon class="cantidad-icono">group</mat-icon>
+          <span class="cantidad-texto">
+            {{ getPersonasAfectadas(incidente) }} AFECTADOS
+          </span>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <p class="incidente-descripcion">
+        {{ incidente.descripcion || "Sin descripción detallada proporcionada para este reporte." }}
+      </p>
+
+      <!-- Nivel y Estado -->
+      <div class="incidente-detalles">
+        <div class="detalle-item">
+          <strong>Nivel:</strong> {{ (getNivelEmergencia(incidente) | nivelEmergencia).texto }}
+        </div>
+        <div class="detalle-item">
+          <strong>Estado:</strong> {{ (incidente.estado | estadoIncidente).texto }}
+        </div>
+      </div>
+
+      <!-- Fecha de registro -->
+      <p class="incidente-fecha" *ngIf="incidente.fecha_reporte">
+        <mat-icon class="fecha-icono">calendar_today</mat-icon>
+        Reportado: {{ incidente.fecha_reporte | fechaFormateada }}
+      </p>
+
+      <!-- Botones de acción (Editar y Eliminar) -->
+      <div class="incidente-acciones">
+        <button class="btn-accion btn-editar" (click)="abrirModalEditar(incidente)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button class="btn-accion btn-eliminar" (click)="prepararEliminacion(incidente)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vacío cuando no hay incidentes -->
+  <div *ngIf="!loading && incidentesFiltrados.length === 0" class="estado-vacio">
+    <mat-icon class="estado-vacio-icono">report_problem</mat-icon>
+    <h3 class="estado-vacio-titulo">No hay incidentes registrados</h3>
+    <p class="estado-vacio-texto">
+      {{ busqueda ? "No se encontraron incidentes con ese criterio" : "Comienza registrando tu primer incidente" }}
+    </p>
+  </div>
+
+  <!-- Diálogo de confirmación para eliminar incidente -->
+  <app-confirm-dialog
+    [isVisible]="mostrarDialogoEliminacion"
+    title="Eliminar incidente"
+    [message]="'¿Estás seguro de que deseas eliminar \'' + (incidenteSeleccionadoParaEliminar?.titulo || 'este incidente') + '\'? Esta acción no se puede deshacer.'"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    (confirmed)="confirmarEliminacion()"
+    (cancelled)="cerrarDialogoEliminacion()">
+  </app-confirm-dialog>
+</div>

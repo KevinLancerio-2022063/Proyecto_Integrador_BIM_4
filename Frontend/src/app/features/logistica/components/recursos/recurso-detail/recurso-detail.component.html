@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Detalle del Recurso</h2>
+    <a mat-raised-button color="primary" routerLink="/logistica/recursos">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a la lista
+    </a>
+  </div>
+
+  <mat-card class="shadow-sm" *ngIf="recurso; else loading">
+    <mat-card-header class="bg-light p-3 border-bottom">
+      <mat-card-title class="fs-4">{{ recurso.nombre }}</mat-card-title>
+      <mat-card-subtitle>Tipo: {{ recurso.tipo }}</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content class="p-4">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <strong>Cantidad Total:</strong> {{ recurso.cantidad_total }} {{ recurso.unidad_medida }}
+        </div>
+        <div class="col-md-6 mb-3">
+          <strong>Estado:</strong> 
+          <span class="badge" [ngClass]="recurso.activo ? 'bg-success' : 'bg-secondary'">
+            {{ recurso.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+        <div class="col-12 mb-3">
+          <strong>Descripción:</strong>
+          <p class="text-muted mt-1">{{ recurso.descripcion || 'Sin descripción disponible' }}</p>
+        </div>
+        <div class="col-md-6">
+          <strong>Fecha de Creación:</strong> {{ recurso.created_at | date:'medium' }}
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="p-3 border-top d-flex justify-content-end gap-2">
+      <button mat-raised-button color="accent" [routerLink]="['/logistica/recursos', recurso.id, 'editar']">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <ng-template #loading>
+    <div class="text-center py-5">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="mt-2 text-muted">Cargando información del recurso...</p>
+    </div>
+  </ng-template>
+</div>

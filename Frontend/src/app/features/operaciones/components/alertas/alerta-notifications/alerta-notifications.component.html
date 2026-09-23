@@ -1,0 +1,226 @@
+<div class="notifications-container">
+
+  <!-- ENCABEZADO -->
+  <div class="notifications-header">
+
+    <div class="header-content">
+
+      <div class="header-icon">
+        <mat-icon>notifications_active</mat-icon>
+      </div>
+
+      <div>
+        <h1 class="notifications-title">
+          Notificaciones de Alertas
+        </h1>
+
+        <p class="notifications-subtitle">
+          Consulta las alertas y notificaciones recientes del sistema
+        </p>
+      </div>
+
+    </div>
+
+    <div class="notifications-counter">
+      <mat-icon>notifications</mat-icon>
+      <span>{{ alertas.length }}</span>
+    </div>
+
+  </div>
+
+
+  <!-- CARGANDO -->
+  <div *ngIf="loading" class="estado-carga">
+
+    <mat-icon class="loading-icon">
+      notifications_active
+    </mat-icon>
+
+    <p>
+      Cargando notificaciones...
+    </p>
+
+  </div>
+
+
+  <!-- LISTA DE NOTIFICACIONES -->
+  <div
+    *ngIf="!loading && alertas.length > 0"
+    class="notifications-list"
+  >
+
+    <div
+      *ngFor="let alerta of alertas; trackBy: trackByAlerta"
+      class="notification-card"
+      [class.no-leida]="alerta.estado === 'Activa'"
+      (click)="marcarComoLeida(alerta)"
+    >
+
+      <!-- ICONO DEL NIVEL -->
+      <div
+        class="notification-icon"
+        [ngClass]="getClaseNivel(alerta.nivel)"
+      >
+
+        <mat-icon>
+          {{ getIconoNivel(alerta.nivel) }}
+        </mat-icon>
+
+      </div>
+
+
+      <!-- INFORMACIÓN DE LA ALERTA -->
+      <div class="notification-content">
+
+        <div class="notification-top">
+
+          <!-- TIPO -->
+          <span class="notification-type">
+
+            <mat-icon>
+              {{ getIconoTipo(alerta.tipo) }}
+            </mat-icon>
+
+            {{ alerta.tipo }}
+
+          </span>
+
+
+          <!-- NIVEL -->
+          <span
+            class="notification-level"
+            [ngClass]="getClaseNivel(alerta.nivel)"
+          >
+            {{ alerta.nivel }}
+          </span>
+
+        </div>
+
+
+        <!-- MENSAJE -->
+        <p class="notification-message">
+          {{ alerta.mensaje }}
+        </p>
+
+
+        <!-- INFORMACIÓN ADICIONAL -->
+        <div class="notification-info">
+
+          <span>
+
+            <mat-icon>
+              calendar_today
+            </mat-icon>
+
+            {{ alerta.fecha | date:'dd/MM/yyyy HH:mm' }}
+
+          </span>
+
+
+          <span>
+
+            <mat-icon>
+              flag
+            </mat-icon>
+
+            {{ alerta.estado }}
+
+          </span>
+
+
+          <span *ngIf="alerta.incidente_id">
+
+            <mat-icon>
+              warning
+            </mat-icon>
+
+            Incidente #{{ alerta.incidente_id }}
+
+          </span>
+
+
+          <span *ngIf="alerta.zona_id">
+
+            <mat-icon>
+              location_on
+            </mat-icon>
+
+            Zona #{{ alerta.zona_id }}
+
+          </span>
+
+
+          <span *ngIf="alerta.refugio_id">
+
+            <mat-icon>
+              home
+            </mat-icon>
+
+            Refugio #{{ alerta.refugio_id }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ESTADO -->
+      <div class="notification-status">
+
+        <span
+          *ngIf="alerta.estado === 'Activa'"
+          class="status-dot"
+          title="Alerta activa">
+        </span>
+
+
+        <mat-icon
+          *ngIf="alerta.estado === 'Leida'"
+          class="status-read"
+          title="Alerta leída"
+        >
+          done
+        </mat-icon>
+
+
+        <mat-icon
+          *ngIf="alerta.estado === 'Resuelta'"
+          class="status-resolved"
+          title="Alerta resuelta"
+        >
+          check_circle
+        </mat-icon>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SIN NOTIFICACIONES -->
+  <div
+    *ngIf="!loading && alertas.length === 0"
+    class="estado-vacio"
+  >
+
+    <div class="empty-icon">
+
+      <mat-icon>
+        notifications_none
+      </mat-icon>
+
+    </div>
+
+    <h3>
+      No hay notificaciones
+    </h3>
+
+    <p>
+      No existen alertas registradas para mostrar en este momento.
+    </p>
+
+  </div>
+
+</div>

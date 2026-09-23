@@ -1,0 +1,237 @@
+<!-- Contenedor del modal con animación de entrada -->
+<div class="modal-container animate-modal-in">
+  
+  <!-- Encabezado del modal con gradiente -->
+  <div class="modal-header">
+    <div class="modal-header-content">
+      <mat-icon class="modal-header-icon">assignment</mat-icon>
+      <h2 class="modal-titulo">{{ isEdit ? "Editar asignación" : "Nueva asignación" }}</h2>
+    </div>
+    <button class="btn-cerrar" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Formulario reactivo -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="formulario-contenido">
+      
+      <!-- Mensaje de error inline -->
+      <div *ngIf="mensajeErrorInline" class="mensaje-error-inline">
+        <mat-icon class="mensaje-icono">error_outline</mat-icon>
+        <span class="mensaje-texto">{{ mensajeErrorInline }}</span>
+      </div>
+
+      <!-- Campo recurso_id con iconos dinámicos por tipo -->
+      <div class="form-group">
+        <label class="form-label">Recurso*</label>
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="recurso_id" class="form-select" placeholder="Seleccionar recurso...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('recurso_id')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getColorIconoRecurso(getTipoRecurso(form.get('recurso_id')?.value))">
+                  {{ getIconoRecurso(getTipoRecurso(form.get('recurso_id')?.value)) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ getNombreRecurso(form.get('recurso_id')?.value) }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let recurso of recursos" [value]="recurso.id">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="getColorIconoRecurso(recurso.tipo)">
+                  {{ getIconoRecurso(recurso.tipo) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ recurso.nombre }} ({{ recurso.tipo }})</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('recurso_id')?.hasError('required')" class="error-message">
+          El recurso es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Campo cantidad -->
+      <div class="form-group">
+        <label class="form-label">Cantidad*</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">straighten</mat-icon>
+          <input 
+            matInput 
+            type="number" 
+            min="1"
+            formControlName="cantidad"
+            class="form-input"
+            placeholder="Ej. 10"
+          />
+        </div>
+        <mat-error *ngIf="form.get('cantidad')?.hasError('required')" class="error-message">
+          La cantidad es obligatoria
+        </mat-error>
+        <mat-error *ngIf="form.get('cantidad')?.hasError('min')" class="error-message">
+          La cantidad debe ser mayor a cero
+        </mat-error>
+      </div>
+
+      <!-- Campo estado con select personalizado -->
+      <div class="form-group">
+        <label class="form-label">Estado*</label>
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="estado" class="form-select" placeholder="Seleccionar estado...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('estado')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getEstadoColor(form.get('estado')?.value)">
+                  {{ getEstadoIcono(form.get('estado')?.value) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ form.get('estado')?.value }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let estado of estadosAsignacion" [value]="estado.valor">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="estado.color">
+                  {{ estado.icono }}
+                </mat-icon>
+                <span class="opcion-texto">{{ estado.texto }}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('estado')?.hasError('required')" class="error-message">
+          El estado es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Selector de tipo de destino -->
+      <div class="form-group">
+        <label class="form-label">Tipo de destino*</label>
+        <div class="destino-selector">
+          <button 
+            type="button" 
+            class="destino-btn"
+            [class.active]="tipoDestino === 'incidente'"
+            (click)="onTipoDestinoChange('incidente')">
+            <mat-icon>warning</mat-icon>
+            Incidente
+          </button>
+          <button 
+            type="button" 
+            class="destino-btn"
+            [class.active]="tipoDestino === 'refugio'"
+            (click)="onTipoDestinoChange('refugio')">
+            <mat-icon>home</mat-icon>
+            Refugio
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo incidente_id con iconos dinámicos por tipo -->
+      <div class="form-group" *ngIf="tipoDestino === 'incidente'">
+        <label class="form-label">Incidente destino*</label>
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="incidente_id" class="form-select" placeholder="Seleccionar incidente...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('incidente_id')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getColorIconoIncidente(getTipoIncidente(form.get('incidente_id')?.value))">
+                  {{ getIconoIncidente(getTipoIncidente(form.get('incidente_id')?.value)) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ getNombreIncidente(form.get('incidente_id')?.value) }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let incidente of incidentes" [value]="incidente.id">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="getColorIconoIncidente(incidente.tipo)">
+                  {{ getIconoIncidente(incidente.tipo) }}
+                </mat-icon>
+                <span class="opcion-texto">{{ incidente.titulo }} ({{ incidente.tipo }})</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('incidente_id')?.hasError('required')" class="error-message">
+          El incidente es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Campo refugio_id con select y color único -->
+      <div class="form-group" *ngIf="tipoDestino === 'refugio'">
+        <label class="form-label">Refugio destino*</label>
+        <div class="input-wrapper select-wrapper">
+          <mat-select formControlName="refugio_id" class="form-select" placeholder="Seleccionar refugio...">
+            <mat-select-trigger>
+              <div class="opcion-contenido" *ngIf="form.get('refugio_id')?.value">
+                <mat-icon class="opcion-icono" [style.color]="getColorIconoRefugio()">
+                  home
+                </mat-icon>
+                <span class="opcion-texto">{{ getNombreRefugio(form.get('refugio_id')?.value) }}</span>
+              </div>
+            </mat-select-trigger>
+            
+            <mat-option *ngFor="let refugio of refugios" [value]="refugio.id">
+              <div class="opcion-contenido">
+                <mat-icon class="opcion-icono" [style.color]="getColorIconoRefugio()">
+                  home
+                </mat-icon>
+                <span class="opcion-texto">{{ refugio.nombre }}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </div>
+        <mat-error *ngIf="form.get('refugio_id')?.hasError('required')" class="error-message">
+          El refugio es obligatorio
+        </mat-error>
+      </div>
+
+      <!-- Campo usuario_asigna_id -->
+      <div class="form-group">
+        <label class="form-label">ID del usuario que asigna</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">person</mat-icon>
+          <input 
+            matInput 
+            type="number"
+            formControlName="usuario_asigna_id"
+            class="form-input"
+            placeholder="Ej. 1"
+          />
+        </div>
+      </div>
+
+      <!-- Campo observaciones -->
+      <div class="form-group">
+        <label class="form-label">Observaciones <span class="opcional-label">(opcional)</span></label>
+        <div class="input-wrapper textarea-wrapper">
+          <mat-icon class="input-icon textarea-icon">note</mat-icon>
+          <textarea 
+            matInput 
+            formControlName="observaciones" 
+            rows="3" 
+            placeholder="Información adicional sobre la asignación"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="botones-accion">
+      <button 
+        type="button" 
+        (click)="onCancel()" 
+        class="btn-cancelar"
+        [disabled]="loading">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn-registrar"
+        [disabled]="loading || form.invalid">
+        <mat-icon *ngIf="!loading">check</mat-icon>
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        {{ isEdit ? "Guardar cambios" : "Crear" }}
+      </button>
+    </div>
+  </form>
+</div>

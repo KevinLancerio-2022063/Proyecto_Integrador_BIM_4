@@ -1,0 +1,129 @@
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+    <h1 class="dashboard-titulo">Dashboard de Estadísticas</h1>
+    <p class="dashboard-subtitulo">Visualización de recursos, refugios, asignaciones e incidentes</p>
+  </div>
+
+  <div *ngIf="loading" class="dashboard-loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando estadísticas...</p>
+  </div>
+
+  <div *ngIf="!loading && estadisticas" class="dashboard-content">
+
+    <!-- Tarjetas de resumen filtradas por rol -->
+    <div class="resumen-cards">
+      
+      <div class="card-resumen" *ngIf="puedeVerTarjeta('totalRecursos')">
+        <div class="card-icono icono-recursos">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+        <div class="card-info">
+          <span class="card-numero">{{ estadisticas.totalRecursos }}</span>
+          <span class="card-etiqueta">Total Recursos</span>
+        </div>
+      </div>
+
+      <div class="card-resumen" *ngIf="puedeVerTarjeta('totalRefugios')">
+        <div class="card-icono icono-refugios">
+          <mat-icon>home</mat-icon>
+        </div>
+        <div class="card-info">
+          <span class="card-numero">{{ estadisticas.totalRefugios }}</span>
+          <span class="card-etiqueta">Total Refugios</span>
+        </div>
+      </div>
+
+      <div class="card-resumen" *ngIf="puedeVerTarjeta('totalAsignaciones')">
+        <div class="card-icono icono-asignaciones">
+          <mat-icon>assignment</mat-icon>
+        </div>
+        <div class="card-info">
+          <span class="card-numero">{{ estadisticas.totalAsignaciones }}</span>
+          <span class="card-etiqueta">Total Asignaciones</span>
+        </div>
+      </div>
+
+      <div class="card-resumen" *ngIf="puedeVerTarjeta('ocupacionPromedio')">
+        <div class="card-icono icono-ocupacion">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="card-info">
+          <span class="card-numero">{{ ocupacionPromedio }}%</span>
+          <span class="card-etiqueta">Ocupación Promedio</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Gráficas circulares filtradas por rol -->
+    <div class="graficas-container">
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('recursosPorTipo') && recursosPorTipo.length > 0"
+        [datos]="recursosPorTipo"
+        titulo="Recursos por Categoría"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('asignacionesPorEstado') && asignacionesPorEstado.length > 0"
+        [datos]="asignacionesPorEstado"
+        titulo="Asignaciones por Estado"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('alertasPorNivel') && alertasPorNivel.length > 0"
+        [datos]="alertasPorNivel"
+        titulo="Alertas por Nivel"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('asignacionesPersonalPorRol') && asignacionesPersonalPorRol.length > 0"
+        [datos]="asignacionesPersonalPorRol"
+        titulo="Personal por Rol"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('refugiosPorEstado') && refugiosPorEstado.length > 0"
+        [datos]="refugiosPorEstado"
+        titulo="Refugios por Estado"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('incidentesPorTipo') && incidentesPorTipo.length > 0"
+        [datos]="incidentesPorTipo"
+        titulo="Incidentes por Tipo"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('historialPorEstadoAnterior') && historialPorEstadoAnterior.length > 0"
+        [datos]="historialPorEstadoAnterior"
+        titulo="Historial - Estados Anteriores"
+        [tamano]="250">
+      </app-grafica-circular>
+
+      <app-grafica-circular
+        *ngIf="puedeVerGrafica('historialPorEstadoNuevo') && historialPorEstadoNuevo.length > 0"
+        [datos]="historialPorEstadoNuevo"
+        titulo="Historial - Estados Nuevos"
+        [tamano]="250">
+      </app-grafica-circular>
+
+    </div>
+
+    <!-- Mensaje opcional si el usuario no tiene gráficas asignadas -->
+    <div *ngIf="!loading && estadisticas && !tieneAlgunaGrafica()" class="no-graficas-msg">
+      <mat-icon>info</mat-icon>
+      <p>No hay gráficas disponibles para tu rol actual.</p>
+    </div>
+
+  </div>
+
+</div>

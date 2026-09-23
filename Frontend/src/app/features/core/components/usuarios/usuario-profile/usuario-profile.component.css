@@ -1,0 +1,671 @@
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.page-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 2rem;
+
+  border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+
+  padding-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 2rem;
+
+  text-shadow:
+    0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+
+/* =========================================================
+   BOTÓN VOLVER
+   ========================================================= */
+
+.btn-secondary {
+  padding: 0.65rem 1.25rem;
+
+  border-radius: 30px;
+
+  font-weight: bold;
+  font-size: 0.875rem;
+
+  text-decoration: none;
+
+  background: rgba(18, 24, 56, 0.8);
+
+  color: #00f0ff;
+
+  border: 1px solid rgba(0, 240, 255, 0.4);
+
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 240, 255, 0.15);
+
+  box-shadow:
+    0 0 18px rgba(0, 240, 255, 0.15);
+}
+
+
+/* =========================================================
+   TARJETA DE PERFIL
+   ========================================================= */
+
+.profile-card {
+  position: relative;
+
+  /*
+   * Crea un contexto independiente para
+   * los pseudo-elementos.
+   */
+  isolation: isolate;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(18, 24, 56, 0.96) 0%,
+      rgba(10, 15, 36, 0.98) 100%
+    );
+
+  border:
+    1px solid rgba(0, 240, 255, 0.25);
+
+  border-radius: 14px;
+
+  padding: 2.5rem;
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 240, 255, 0.015);
+
+  /*
+   * La estela queda contenida dentro
+   * de los límites de la tarjeta.
+   */
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   PROPIEDAD PARA ANIMAR EL GRADIENTE
+   ========================================================= */
+
+@property --trail-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+
+/* =========================================================
+   ESTELA NEÓN - GLOW
+   ========================================================= */
+
+.profile-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    conic-gradient(
+      from var(--trail-angle),
+
+      /*
+       * Borde apagado
+       */
+      transparent 0deg,
+      transparent 300deg,
+
+      /*
+       * Inicio de la estela
+       */
+      rgba(0, 240, 255, 0.08) 310deg,
+      rgba(0, 240, 255, 0.25) 318deg,
+      rgba(0, 240, 255, 0.65) 326deg,
+
+      /*
+       * Punto más brillante
+       */
+      #00f0ff 333deg,
+
+      /*
+       * Cola
+       */
+      rgba(0, 240, 255, 0.45) 340deg,
+      rgba(0, 240, 255, 0.12) 348deg,
+
+      transparent 356deg,
+      transparent 360deg
+    );
+
+  /*
+   * Elimina el centro del gradiente.
+   *
+   * Solo queda visible el borde.
+   */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+
+  /*
+   * Glow controlado.
+   */
+  filter:
+    drop-shadow(
+      0 0 4px rgba(0, 240, 255, 0.55)
+    )
+    drop-shadow(
+      0 0 8px rgba(0, 240, 255, 0.2)
+    );
+
+  opacity: 0.8;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  animation:
+    trailRotation 4.5s linear infinite;
+}
+
+
+/* =========================================================
+   ESTELA NEÓN - LÍNEA PRINCIPAL
+   ========================================================= */
+
+.profile-card::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    conic-gradient(
+      from var(--trail-angle),
+
+      /*
+       * Mayor parte del borde apagada
+       */
+      rgba(0, 240, 255, 0.12) 0deg,
+      rgba(0, 240, 255, 0.12) 250deg,
+
+      transparent 265deg,
+
+      /*
+       * Inicio de la estela
+       */
+      rgba(0, 240, 255, 0.12) 275deg,
+      rgba(0, 240, 255, 0.40) 282deg,
+
+      /*
+       * Núcleo de luz
+       */
+      #00f0ff 290deg,
+
+      /*
+       * Cola
+       */
+      rgba(0, 240, 255, 0.55) 298deg,
+      rgba(0, 240, 255, 0.20) 306deg,
+
+      /*
+       * Pequeño toque violeta
+       */
+      rgba(168, 85, 247, 0.18) 314deg,
+
+      transparent 325deg,
+
+      rgba(0, 240, 255, 0.12) 340deg,
+      rgba(0, 240, 255, 0.12) 360deg
+    );
+
+  /*
+   * Elimina completamente el centro.
+   *
+   * El gradiente solo existe en el borde.
+   */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+
+  pointer-events: none;
+
+  z-index: 1;
+
+  animation:
+    trailRotation 4.5s linear infinite;
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE LA ESTELA
+   ========================================================= */
+
+@keyframes trailRotation {
+  from {
+    --trail-angle: 0deg;
+  }
+
+  to {
+    --trail-angle: 360deg;
+  }
+}
+
+
+/* =========================================================
+   HEADER DEL PERFIL
+   ========================================================= */
+
+.profile-header {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  padding-bottom: 2rem;
+
+  border-bottom:
+    1px solid rgba(0, 240, 255, 0.15);
+
+  margin-bottom: 2rem;
+}
+
+.profile-header h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 1.5rem;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   AVATAR HEXAGONAL
+   ========================================================= */
+
+.avatar {
+  position: relative;
+
+  width: 90px;
+  height: 90px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 0.5rem;
+
+  color: #00f0ff;
+
+  font-size: 2.5rem;
+
+  font-weight: bold;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0, 240, 255, 0.25),
+      rgba(0, 100, 160, 0.12)
+    );
+
+  clip-path: polygon(
+    50% 0%,
+    92% 24%,
+    92% 76%,
+    50% 100%,
+    8% 76%,
+    8% 24%
+  );
+
+  filter:
+    drop-shadow(
+      0 0 5px rgba(0, 240, 255, 0.65)
+    )
+    drop-shadow(
+      0 0 14px rgba(0, 240, 255, 0.18)
+    );
+
+  text-shadow:
+    0 0 8px rgba(0, 240, 255, 0.8),
+    0 0 18px rgba(0, 240, 255, 0.25);
+
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   INTERIOR DEL HEXÁGONO
+   ========================================================= */
+
+.avatar::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: -1;
+
+  inset: 2px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 35, 60, 0.98),
+      rgba(8, 18, 42, 0.98)
+    );
+
+  clip-path: polygon(
+    50% 0%,
+    92% 24%,
+    92% 76%,
+    50% 100%,
+    8% 76%,
+    8% 24%
+  );
+}
+
+
+/* =========================================================
+   BRILLO INTERIOR DEL HEXÁGONO
+   ========================================================= */
+
+.avatar::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: -1;
+
+  width: 28px;
+  height: 28px;
+
+  top: 50%;
+  left: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  background:
+    rgba(0, 240, 255, 0.12);
+
+  filter: blur(12px);
+
+  border-radius: 50%;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL PERFIL
+   ========================================================= */
+
+.profile-info {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.25rem;
+}
+
+
+/* =========================================================
+   FILAS DE DATOS
+   ========================================================= */
+
+.info-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0.85rem 0;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.05);
+}
+
+.info-row.full {
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 0.5rem;
+}
+
+.info-row .label {
+  color: #00f0ff;
+
+  font-size: 0.8rem;
+
+  text-transform: uppercase;
+
+  font-weight: bold;
+
+  letter-spacing: 0.5px;
+}
+
+.info-row span:last-child {
+  color: #e2e8f0;
+
+  font-size: 1rem;
+
+  text-align: right;
+}
+
+.info-row.full span:last-child {
+  text-align: left;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge {
+  padding: 0.3rem 0.75rem;
+
+  border-radius: 4px;
+
+  font-size: 0.75rem;
+
+  font-weight: bold;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+
+  display: inline-block;
+}
+
+.badge-admin {
+  background:
+    rgba(0, 240, 255, 0.15);
+
+  color: #00f0ff;
+
+  border:
+    1px solid #00f0ff;
+
+  box-shadow:
+    0 0 8px rgba(0, 240, 255, 0.15);
+}
+
+.badge-coordinador {
+  background:
+    rgba(168, 85, 247, 0.15);
+
+  color: #a855f7;
+
+  border:
+    1px solid #a855f7;
+}
+
+.badge-rescatista {
+  background:
+    rgba(239, 68, 68, 0.15);
+
+  color: #ef4444;
+
+  border:
+    1px solid #ef4444;
+}
+
+.badge-voluntario {
+  background:
+    rgba(34, 197, 94, 0.15);
+
+  color: #22c55e;
+
+  border:
+    1px solid #22c55e;
+}
+
+.badge-gestor_refugio {
+  background:
+    rgba(249, 115, 22, 0.15);
+
+  color: #f97316;
+
+  border:
+    1px solid #f97316;
+}
+
+
+/* =========================================================
+   DISPONIBILIDAD
+   ========================================================= */
+
+.dot {
+  display: inline-block;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #64748b;
+
+  margin-right: 0.5rem;
+
+  vertical-align: middle;
+}
+
+.dot.active {
+  background: #39ff14;
+
+  box-shadow:
+    0 0 6px #39ff14,
+    0 0 12px rgba(57, 255, 20, 0.8),
+    0 0 20px rgba(57, 255, 20, 0.35);
+}
+
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+
+.alert {
+  padding: 1rem;
+
+  border-radius: 8px;
+
+  margin-bottom: 1.5rem;
+
+  font-size: 0.9rem;
+}
+
+.alert-error {
+  background:
+    rgba(255, 77, 77, 0.1);
+
+  color: #ff4d4d;
+
+  border:
+    1px solid #ff4d4d;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading {
+  padding: 4rem 1rem;
+
+  text-align: center;
+
+  color: #64748b;
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-card::before,
+  .profile-card::after {
+    animation: none;
+  }
+}
